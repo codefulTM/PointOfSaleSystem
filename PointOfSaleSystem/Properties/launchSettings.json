@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "PointOfSaleSystem (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "PointOfSaleSystem (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
