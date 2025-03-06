@@ -45,7 +45,21 @@ namespace PointOfSaleSystem.Models
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            string query = "DELETE FROM PRODUCT WHERE product_id = @id";
+            using (var cmd = new NpgsqlCommand(query, _connection))
+            {
+                cmd.Parameters.AddWithValue("id", id);
+
+                _connection.Open();
+                cmd.ExecuteNonQuery();
+                _connection.Close();
+            }
+
+            var productToRemove = products.FirstOrDefault(p => p.Id == id);
+            if (productToRemove != null)
+            {
+                products.Remove(productToRemove);
+            }
         }
 
         public IEnumerable<Product> GetAll()
@@ -115,7 +129,34 @@ namespace PointOfSaleSystem.Models
 
         public void Update(Product entity)
         {
-            throw new NotImplementedException();
+            string query = "UPDATE PRODUCT SET barcode = @barcode, name = @name, category_id = @categoryId, supplier_id = @supplierId, " +
+                   "brand = @brand, quantity = @quantity, cost_price = @costPrice, selling_price = @sellingPrice, image = @image " +
+                   "WHERE product_id = @id";
+
+            using (var cmd = new NpgsqlCommand(query, _connection))
+            {
+                cmd.Parameters.AddWithValue("barcode", entity.Barcode ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("name", entity.Name);
+                cmd.Parameters.AddWithValue("categoryId", entity.CategoryId ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("supplierId", entity.SupplierId ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("brand", entity.Brand ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("quantity", entity.Quantity ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("costPrice", entity.CostPrice ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("sellingPrice", entity.SellingPrice ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("image", entity.Image ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("id", entity.Id);
+
+                _connection.Open();
+                cmd.ExecuteNonQuery();
+                _connection.Close();
+            }
+
+            var existingProduct = products.FirstOrDefault(p => p.Id == entity.Id);
+            if (existingProduct != null)
+            {
+                products.Remove(existingProduct);
+                products.Add(entity);
+            }
         }
     }
 }
