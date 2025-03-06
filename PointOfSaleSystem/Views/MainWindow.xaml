@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="PointOfSaleSystem.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PointOfSaleSystem.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="MainWindow">
+
+    <Grid>
+        <NavigationView x:Name="nav" 
+                        IsSettingsVisible="False">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Hàng hóa" Tag="Products" IsSelected="True">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="H"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame"/>
+        </NavigationView>
+    </Grid>
+</Window>
