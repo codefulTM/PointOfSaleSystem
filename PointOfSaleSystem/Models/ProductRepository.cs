@@ -45,7 +45,7 @@ namespace PointOfSaleSystem.Models
 
         public void Delete(int id)
         {
-            string query = "DELETE FROM PRODUCT WHERE product_id = @id";
+            string query = "UPDATE PRODUCT SET deleted = TRUE WHERE product_id = @id";
             using (var cmd = new NpgsqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("id", id);
