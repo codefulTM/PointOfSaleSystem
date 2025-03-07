@@ -17,6 +17,5 @@
         <Button Content="Thêm" 
                 Click="AddProduct" 
                 Margin="10"/>
-        
     </StackPanel>
 </Page>
