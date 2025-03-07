@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Models;
+using System.Collections.ObjectModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -24,11 +25,12 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class ProductPage : Page
     {
-        public IEnumerable<Product> products { get; set; }
+        public ProductRepository ProductRepo { get; set; }
+        public ObservableCollection<Product> Products { get; set; }
         public ProductPage()
         {
-            ProductRepository productRepo = ProductRepository.GetInstance();
-            products = productRepo.GetAll();
+            ProductRepo = ProductRepository.GetInstance();
+            Products = new ObservableCollection<Product>(ProductRepo.GetAll());
             this.InitializeComponent();
         }
 
@@ -36,7 +38,14 @@ namespace PointOfSaleSystem.Views
         {
             // Add product to cart
             AddProductWindow addProductWindow = new AddProductWindow();
+            addProductWindow.AddProductEvent += Refresh;
             addProductWindow.Activate();
+        }
+
+        private void Refresh(object? sender, EventArgs e)
+        {
+            Products = new ObservableCollection<Product>(ProductRepo.GetAll());
+            productPage.ItemsSource = Products;
         }
 
         public void Search(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)

@@ -29,6 +29,7 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class AddProductWindow : Window
     {
+        public event EventHandler AddProductEvent;
         public AddProductWindow()
         {
             this.InitializeComponent();
@@ -163,6 +164,7 @@ namespace PointOfSaleSystem.Views
 
             dialog.XamlRoot = this.Content.XamlRoot;
             await dialog.ShowAsync();
+            AddProductEvent?.Invoke(this, EventArgs.Empty);
         }
 
         public async void AddPhoto(object sender, RoutedEventArgs e)

@@ -17,5 +17,46 @@
         <Button Content="Thêm" 
                 Click="AddProduct" 
                 Margin="10"/>
+        <GridView x:Name="productPage"
+                  ItemsSource="{x:Bind Products}"
+                  Padding="10">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical"
+                                Padding="10"
+                                Margin="10"
+                                Background="{StaticResource TextFillColorPrimaryBrush}"
+                                CornerRadius="8">
+                        <Grid Width="150"
+                              Height="150"
+                              Margin="5"
+                              BorderBrush="Black">
+                            <Rectangle Fill="DarkGray"/>
+                            <Image Source="{Binding Image}"
+                                   Stretch="UniformToFill"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   />
+                        </Grid>
+                        <Border Width="100"
+                                VerticalAlignment="Stretch">
+                            <TextBlock Text="{Binding Name}"
+                                       Style="{StaticResource BodyStrongTextBlockStyle}"
+                                       Foreground="Black"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid MaximumRowsOrColumns="3" 
+                                   Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+        </GridView>
+        
     </StackPanel>
 </Page>
