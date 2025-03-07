@@ -22,23 +22,34 @@
                   Width="200"
                   Margin="10">
                 <Rectangle Fill="DarkGray"/>
-                <Image x:Name="productImage" Stretch="UniformToFill"/>
+                <Image x:Name="productImage" 
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
             </Grid>
             <Border HorizontalAlignment="Center">
                 <Button Content="Thêm ảnh"
                         Click="AddPhoto" />
             </Border>
         </StackPanel>
-        <StackPanel Orientation="Vertical"
-                    Grid.Column="1"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center">
-            <TextBox Header="Tên sản phẩm:" PlaceholderText="Nhập tên sản phẩm" HorizontalAlignment="Stretch" Margin="10"/>
-            <TextBox Header="Thương hiệu:" PlaceholderText="Nhập thương hiệu" HorizontalAlignment="Stretch" Margin="10"/>
-            <TextBox Header="Hạng mục:" PlaceholderText="Nhập tên sản phẩm" HorizontalAlignment="Stretch" Margin="10"/>
-            <TextBox Header="Tồn kho:" PlaceholderText="Nhập tồn kho" HorizontalAlignment="Stretch" Margin="10"/>
-            <TextBox Header="Giá vốn:" PlaceholderText="Nhập giá vốn" HorizontalAlignment="Stretch" Margin="10"/>
-            <TextBox Header="Giá bán:" PlaceholderText="Nhập giá bán" HorizontalAlignment="Stretch" Margin="10"/>
-        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+              HorizontalScrollBarVisibility="Disabled"
+              Grid.Column="1">
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+                <TextBox x:Name="productName" Header="Tên sản phẩm:" PlaceholderText="Nhập tên sản phẩm" HorizontalAlignment="Stretch" Margin="10"/>
+                <TextBox x:Name="brand" Header="Thương hiệu:" PlaceholderText="Nhập thương hiệu" HorizontalAlignment="Stretch" Margin="10"/>
+                <TextBox x:Name="category" Header="Hạng mục:" PlaceholderText="Nhập hạng mục" HorizontalAlignment="Stretch" Margin="10"/>
+                <TextBox x:Name="quantity" Header="Tồn kho:" PlaceholderText="Nhập tồn kho" HorizontalAlignment="Stretch" Margin="10"/>
+                <TextBox x:Name="costPrice" Header="Giá vốn:" PlaceholderText="Nhập giá vốn" HorizontalAlignment="Stretch" Margin="10"/>
+                <TextBox x:Name="sellingPrice" Header="Giá bán:" PlaceholderText="Nhập giá bán" HorizontalAlignment="Stretch" Margin="10"/>
+                <Border HorizontalAlignment="Center">
+                    <Button Content="Thêm sản phẩm"
+                            Margin="10"
+                            Click="AddProduct"/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

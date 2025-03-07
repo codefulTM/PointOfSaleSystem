@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.System;
 using Npgsql;
 using System.Security.Cryptography;
+using System.Diagnostics;
 
 namespace PointOfSaleSystem.Models
 {
@@ -14,9 +15,22 @@ namespace PointOfSaleSystem.Models
         List<Product> products = new List<Product>();
         private NpgsqlConnection _connection;
 
-        public ProductRepository(NpgsqlConnection connection)
+        // singleton instance
+        private static ProductRepository _instance = null;
+
+        private ProductRepository(NpgsqlConnection connection)
         {
             _connection = connection;
+            GetAll();
+        }
+
+        public static ProductRepository GetInstance() 
+        {    
+            if(_instance == null)
+            {
+                _instance = new ProductRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
+            }
+            return _instance;
         }
 
         public void Create(Product entity)
@@ -66,9 +80,11 @@ namespace PointOfSaleSystem.Models
         {
             if(products.Count == 0)
             {
-                string query = "SELECT * FROM PRODUCT";
+                string query = "SELECT * FROM PRODUCT WHERE deleted = @deleted";
                 using(var cmd = new NpgsqlCommand(query, _connection))
                 {
+                    cmd.Parameters.AddWithValue("deleted", false);
+                    _connection.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -87,6 +103,7 @@ namespace PointOfSaleSystem.Models
                             products.Add(product);
                         }
                     }
+                    _connection.Close();
                 }
             }
             return products;
@@ -96,9 +113,10 @@ namespace PointOfSaleSystem.Models
         {
             if(products.Count == 0)
             {
-                string query = "SELECT * FROM PRODUCT WHERE id = @id";
+                string query = "SELECT * FROM PRODUCT WHERE id = @id AND deleted = @deleted";
                 using (var cmd = new NpgsqlCommand(query, _connection))
                 {
+                    cmd.Parameters.AddWithValue("deleted", false);
                     cmd.Parameters.AddWithValue("id", id);
                     using (var reader = cmd.ExecuteReader())
                     {

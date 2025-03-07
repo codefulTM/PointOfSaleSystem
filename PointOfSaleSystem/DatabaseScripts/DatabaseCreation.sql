@@ -7,7 +7,8 @@ CREATE TABLE SUPPLIER (
 
 CREATE TABLE CATEGORY (
     category_id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+	deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE PRODUCT (
@@ -20,7 +21,8 @@ CREATE TABLE PRODUCT (
     quantity INT,
     cost_price INT,
     selling_price INT,
-    image VARCHAR(255),
+    image TEXT,
+    deleted BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (category_id) REFERENCES CATEGORY(category_id),
     FOREIGN KEY (supplier_id) REFERENCES SUPPLIER(supplier_id)
 );
