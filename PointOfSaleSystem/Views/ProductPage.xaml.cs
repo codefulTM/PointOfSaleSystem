@@ -52,5 +52,14 @@ namespace PointOfSaleSystem.Views
         {
             // Search for product
         }
+
+        public void OnItemClicked(object sender, ItemClickEventArgs e)
+        {
+            if(e.ClickedItem is Product product)
+            {
+                ProductDetailsWindow productDetailsWindow = new ProductDetailsWindow(product);
+                productDetailsWindow.Activate();
+            }
+        }
     }
 }

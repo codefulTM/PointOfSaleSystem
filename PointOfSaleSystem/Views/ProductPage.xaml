@@ -15,11 +15,15 @@
                 QuerySubmitted="Search"
                 Margin="10"/>
         <Button Content="Thêm" 
+                Background="{ThemeResource SystemAccentColor}"
+                Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
                 Click="AddProduct" 
                 Margin="10"/>
         <GridView x:Name="productPage"
                   ItemsSource="{x:Bind Products}"
-                  Padding="10">
+                  Padding="10"
+                  IsItemClickEnabled="True"
+                  ItemClick="OnItemClicked">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical"
