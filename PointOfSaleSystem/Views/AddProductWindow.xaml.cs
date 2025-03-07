@@ -29,6 +29,7 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class AddProductWindow : Window
     {
+        public event EventHandler AddProductEvent;
         public AddProductWindow()
         {
             this.InitializeComponent();
@@ -49,7 +50,7 @@ namespace PointOfSaleSystem.Views
 
             // Constraint checking
             ContentDialog dialog;
-            if(prodName == null)
+            if (prodName == null)
             {
                 dialog = new ContentDialog
                 {
@@ -65,12 +66,12 @@ namespace PointOfSaleSystem.Views
 
             try
             {
-                if(quantity.Text != "")
+                if (quantity.Text != "")
                 {
                     prodQuantity = int.Parse(quantity.Text);
                 }
             }
-            catch(FormatException ex)
+            catch (FormatException ex)
             {
                 dialog = new ContentDialog
                 {
@@ -84,15 +85,15 @@ namespace PointOfSaleSystem.Views
 
                 return;
             }
-            
+
             try
             {
-                if(costPrice.Text != "")
+                if (costPrice.Text != "")
                 {
                     prodCostPrice = int.Parse(costPrice.Text);
                 }
             }
-            catch(FormatException ex)
+            catch (FormatException ex)
             {
                 dialog = new ContentDialog
                 {
@@ -109,12 +110,12 @@ namespace PointOfSaleSystem.Views
 
             try
             {
-                if(sellingPrice.Text != "")
+                if (sellingPrice.Text != "")
                 {
                     prodSellingPrice = int.Parse(sellingPrice.Text);
                 }
             }
-            catch(FormatException ex)
+            catch (FormatException ex)
             {
                 dialog = new ContentDialog
                 {
@@ -129,14 +130,26 @@ namespace PointOfSaleSystem.Views
                 return;
             }
 
-            // Find the category
-            CategoryRepository catRepo = CategoryRepository.GetInstance();
-            var categories = catRepo.GetAll();
+            // If the category is detailed, add it to the database or take the id from an existing category
             int? prodCatId = null;
-            Category? foundCat = categories.FirstOrDefault(cat => cat.Name == prodCat);
-            if (foundCat != null)
+            if (prodCat != null)
             {
-                prodCatId = foundCat.Id;
+                CategoryRepository catRepo = CategoryRepository.GetInstance();
+                var categories = catRepo.GetAll();
+                Category? foundCat = categories.FirstOrDefault(cat => cat.Name == prodCat);
+                if (foundCat != null)
+                {
+                    prodCatId = foundCat.Id;
+                }
+                else
+                {
+                    Category newCat = new Category()
+                    {
+                        Name = prodCat,
+                    };
+                    catRepo.Create(newCat);
+                    prodCatId = newCat.Id;
+                }
             }
 
             // Creating the product
@@ -163,6 +176,7 @@ namespace PointOfSaleSystem.Views
 
             dialog.XamlRoot = this.Content.XamlRoot;
             await dialog.ShowAsync();
+            AddProductEvent?.Invoke(this, EventArgs.Empty);
         }
 
         public async void AddPhoto(object sender, RoutedEventArgs e)
