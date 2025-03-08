@@ -35,7 +35,7 @@ namespace PointOfSaleSystem.Views
         private void ProductDetailsWindowActivated(object sender, WindowActivatedEventArgs args)
         {
             productInfo.DataContext = product;
-            if(product.CategoryId == null)
+            if(product.Category == null)
             {
                 productCategory.Text = "Chưa có dữ liệu";
             }

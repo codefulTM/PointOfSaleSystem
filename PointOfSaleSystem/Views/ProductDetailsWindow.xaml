@@ -55,7 +55,7 @@
                     <TextBlock Text="Hạng mục: "
                                Margin="0 0 10 0"
                                Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                    <TextBlock x:Name="productCategory" Text="{Binding CategoryId}"/>
+                    <TextBlock x:Name="productCategory" Text="{Binding Category}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
                             Margin="10">
