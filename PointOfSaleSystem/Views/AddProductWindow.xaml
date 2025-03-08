@@ -7,8 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="AddProductWindow">
-
+    Title="Thêm sản phẩm">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
@@ -29,7 +28,9 @@
             </Grid>
             <Border HorizontalAlignment="Center">
                 <Button Content="Thêm ảnh"
-                        Click="AddPhoto" />
+                        Click="AddPhoto" 
+                        Background="{ThemeResource SystemAccentColor}"
+                        Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
             </Border>
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -47,7 +48,9 @@
                 <Border HorizontalAlignment="Center">
                     <Button Content="Thêm sản phẩm"
                             Margin="10"
-                            Click="AddProduct"/>
+                            Click="AddProduct"
+                            Background="{ThemeResource SystemAccentColor}"
+                            Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
                 </Border>
             </StackPanel>
         </ScrollViewer>

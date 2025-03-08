@@ -130,25 +130,19 @@ namespace PointOfSaleSystem.Views
                 return;
             }
 
-            // If the category is detailed, add it to the database or take the id from an existing category
-            int? prodCatId = null;
+            // If the category is detailed, add it to the database 
             if (prodCat != null)
             {
                 CategoryRepository catRepo = CategoryRepository.GetInstance();
                 var categories = catRepo.GetAll();
                 Category? foundCat = categories.FirstOrDefault(cat => cat.Name == prodCat);
-                if (foundCat != null)
-                {
-                    prodCatId = foundCat.Id;
-                }
-                else
+                if (foundCat == null)
                 {
                     Category newCat = new Category()
                     {
                         Name = prodCat,
                     };
                     catRepo.Create(newCat);
-                    prodCatId = newCat.Id;
                 }
             }
 
@@ -160,7 +154,7 @@ namespace PointOfSaleSystem.Views
                 Quantity = prodQuantity,
                 CostPrice = prodCostPrice,
                 SellingPrice = prodSellingPrice,
-                CategoryId = prodCatId,
+                Category = prodCat,
                 Image = productImage.Tag as string
             };
 

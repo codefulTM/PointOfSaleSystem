@@ -41,6 +41,11 @@
     <PackageReference Include="Npgsql" Version="9.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\ProductDetailsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\AddProductWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

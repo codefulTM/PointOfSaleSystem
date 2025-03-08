@@ -11,8 +11,8 @@ namespace PointOfSaleSystem.Models
         public int Id { get; set; }
         public string? Barcode { get; set; } = null;
         public string Name { get; set; }
-        public int? CategoryId { get; set; } = null;
-        public int? SupplierId { get; set; } = null;
+        public string? Category { get; set; } = null;
+        public string? Supplier { get; set; } = null;
         public string? Brand { get; set; } = null;
         public int? Quantity { get; set; } = null;
         public int? CostPrice { get; set; } = null;
