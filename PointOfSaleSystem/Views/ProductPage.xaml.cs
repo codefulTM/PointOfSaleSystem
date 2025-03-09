@@ -42,7 +42,7 @@ namespace PointOfSaleSystem.Views
             addProductWindow.Activate();
         }
 
-        private void Refresh(object? sender, EventArgs e)
+        public void Refresh(object? sender, EventArgs e)
         {
             Products = new ObservableCollection<Product>(ProductRepo.GetAll());
             productPage.ItemsSource = Products;

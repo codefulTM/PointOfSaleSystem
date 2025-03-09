@@ -64,5 +64,36 @@ namespace PointOfSaleSystem.Views
             updateProductWindow.Activate();
             this.Close();
         }
+
+        private async void DeleteProduct(object sender, RoutedEventArgs e)
+        {
+            ContentDialog deleteDialog = new ContentDialog
+            {
+                Title = "Xác nhận xóa",
+                Content = "Bạn có chắc chắn muốn xóa sản phẩm này không?",
+                PrimaryButtonText = "Xóa",
+                CloseButtonText = "Hủy",
+            };
+
+            deleteDialog.XamlRoot = this.Content.XamlRoot;
+            ContentDialogResult result = await deleteDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                ProductRepository productRepo = ProductRepository.GetInstance();
+                productRepo.Delete(product.Id);
+
+                ContentDialog successDialog = new ContentDialog
+                {
+                    Title = "Thành công",
+                    Content = "Sản phẩm đã được xóa thành công.",
+                    CloseButtonText = "OK"
+                };
+
+                successDialog.XamlRoot = this.Content.XamlRoot;
+                await successDialog.ShowAsync();
+                this.Close();
+            }
+        }
     }
 }
