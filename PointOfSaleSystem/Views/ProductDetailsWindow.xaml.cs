@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Models;
+using System.Collections.ObjectModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -55,6 +56,13 @@ namespace PointOfSaleSystem.Views
             {
                 productSellingPrice.Text = "Chưa có dữ liệu";
             }
+        }
+
+        private void OpenUpdateWindow(object sender, RoutedEventArgs e)
+        {
+            var updateProductWindow = new UpdateProductWindow(product);
+            updateProductWindow.Activate();
+            this.Close();
         }
     }
 }

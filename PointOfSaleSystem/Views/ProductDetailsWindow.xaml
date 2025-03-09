@@ -78,6 +78,13 @@
                                Style="{StaticResource BodyStrongTextBlockStyle}"/>
                     <TextBlock x:Name="productSellingPrice" Text="{Binding SellingPrice, Converter={StaticResource currency}}"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="UpdateButton" 
+                            Style="{StaticResource AccentButtonStyle}" 
+                            Click="OpenUpdateWindow"
+                            >Sửa
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Grid>
