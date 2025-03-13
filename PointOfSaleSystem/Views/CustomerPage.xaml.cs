@@ -39,5 +39,11 @@ namespace PointOfSaleSystem.Views
             var screen = new AddCustomerWindow();
             screen.Activate();
         }
+
+        private void updateButton_Click(object sender, RoutedEventArgs e)
+        {
+            var screen = new UpdateCustomerWindow();
+            screen.Activate();
+        }
     }
 }
