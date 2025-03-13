@@ -54,7 +54,7 @@
             <Border Background="White" Grid.Column="1" Grid.Row="1" Margin="5">
                 <TextBlock Text="Nguyễn Văn A" HorizontalAlignment="Center" Margin="5"/>
             </Border>
-            <Button Content="Xem" Grid.Column="2" Grid.Row="1" Margin="5" Width="90"/>
+            <Button Content="Xem" Grid.Column="2" Grid.Row="1" Margin="5" Width="90" Click="viewDetailButton_Click"/>
             <Button Content="Xóa" Grid.Column="3" Grid.Row="1" Margin="5" Width="90"/>
             <Button Content="Sửa" Grid.Column="4" Grid.Row="1" Margin="5" Width="90"/>
 
