@@ -26,8 +26,23 @@ namespace PointOfSaleSystem.Views
         public MainWindow()
         {
             this.InitializeComponent();
-
             contentFrame.Navigate(typeof(ProductPage));
+        }
+
+        private void nav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.IsSettingsInvoked)
+            {
+                Console.WriteLine("Settings clicked");
+                return;
+            }
+            else
+            {
+                var item = (NavigationViewItem)args.InvokedItemContainer;
+                var page = item.Tag.ToString();
+
+                contentFrame.Navigate(Type.GetType($"PointOfSaleSystem.Views.{page}"));
+            }
         }
     }
 }
