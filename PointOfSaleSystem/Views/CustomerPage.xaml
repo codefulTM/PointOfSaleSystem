@@ -16,6 +16,7 @@
         <Button Content="Thêm" 
             Background="{ThemeResource SystemAccentColor}"
             Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+            Click="addButton_Click"
             Margin="10">
         </Button>
         <Grid Margin="10">
