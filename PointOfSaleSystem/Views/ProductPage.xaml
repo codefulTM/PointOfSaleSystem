@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <StackPanel Orientation="Vertical">
-        <AutoSuggestBox PlaceholderText="Nhập tên sản phẩm"
+        <AutoSuggestBox PlaceholderText="Nhập tên hoặc mã khách hàng"
                 QueryIcon="Find"
                 QuerySubmitted="Search"
                 Margin="10"/>

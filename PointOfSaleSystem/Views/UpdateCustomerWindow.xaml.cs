@@ -21,28 +21,11 @@ namespace PointOfSaleSystem.Views
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : Window
+    public sealed partial class UpdateCustomerWindow : Window
     {
-        public MainWindow()
+        public UpdateCustomerWindow()
         {
             this.InitializeComponent();
-            contentFrame.Navigate(typeof(ProductPage));
-        }
-
-        private void nav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            if (args.IsSettingsInvoked)
-            {
-                Console.WriteLine("Settings clicked");
-                return;
-            }
-            else
-            {
-                var item = (NavigationViewItem)args.InvokedItemContainer;
-                var page = item.Tag.ToString();
-
-                contentFrame.Navigate(Type.GetType($"PointOfSaleSystem.Views.{page}"));
-            }
         }
     }
 }
