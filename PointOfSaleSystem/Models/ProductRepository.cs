@@ -162,41 +162,9 @@ namespace PointOfSaleSystem.Models
         {
             if(products.Count == 0)
             {
-                string query = "SELECT p.product_id, p.barcode, p.name, c.name, s.name, p.brand, p.quantity, p.cost_price, p.selling_price, p.image " +
-                    "FROM PRODUCT p " +
-                    "LEFT JOIN CATEGORY c ON c.category_id = p.category_id " +
-                    "LEFT JOIN SUPPLIER s ON s.supplier_id = p.supplier_id " +
-                    "WHERE p.id = @id AND p.deleted = @deleted";
-                using (var cmd = new NpgsqlCommand(query, _connection))
-                {
-                    cmd.Parameters.AddWithValue("deleted", false);
-                    cmd.Parameters.AddWithValue("id", id);
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            Product product = new Product();
-                            product.Id = reader.GetInt32(0);
-                            product.Barcode = reader.IsDBNull(1) ? null : reader.GetString(1);
-                            product.Name = reader.GetString(2);
-                            product.Category = reader.IsDBNull(3) ? null : reader.GetString(3);
-                            product.Supplier = reader.IsDBNull(4) ? null : reader.GetString(4);
-                            product.Brand = reader.IsDBNull(5) ? null : reader.GetString(5);
-                            product.Quantity = reader.IsDBNull(6) ? null : reader.GetInt32(6);
-                            product.CostPrice = reader.IsDBNull(7) ? null : reader.GetInt32(7);
-                            product.SellingPrice = reader.IsDBNull(8) ? null : reader.GetInt32(8);
-                            product.Image = reader.IsDBNull(9) ? null : reader.GetString(9);
-
-                            return product;
-                        }
-                        return null;
-                    }
-                }
+                GetAll();
             }
-            else
-            {
-                return products.Find(product => product.Id == id);
-            }
+            return products.Find(product => product.Id == id);
         }
 
         public void Update(Product entity)
