@@ -105,10 +105,7 @@ namespace PointOfSaleSystem.Models
             {
                 GetAll();
             }
-            else
-            {
-                customer = customers.Find(c => c.Id == id);
-            }
+            customer = customers.Find(c => c.Id == id);
             return customer;
         }
 
