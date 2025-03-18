@@ -18,6 +18,7 @@ using Windows.Storage.Pickers;
 using System.Security.Cryptography.X509Certificates;
 using System.Numerics;
 using Windows.ApplicationModel.Activation;
+using static PointOfSaleSystem.Models.PostgresDao;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -133,7 +134,7 @@ namespace PointOfSaleSystem.Views
             // If the category is detailed, add it to the database 
             if (prodCat != null)
             {
-                CategoryRepository catRepo = CategoryRepository.GetInstance();
+                PostgresCategoryRepository catRepo = PostgresCategoryRepository.GetInstance();
                 var categories = catRepo.GetAll();
                 Category? foundCat = categories.FirstOrDefault(cat => cat.Name == prodCat);
                 if (foundCat == null)
