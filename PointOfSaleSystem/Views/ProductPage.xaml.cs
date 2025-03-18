@@ -25,12 +25,12 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class ProductPage : Page
     {
-        public ProductRepository ProductRepo { get; set; }
+        public IDao dao { get; set; }
         public ObservableCollection<Product> Products { get; set; }
         public ProductPage()
         {
-            ProductRepo = ProductRepository.GetInstance();
-            Products = new ObservableCollection<Product>(ProductRepo.GetAll());
+            dao = PostgresDao.GetInstance();
+            Products = new ObservableCollection<Product>(dao.Products.GetAll());
             this.InitializeComponent();
         }
 
@@ -44,7 +44,7 @@ namespace PointOfSaleSystem.Views
 
         private void Refresh(object? sender, EventArgs e)
         {
-            Products = new ObservableCollection<Product>(ProductRepo.GetAll());
+            Products = new ObservableCollection<Product>(dao.Products.GetAll());
             productPage.ItemsSource = Products;
         }
 

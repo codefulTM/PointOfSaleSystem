@@ -38,8 +38,8 @@ namespace PointOfSaleSystem.Views
 
         public async void AddProduct(object sender, RoutedEventArgs e)
         {
-            // Get an instance of the product repository
-            ProductRepository productRepo = ProductRepository.GetInstance();
+            // Get an instance of the PostgresDao
+            PostgresDao postgresDao = PostgresDao.GetInstance();
 
             // Get information from the form
             string? prodName = productName.Text != "" ? productName.Text : null;
@@ -134,8 +134,7 @@ namespace PointOfSaleSystem.Views
             // If the category is detailed, add it to the database 
             if (prodCat != null)
             {
-                PostgresCategoryRepository catRepo = PostgresCategoryRepository.GetInstance();
-                var categories = catRepo.GetAll();
+                var categories = postgresDao.Categories.GetAll();
                 Category? foundCat = categories.FirstOrDefault(cat => cat.Name == prodCat);
                 if (foundCat == null)
                 {
@@ -143,7 +142,7 @@ namespace PointOfSaleSystem.Views
                     {
                         Name = prodCat,
                     };
-                    catRepo.Create(newCat);
+                    postgresDao.Categories.Create(newCat);
                 }
             }
 
@@ -160,7 +159,7 @@ namespace PointOfSaleSystem.Views
             };
 
             // Add the product to the database
-            productRepo.Create(product);
+            postgresDao.Products.Create(product);
 
             dialog = new ContentDialog
             {
