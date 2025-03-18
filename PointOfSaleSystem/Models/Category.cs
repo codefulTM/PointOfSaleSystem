@@ -9,6 +9,6 @@ namespace PointOfSaleSystem.Models
     public class Category
     {
         public int? Id { get; set; } = null;
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }

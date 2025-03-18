@@ -31,7 +31,6 @@ namespace PointOfSaleSystem.Models
             return _instance;
         }
 
-
         public void Delete(int id)
         {
             string query = "UPDATE CUSTOMER SET deleted = TRUE WHERE customer_id = @id";
