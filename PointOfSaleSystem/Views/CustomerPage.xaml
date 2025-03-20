@@ -66,7 +66,7 @@
                         <Border Background="White" Grid.Column="1" Margin="5">
                             <TextBlock Text="{x:Bind Name}" HorizontalAlignment="Center" Margin="5"/>
                         </Border>
-                        <Button Content="Xem" Grid.Column="2" Margin="5" Width="90" Click="viewDetailButton_Click"/>
+                        <Button Content="Xem" Grid.Column="2" Margin="5" Width="90" Click="viewDetailButton_Click" Tag="{Binding}"/>
                         <Button Content="Xóa" Grid.Column="3" Margin="5" Width="90"/>
                         <Button Content="Sửa" Grid.Column="4" Margin="5" Width="90" Click="updateButton_Click"/>
                     </Grid>

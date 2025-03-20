@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using PointOfSaleSystem.Models;
 using PointOfSaleSystem.Views.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -33,8 +34,13 @@ namespace PointOfSaleSystem.Views
 
         private void viewDetailButton_Click(object sender, RoutedEventArgs e)
         {
-            var screen = new CustomerDetailsWindow();
-            screen.Activate();
+            var button = sender as Button;
+            var customer = button?.Tag as Customer;
+            if (customer != null)
+            {
+                var screen = new CustomerDetailsWindow(customer);
+                screen.Activate();
+            }
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
