@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Npgsql;
+using PointOfSaleSystem.Models;
 
-namespace PointOfSaleSystem.Models
+namespace PointOfSaleSystem.Services
 {
     public class PostgresDao : IDao
     {

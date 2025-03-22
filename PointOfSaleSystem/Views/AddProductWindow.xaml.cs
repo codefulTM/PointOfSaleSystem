@@ -18,7 +18,8 @@ using Windows.Storage.Pickers;
 using System.Security.Cryptography.X509Certificates;
 using System.Numerics;
 using Windows.ApplicationModel.Activation;
-using static PointOfSaleSystem.Models.PostgresDao;
+using static PointOfSaleSystem.Services.PostgresDao;
+using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
