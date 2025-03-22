@@ -30,7 +30,7 @@ namespace PointOfSaleSystem.Views
         public ObservableCollection<Product> Products { get; set; }
         public ProductPage()
         {
-            dao = PostgresDao.GetInstance();
+            dao = Services.Services.GetKeyedSingleton<IDao>();
             Products = new ObservableCollection<Product>(dao.Products.GetAll());
             this.InitializeComponent();
         }

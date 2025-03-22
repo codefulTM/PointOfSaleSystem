@@ -18,7 +18,6 @@ using Windows.Storage.Pickers;
 using System.Security.Cryptography.X509Certificates;
 using System.Numerics;
 using Windows.ApplicationModel.Activation;
-using static PointOfSaleSystem.Services.PostgresDao;
 using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -39,8 +38,9 @@ namespace PointOfSaleSystem.Views
 
         public async void AddProduct(object sender, RoutedEventArgs e)
         {
-            // Get an instance of the PostgresDao
-            PostgresDao postgresDao = PostgresDao.GetInstance();
+            // Get an instance of the database access object
+            IDao dao = Services.Services.GetKeyedSingleton<IDao>();
+            
 
             // Get information from the form
             string? prodName = productName.Text != "" ? productName.Text : null;
@@ -135,7 +135,7 @@ namespace PointOfSaleSystem.Views
             // If the category is detailed, add it to the database 
             if (prodCat != null)
             {
-                var categories = postgresDao.Categories.GetAll();
+                var categories = dao.Categories.GetAll();
                 Category? foundCat = categories.FirstOrDefault(cat => cat.Name == prodCat);
                 if (foundCat == null)
                 {
@@ -143,7 +143,7 @@ namespace PointOfSaleSystem.Views
                     {
                         Name = prodCat,
                     };
-                    postgresDao.Categories.Create(newCat);
+                    dao.Categories.Create(newCat);
                 }
             }
 
@@ -160,7 +160,7 @@ namespace PointOfSaleSystem.Views
             };
 
             // Add the product to the database
-            postgresDao.Products.Create(product);
+            dao.Products.Create(product);
 
             dialog = new ContentDialog
             {
