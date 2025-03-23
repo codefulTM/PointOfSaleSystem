@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Models;
 using System.Collections.ObjectModel;
+using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,12 +26,12 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class ProductPage : Page
     {
-        public ProductRepository ProductRepo { get; set; }
+        public IDao dao { get; set; }
         public ObservableCollection<Product> Products { get; set; }
         public ProductPage()
         {
-            ProductRepo = ProductRepository.GetInstance();
-            Products = new ObservableCollection<Product>(ProductRepo.GetAll());
+            dao = Services.Services.GetKeyedSingleton<IDao>();
+            Products = new ObservableCollection<Product>(dao.Products.GetAll());
             this.InitializeComponent();
         }
 
@@ -44,7 +45,7 @@ namespace PointOfSaleSystem.Views
 
         private void Refresh(object? sender, EventArgs e)
         {
-            Products = new ObservableCollection<Product>(ProductRepo.GetAll());
+            Products = new ObservableCollection<Product>(dao.Products.GetAll());
             productPage.ItemsSource = Products;
         }
 

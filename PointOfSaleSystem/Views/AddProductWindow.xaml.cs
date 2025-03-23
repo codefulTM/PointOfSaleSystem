@@ -18,6 +18,7 @@ using Windows.Storage.Pickers;
 using System.Security.Cryptography.X509Certificates;
 using System.Numerics;
 using Windows.ApplicationModel.Activation;
+using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -37,8 +38,9 @@ namespace PointOfSaleSystem.Views
 
         public async void AddProduct(object sender, RoutedEventArgs e)
         {
-            // Get an instance of the product repository
-            ProductRepository productRepo = ProductRepository.GetInstance();
+            // Get an instance of the database access object
+            IDao dao = Services.Services.GetKeyedSingleton<IDao>();
+            
 
             // Get information from the form
             string? prodName = productName.Text != "" ? productName.Text : null;
@@ -133,8 +135,7 @@ namespace PointOfSaleSystem.Views
             // If the category is detailed, add it to the database 
             if (prodCat != null)
             {
-                CategoryRepository catRepo = CategoryRepository.GetInstance();
-                var categories = catRepo.GetAll();
+                var categories = dao.Categories.GetAll();
                 Category? foundCat = categories.FirstOrDefault(cat => cat.Name == prodCat);
                 if (foundCat == null)
                 {
@@ -142,7 +143,7 @@ namespace PointOfSaleSystem.Views
                     {
                         Name = prodCat,
                     };
-                    catRepo.Create(newCat);
+                    dao.Categories.Create(newCat);
                 }
             }
 
@@ -159,7 +160,7 @@ namespace PointOfSaleSystem.Views
             };
 
             // Add the product to the database
-            productRepo.Create(product);
+            dao.Products.Create(product);
 
             dialog = new ContentDialog
             {

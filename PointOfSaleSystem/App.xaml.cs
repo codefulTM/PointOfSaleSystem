@@ -16,6 +16,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Shapes;
 using PointOfSaleSystem.Views;
+using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -34,6 +35,8 @@ namespace PointOfSaleSystem
         public App()
         {
             this.InitializeComponent();
+
+            Services.Services.AddKeyedSingleton<IDao, PostgresDao>();
         }
 
         /// <summary>
