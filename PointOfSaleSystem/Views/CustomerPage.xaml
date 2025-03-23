@@ -16,8 +16,8 @@
             QueryIcon="Find"
             Margin="10"/>
         <Button Content="Thêm" 
-            Background="{ThemeResource SystemAccentColor}"
-            Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+            Background="#ffb22c"
+            Foreground="Black"
             Click="addButton_Click"
             Margin="10">
         </Button>
@@ -33,20 +33,20 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Border Background="LightGray" Grid.Column="0" Margin="5">
-                <TextBlock Text="ID" HorizontalAlignment="Center" Margin="5"/>
+            <Border Background="#d9d9d9" Grid.Column="0" Margin="5">
+                <TextBlock Text="ID" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" Margin="5"/>
             </Border>
-            <Border Background="LightGray" Grid.Column="1" Margin="5">
-                <TextBlock Text="Tên khách hàng" HorizontalAlignment="Center" Margin="5"/>
+            <Border Background="#d9d9d9" Grid.Column="1" Margin="5">
+                <TextBlock Text="Tên khách hàng" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" Margin="5"/>
             </Border>
-            <Border Background="LightGray" Grid.Column="2" Margin="5">
-                <TextBlock HorizontalAlignment="Center" Margin="5">Xem</TextBlock>
+            <Border Background="#d9d9d9" Grid.Column="2" Margin="5">
+                <TextBlock Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" Margin="5">Xem</TextBlock>
             </Border>
-            <Border Background="LightGray" Grid.Column="3" Margin="5">
-                <TextBlock HorizontalAlignment="Center" Margin="5">Xóa</TextBlock>
+            <Border Background="#d9d9d9" Grid.Column="3" Margin="5">
+                <TextBlock Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" Margin="5">Sửa</TextBlock>
             </Border>
-            <Border Background="LightGray" Grid.Column="4" Margin="5">
-                <TextBlock HorizontalAlignment="Center" Margin="5">Sửa</TextBlock>
+            <Border Background="#d9d9d9" Grid.Column="4" Margin="5">
+                <TextBlock Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center" Margin="5">Xóa</TextBlock>
             </Border>
         </Grid>
         <ListView Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{x:Bind ViewModel.Customers}">
@@ -60,15 +60,15 @@
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="100" />
                         </Grid.ColumnDefinitions>
-                        <Border Background="White" Grid.Column="0" Margin="5">
-                            <TextBlock Text="{x:Bind Id}" HorizontalAlignment="Center" Margin="5"/>
+                        <Border Background="#efebe2" Grid.Column="0" Margin="5">
+                            <TextBlock Text="{x:Bind Id}" Foreground="Black" HorizontalAlignment="Center" Margin="5"/>
                         </Border>
-                        <Border Background="White" Grid.Column="1" Margin="5">
-                            <TextBlock Text="{x:Bind Name}" HorizontalAlignment="Center" Margin="5"/>
+                        <Border Background="#efebe2" Grid.Column="1" Margin="5">
+                            <TextBlock Text="{x:Bind Name}" Foreground="Black" HorizontalAlignment="Center" Margin="5"/>
                         </Border>
-                        <Button Content="Xem" Grid.Column="2" Margin="5" Width="90" Click="viewDetailButton_Click" Tag="{Binding}"/>
-                        <Button Content="Xóa" Grid.Column="3" Margin="5" Width="90"/>
-                        <Button Content="Sửa" Grid.Column="4" Margin="5" Width="90" Click="updateButton_Click"/>
+                        <Button Content="Xem" Background="#ffb22c" Grid.Column="2" Margin="5" Width="90" Click="viewDetailButton_Click" Tag="{Binding}"/>
+                        <Button Content="Sửa" Background="#ffb22c" Grid.Column="3" Margin="5" Width="90" Click="updateButton_Click"/>
+                        <Button Content="Xóa" Background="#854836" Grid.Column="4" Margin="5" Width="90" Click="deleteButton_Click"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -10,13 +10,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <StackPanel Orientation="Vertical">
-        <AutoSuggestBox PlaceholderText="Nhập tên hoặc mã khách hàng"
+        <AutoSuggestBox PlaceholderText="Nhập tên hoặc mã sản phẩm"
                 QueryIcon="Find"
                 QuerySubmitted="Search"
                 Margin="10"/>
         <Button Content="Thêm" 
-                Background="{ThemeResource SystemAccentColor}"
-                Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                Background="#ffb22c"
+                Foreground="Black"
                 Click="AddProduct" 
                 Margin="10"/>
         <GridView x:Name="productPage"
@@ -29,7 +29,7 @@
                     <StackPanel Orientation="Vertical"
                                 Padding="10"
                                 Margin="10"
-                                Background="{StaticResource TextFillColorPrimaryBrush}"
+                                Background="#f7f7f7"
                                 CornerRadius="8">
                         <Grid Width="150"
                               Height="150"

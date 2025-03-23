@@ -1,0 +1,9 @@
+App.xbf
+Views\AddCustomerWindow.xbf
+Views\AddProductWindow.xbf
+Views\CustomerDetailsWindow.xbf
+Views\CustomerPage.xbf
+Views\MainWindow.xbf
+Views\ProductDetailsWindow.xbf
+Views\ProductPage.xbf
+Views\UpdateCustomerWindow.xbf
