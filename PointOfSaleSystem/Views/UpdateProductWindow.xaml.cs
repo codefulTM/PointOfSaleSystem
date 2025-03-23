@@ -27,7 +27,6 @@ namespace PointOfSaleSystem.Views
     public sealed partial class UpdateProductWindow : Window
     {
         Product product;
-        public event EventHandler? UpdateProductEvent;
         public UpdateProductWindow(Product product)
         {
             this.product = product;
@@ -158,6 +157,7 @@ namespace PointOfSaleSystem.Views
             product.CostPrice = prodCostPrice;
             product.SellingPrice = prodSellingPrice;
             product.Category = prodCat;
+            product.Image = productImage.Tag as string;
 
             // Add the product to the database
             productRepo.Update(product);
@@ -171,7 +171,6 @@ namespace PointOfSaleSystem.Views
 
             dialog.XamlRoot = this.Content.XamlRoot;
             await dialog.ShowAsync();
-            UpdateProductEvent?.Invoke(this, EventArgs.Empty);
             this.Close();
         }
 

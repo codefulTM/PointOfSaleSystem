@@ -18,6 +18,7 @@ using Windows.Storage.Pickers;
 using System.Security.Cryptography.X509Certificates;
 using System.Numerics;
 using Windows.ApplicationModel.Activation;
+using PointOfSaleSystem.Views.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,10 +30,11 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class AddProductWindow : Window
     {
-        public event EventHandler AddProductEvent;
-        public AddProductWindow()
+        private ProductViewModel _productViewModel;
+        public AddProductWindow(ProductViewModel ViewModel)
         {
             this.InitializeComponent();
+            _productViewModel = ViewModel;
         }
 
         public async void AddProduct(object sender, RoutedEventArgs e)
@@ -160,6 +162,7 @@ namespace PointOfSaleSystem.Views
 
             // Add the product to the database
             productRepo.Create(product);
+            _productViewModel.Products.Add(product);
 
             dialog = new ContentDialog
             {
@@ -170,7 +173,7 @@ namespace PointOfSaleSystem.Views
 
             dialog.XamlRoot = this.Content.XamlRoot;
             await dialog.ShowAsync();
-            AddProductEvent?.Invoke(this, EventArgs.Empty);
+            this.Close();
         }
 
         public async void AddPhoto(object sender, RoutedEventArgs e)
