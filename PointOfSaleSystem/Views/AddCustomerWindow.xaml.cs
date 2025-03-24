@@ -67,7 +67,7 @@ namespace PointOfSaleSystem.Views
             checkRes = newCustomer.AcceptForChecking(new RequiredFieldChecker());
             if(checkRes is not null)
             {
-                var dialog = new ContentDialog
+                dialog = new ContentDialog
                 {
                     Title = "Nhập thiếu thông tin cần thiết",
                     Content = checkRes,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -41,7 +42,11 @@ namespace PointOfSaleSystem.Utils.Checkers
 
         public string? Check(Product product)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrWhiteSpace(product.Image) && !Path.IsPathRooted(product.Image))
+            {
+                return "Đường dẫn ảnh không hợp lệ";
+            }
+            return null;
         }
     }
 }

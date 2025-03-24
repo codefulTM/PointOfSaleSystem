@@ -25,7 +25,19 @@ namespace PointOfSaleSystem.Utils.Checkers
 
         public string? Check(Product product)
         {
-            throw new NotImplementedException();
+            if(product.Quantity is not null && product.Quantity < 0)
+            {
+                return "Số lượng sản phẩm không thể nhỏ hơn 0";
+            }
+            if (product.CostPrice is not null && product.CostPrice < 0)
+            {
+                return "Giá nhập sản phẩm không thể nhỏ hơn 0";
+            }
+            if (product.SellingPrice is not null && product.SellingPrice < 0)
+            {
+                return "Giá bán sản phẩm không thể nhỏ hơn 0";
+            }
+            return null;
         }
     }
 }

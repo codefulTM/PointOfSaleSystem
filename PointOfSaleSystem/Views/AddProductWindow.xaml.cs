@@ -19,6 +19,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Numerics;
 using Windows.ApplicationModel.Activation;
 using PointOfSaleSystem.Services;
+using PointOfSaleSystem.Utils.Checkers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -40,7 +41,6 @@ namespace PointOfSaleSystem.Views
         {
             // Get an instance of the database access object
             IDao dao = Services.Services.GetKeyedSingleton<IDao>();
-            
 
             // Get information from the form
             string? prodName = productName.Text != "" ? productName.Text : null;
@@ -52,20 +52,6 @@ namespace PointOfSaleSystem.Views
 
             // Constraint checking
             ContentDialog dialog;
-            if (prodName == null)
-            {
-                dialog = new ContentDialog
-                {
-                    Title = "Lỗi",
-                    Content = "Tên sản phẩm không được để trống.",
-                    CloseButtonText = "Đóng"
-                };
-
-                dialog.XamlRoot = this.Content.XamlRoot;
-                await dialog.ShowAsync();
-                return;
-            }
-
             try
             {
                 if (quantity.Text != "")
@@ -77,7 +63,7 @@ namespace PointOfSaleSystem.Views
             {
                 dialog = new ContentDialog
                 {
-                    Title = "Lỗi",
+                    Title = "Lỗi giá trị",
                     Content = "Số lượng sản phẩm tồn kho phải là một số nguyên.",
                     CloseButtonText = "Đóng"
                 };
@@ -99,7 +85,7 @@ namespace PointOfSaleSystem.Views
             {
                 dialog = new ContentDialog
                 {
-                    Title = "Lỗi",
+                    Title = "Lỗi giá trị",
                     Content = "Giá vốn phải là một số nguyên.",
                     CloseButtonText = "Đóng"
                 };
@@ -121,7 +107,7 @@ namespace PointOfSaleSystem.Views
             {
                 dialog = new ContentDialog
                 {
-                    Title = "Lỗi",
+                    Title = "Lỗi giá trị",
                     Content = "Giá bán phải là một số nguyên.",
                     CloseButtonText = "Đóng"
                 };
@@ -158,6 +144,51 @@ namespace PointOfSaleSystem.Views
                 Category = prodCat,
                 Image = productImage.Tag as string
             };
+
+            // Check format
+            var checkRes = product.AcceptForChecking(new FormatChecker());
+            if(checkRes is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Lỗi định dạng",
+                    Content = checkRes,
+                    CloseButtonText = "Đóng"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Check required field
+            checkRes = product.AcceptForChecking(new RequiredFieldChecker());
+            if(checkRes is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Nhập thiếu thông tin cần thiết",
+                    Content = checkRes,
+                    CloseButtonText = "Đóng"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Check value
+            checkRes = product.AcceptForChecking(new ValueChecker());
+            if (checkRes is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Nhập thông tin không hợp lệ",
+                    Content = checkRes,
+                    CloseButtonText = "Đóng"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
 
             // Add the product to the database
             dao.Products.Create(product);

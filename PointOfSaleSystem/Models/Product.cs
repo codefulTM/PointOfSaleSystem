@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PointOfSaleSystem.Utils.Checkers;
 
 namespace PointOfSaleSystem.Models
 {
-    public class Product
+    public class Product : ICheckable
     {
         public int Id { get; set; }
         public string? Barcode { get; set; } = null;
@@ -18,5 +19,10 @@ namespace PointOfSaleSystem.Models
         public int? CostPrice { get; set; } = null;
         public int? SellingPrice { get; set; } = null;
         public string? Image { get; set; } = null;
+
+        public string? AcceptForChecking(IChecker checker)
+        {
+            return checker.Check(this);
+        }
     }
 }

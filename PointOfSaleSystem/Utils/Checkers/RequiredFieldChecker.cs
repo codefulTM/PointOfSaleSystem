@@ -21,7 +21,11 @@ namespace PointOfSaleSystem.Utils.Checkers
 
         public string? Check(Product product)
         {
-            throw new NotImplementedException();
+            if(string.IsNullOrWhiteSpace(product.Name))
+            {
+                return "Tên sản phẩm không được để trống";
+            }
+            return null;
         }
     }
 }
