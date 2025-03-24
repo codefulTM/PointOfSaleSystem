@@ -14,28 +14,34 @@
             <TextBlock Text="Thêm khách hàng"
                        Style="{StaticResource HeaderTextBlockStyle}"
                        FontWeight="Bold"
-                       Foreground="Orange"/>
+                       Foreground="#ffb22c"/>
             <TextBox Header="Họ tên" 
+                     x:Name="NameTextBox"
                      PlaceholderText="Nhập họ tên..."
                      Margin="5"/>
             <TextBox Header="Số điện thoại"
+                     x:Name="PhoneNumberTextBox"
                      PlaceholderText="Nhập số điện thoại..."
                      Margin="5"/>
             <TextBox Header="Địa chỉ"
+                     x:Name="AddressTextBox"
                      PlaceholderText="Nhập địa chỉ..."
                      Margin="5"/>
             <DatePicker Header="Ngày sinh"
+                        x:Name="BirthdayDatePicker"
                         Margin="5"/>
             <RadioButtons Header="Giới tính"
-                              Margin="5">
-                <RadioButton Content="Nam"/>
-                <RadioButton Content="Nữ"/>
+                          x:Name="GenderRadioButtons"
+                          Margin="5">
+                <RadioButton x:Name="MaleRadioButton" Content="Nam"/>
+                <RadioButton x:Name="FemaleRadioButton" Content="Nữ"/>
             </RadioButtons>
 
             <Button Content="Thêm"
                 Background="{ThemeResource SystemAccentColor}"
                 Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
                 HorizontalAlignment="Center"
+                Click="AddButton_Click"
                 Margin="5"/>
         </StackPanel>
     </ScrollViewer>

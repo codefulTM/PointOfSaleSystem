@@ -9,13 +9,14 @@
     mc:Ignorable="d"
     Title="CustomerDetailsWindow">
 
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <StackPanel x:Name="customerInfo" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock Text="Thông tin khách hàng" 
                    Style="{StaticResource HeaderTextBlockStyle}"
                    FontWeight="Bold"
+                   Foreground="#ffb22c"
                    Margin="5"/>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="12340192"
+            <TextBlock Text="{Binding Id}"
                        FontSize="20"
                        FontWeight="Bold"
                        Margin="5"/>
@@ -23,7 +24,7 @@
                        FontSize="20"
                        FontWeight="Bold"
                        Margin="5"/>
-            <TextBlock Text="Nguyễn Nhật Minh"
+            <TextBlock Text="{Binding Name}"
                        FontSize="20"
                        FontWeight="Bold"
                        Margin="5"/>
@@ -32,28 +33,28 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Số điện thoại:"
                        Margin="5"/>
-            <TextBlock Text="0123456789"
+            <TextBlock Text="{Binding PhoneNumber}"
                        Margin="5"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Địa chỉ:"
                        Margin="5"/>
-            <TextBlock Text="123 Nguyễn Văn Cừ"
+            <TextBlock Text="{Binding Address}"
                        Margin="5"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Ngày sinh:"
                        Margin="5"/>
-            <TextBlock Text="14/07/2004"
+            <TextBlock Text="{Binding Birthday}"
                        Margin="5"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Giới tính:"
                        Margin="5"/>
-            <TextBlock Text="Nam"
+            <TextBlock Text="{Binding Gender}"
                        Margin="5"/>
         </StackPanel>
     </StackPanel>

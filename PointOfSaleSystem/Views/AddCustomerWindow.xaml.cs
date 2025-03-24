@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +12,9 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using PointOfSaleSystem.Views.ViewModels;
+using PointOfSaleSystem.Models;
+using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,9 +26,39 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class AddCustomerWindow : Window
     {
-        public AddCustomerWindow()
+        private CustomerViewModel _customerViewModel;
+        public AddCustomerWindow(CustomerViewModel ViewModel)
         {
             this.InitializeComponent();
+            _customerViewModel = ViewModel;
+        }
+
+        private async void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var newCustomer = new Customer
+            {
+                Name = NameTextBox.Text,
+                PhoneNumber = PhoneNumberTextBox.Text,
+                Address = AddressTextBox.Text,
+                Birthday = BirthdayDatePicker.Date.DateTime,
+                Gender = (bool)MaleRadioButton.IsChecked ? "Nam" : (bool)FemaleRadioButton.IsChecked ? "Nữ" : ""
+            };
+
+            var dao = Services.Services.GetKeyedSingleton<IDao>();
+            dao.Customers.Create(newCustomer);
+            _customerViewModel.Customers.Add(newCustomer);
+
+
+            var dialog = new ContentDialog
+            {
+                Title = "Thành công",
+                Content = "Khách hàng đã được thêm vào cơ sở dữ liệu.",
+                CloseButtonText = "OK"
+            };
+
+            dialog.XamlRoot = this.Content.XamlRoot;
+            await dialog.ShowAsync();
+            this.Close();
         }
     }
 }

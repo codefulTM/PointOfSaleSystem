@@ -21,7 +21,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem Content="Khách hàng" Tag="CustomerPage">
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="H"/>
+                        <FontIcon Glyph="K"/>
                     </NavigationViewItem.Icon>  
                 </NavigationViewItem>
             </NavigationView.MenuItems>

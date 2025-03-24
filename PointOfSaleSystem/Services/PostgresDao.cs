@@ -10,21 +10,11 @@ namespace PointOfSaleSystem.Services
 {
     public class PostgresDao : IDao
     {
-        private static PostgresDao? _instance = null;
-        private PostgresDao()
+        public PostgresDao()
         {
             Categories = PostgresCategoryRepository.GetInstance();
             Products = PostgresProductRepository.GetInstance();
             Customers = PostgresCustomerRepository.GetInstance();
-        }
-
-        public static PostgresDao GetInstance()
-        {
-            if(_instance is null)
-            {
-                _instance = new PostgresDao();
-            }
-            return _instance;
         }
 
         public IRepository<Category> Categories { get; set; }
@@ -420,10 +410,10 @@ namespace PointOfSaleSystem.Services
                                 Customer customer = new Customer();
                                 customer.Id = reader.GetInt32(0);
                                 customer.Name = reader.GetString(1);
-                                customer.PhoneNumber = reader.GetString(2);
-                                customer.Address = reader.GetString(3);
-                                customer.Birthday = reader.GetDateTime(4);
-                                customer.Gender = reader.GetString(5);
+                                customer.PhoneNumber = reader.IsDBNull(2) ? null : reader.GetString(2);
+                                customer.Address = reader.IsDBNull(3) ? null : reader.GetString(3);
+                                customer.Birthday = reader.IsDBNull(4) ? null : reader.GetDateTime(4);
+                                customer.Gender = reader.IsDBNull(5) ? null : reader.GetString(5);
                                 customers.Add(customer);
                             }
                         }
@@ -448,7 +438,7 @@ namespace PointOfSaleSystem.Services
             {
                 string query = "UPDATE CUSTOMER " +
                     "SET name = @name, phone_number = @phone_number," +
-                    "address = @address, birthday = @birthday, gender = @gender" +
+                    "address = @address, birthday = @birthday, gender = @gender " +
                     "WHERE customer_id = @id";
 
                 using (var cmd = new NpgsqlCommand(query, _connection))
@@ -458,6 +448,7 @@ namespace PointOfSaleSystem.Services
                     cmd.Parameters.AddWithValue("address", entity.Address ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("birthday", entity.Birthday ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("gender", entity.Gender ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("id", entity.Id);
 
                     _connection.Open();
                     cmd.ExecuteNonQuery();
