@@ -14,7 +14,7 @@
             <TextBlock Text="Thêm khách hàng"
                        Style="{StaticResource HeaderTextBlockStyle}"
                        FontWeight="Bold"
-                       Foreground="Orange"/>
+                       Foreground="#ffb22c"/>
             <TextBox Header="Họ tên" 
                      x:Name="NameTextBox"
                      PlaceholderText="Nhập họ tên..."

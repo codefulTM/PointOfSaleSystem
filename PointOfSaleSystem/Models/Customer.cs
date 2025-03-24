@@ -9,7 +9,7 @@ namespace PointOfSaleSystem.Models
 {
     public class Customer : INotifyPropertyChanged
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? PhoneNumber { get; set; }
         public string? Address { get; set; }
@@ -17,5 +17,10 @@ namespace PointOfSaleSystem.Models
         public string? Gender { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public bool Check()
+        {
+            return true;
+        }
     }
 }

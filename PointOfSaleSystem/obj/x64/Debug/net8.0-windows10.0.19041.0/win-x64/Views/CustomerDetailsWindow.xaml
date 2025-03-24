@@ -13,6 +13,7 @@
         <TextBlock Text="Thông tin khách hàng" 
                    Style="{StaticResource HeaderTextBlockStyle}"
                    FontWeight="Bold"
+                   Foreground="#ffb22c"
                    Margin="5"/>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding Id}"

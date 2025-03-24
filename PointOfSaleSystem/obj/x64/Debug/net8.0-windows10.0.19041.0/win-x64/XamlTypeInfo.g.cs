@@ -226,7 +226,7 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
         
         private void InitTypeTables()
         {
-            _typeNameTable = new string[52];
+            _typeNameTable = new string[53];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
@@ -271,16 +271,17 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
             _typeNameTable[41] = "PointOfSaleSystem.Views.Converters.CurrencyFormatter";
             _typeNameTable[42] = "PointOfSaleSystem.Views.ProductDetailsWindow";
             _typeNameTable[43] = "PointOfSaleSystem.Views.ProductPage";
-            _typeNameTable[44] = "PointOfSaleSystem.Models.ProductRepository";
+            _typeNameTable[44] = "PointOfSaleSystem.Services.IDao";
             _typeNameTable[45] = "System.Collections.ObjectModel.ObservableCollection`1<PointOfSaleSystem.Models.Product>";
             _typeNameTable[46] = "System.Collections.ObjectModel.Collection`1<PointOfSaleSystem.Models.Product>";
             _typeNameTable[47] = "PointOfSaleSystem.Models.Product";
             _typeNameTable[48] = "System.Nullable`1<Int32>";
-            _typeNameTable[49] = "PointOfSaleSystem.Views.UpdateCustomerWindow";
-            _typeNameTable[50] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[51] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[49] = "PointOfSaleSystem.Views.Converters.DateTimeToDateTimeOffsetFormatter";
+            _typeNameTable[50] = "PointOfSaleSystem.Views.UpdateCustomerWindow";
+            _typeNameTable[51] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[52] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
 
-            _typeTable = new global::System.Type[52];
+            _typeTable = new global::System.Type[53];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
@@ -325,14 +326,15 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
             _typeTable[41] = typeof(global::PointOfSaleSystem.Views.Converters.CurrencyFormatter);
             _typeTable[42] = typeof(global::PointOfSaleSystem.Views.ProductDetailsWindow);
             _typeTable[43] = typeof(global::PointOfSaleSystem.Views.ProductPage);
-            _typeTable[44] = typeof(global::PointOfSaleSystem.Models.ProductRepository);
+            _typeTable[44] = typeof(global::PointOfSaleSystem.Services.IDao);
             _typeTable[45] = typeof(global::System.Collections.ObjectModel.ObservableCollection<global::PointOfSaleSystem.Models.Product>);
             _typeTable[46] = typeof(global::System.Collections.ObjectModel.Collection<global::PointOfSaleSystem.Models.Product>);
             _typeTable[47] = typeof(global::PointOfSaleSystem.Models.Product);
             _typeTable[48] = typeof(global::System.Nullable<global::System.Int32>);
-            _typeTable[49] = typeof(global::PointOfSaleSystem.Views.UpdateCustomerWindow);
-            _typeTable[50] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[51] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[49] = typeof(global::PointOfSaleSystem.Views.Converters.DateTimeToDateTimeOffsetFormatter);
+            _typeTable[50] = typeof(global::PointOfSaleSystem.Views.UpdateCustomerWindow);
+            _typeTable[51] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[52] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -382,8 +384,8 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
         private object Activate_45_ObservableCollection() { return new global::System.Collections.ObjectModel.ObservableCollection<global::PointOfSaleSystem.Models.Product>(); }
         private object Activate_46_Collection() { return new global::System.Collections.ObjectModel.Collection<global::PointOfSaleSystem.Models.Product>(); }
         private object Activate_47_Product() { return new global::PointOfSaleSystem.Models.Product(); }
-        private object Activate_49_UpdateCustomerWindow() { return new global::PointOfSaleSystem.Views.UpdateCustomerWindow(); }
-        private object Activate_50_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_49_DateTimeToDateTimeOffsetFormatter() { return new global::PointOfSaleSystem.Views.Converters.DateTimeToDateTimeOffsetFormatter(); }
+        private object Activate_51_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void StaticInitializer_0_XamlControlsResources() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources).TypeHandle);
         private void StaticInitializer_4_RadioButtons() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.RadioButtons).TypeHandle);
         private void StaticInitializer_6_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::System.Object>).TypeHandle);
@@ -409,14 +411,15 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
         private void StaticInitializer_41_CurrencyFormatter() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::PointOfSaleSystem.Views.Converters.CurrencyFormatter).TypeHandle);
         private void StaticInitializer_42_ProductDetailsWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::PointOfSaleSystem.Views.ProductDetailsWindow).TypeHandle);
         private void StaticInitializer_43_ProductPage() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::PointOfSaleSystem.Views.ProductPage).TypeHandle);
-        private void StaticInitializer_44_ProductRepository() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::PointOfSaleSystem.Models.ProductRepository).TypeHandle);
+        private void StaticInitializer_44_IDao() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::PointOfSaleSystem.Services.IDao).TypeHandle);
         private void StaticInitializer_45_ObservableCollection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.ObservableCollection<global::PointOfSaleSystem.Models.Product>).TypeHandle);
         private void StaticInitializer_46_Collection() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.ObjectModel.Collection<global::PointOfSaleSystem.Models.Product>).TypeHandle);
         private void StaticInitializer_47_Product() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::PointOfSaleSystem.Models.Product).TypeHandle);
         private void StaticInitializer_48_Nullable() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Nullable<global::System.Int32>).TypeHandle);
-        private void StaticInitializer_49_UpdateCustomerWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::PointOfSaleSystem.Views.UpdateCustomerWindow).TypeHandle);
-        private void StaticInitializer_50_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
-        private void StaticInitializer_51_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
+        private void StaticInitializer_49_DateTimeToDateTimeOffsetFormatter() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::PointOfSaleSystem.Views.Converters.DateTimeToDateTimeOffsetFormatter).TypeHandle);
+        private void StaticInitializer_50_UpdateCustomerWindow() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::PointOfSaleSystem.Views.UpdateCustomerWindow).TypeHandle);
+        private void StaticInitializer_51_TreeViewNode() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode).TypeHandle);
+        private void StaticInitializer_52_IList() => global::System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>).TypeHandle);
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -442,7 +445,7 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
             var newItem = (global::PointOfSaleSystem.Models.Product)item;
             collection.Add(newItem);
         }
-        private void VectorAdd_51_IList(object instance, object item)
+        private void VectorAdd_52_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -781,15 +784,15 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
                 userType = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_43_ProductPage;
                 userType.StaticInitializer = StaticInitializer_43_ProductPage;
-                userType.AddMemberName("ProductRepo");
+                userType.AddMemberName("dao");
                 userType.AddMemberName("Products");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 44:   //  PointOfSaleSystem.Models.ProductRepository
-                userType = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.StaticInitializer = StaticInitializer_44_ProductRepository;
+            case 44:   //  PointOfSaleSystem.Services.IDao
+                userType = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType(this, typeName, type, null);
+                userType.StaticInitializer = StaticInitializer_44_IDao;
                 userType.SetIsReturnTypeStub();
                 userType.SetIsLocalType();
                 xamlType = userType;
@@ -838,18 +841,25 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 49:   //  PointOfSaleSystem.Views.UpdateCustomerWindow
-                userType = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
-                userType.Activator = Activate_49_UpdateCustomerWindow;
-                userType.StaticInitializer = StaticInitializer_49_UpdateCustomerWindow;
+            case 49:   //  PointOfSaleSystem.Views.Converters.DateTimeToDateTimeOffsetFormatter
+                userType = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_49_DateTimeToDateTimeOffsetFormatter;
+                userType.StaticInitializer = StaticInitializer_49_DateTimeToDateTimeOffsetFormatter;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 50:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 50:   //  PointOfSaleSystem.Views.UpdateCustomerWindow
+                userType = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
+                userType.StaticInitializer = StaticInitializer_50_UpdateCustomerWindow;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 51:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_50_TreeViewNode;
-                userType.StaticInitializer = StaticInitializer_50_TreeViewNode;
+                userType.Activator = Activate_51_TreeViewNode;
+                userType.StaticInitializer = StaticInitializer_51_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -861,10 +871,10 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 51:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 52:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.StaticInitializer = StaticInitializer_51_IList;
-                userType.CollectionAdd = VectorAdd_51_IList;
+                userType.StaticInitializer = StaticInitializer_52_IList;
+                userType.CollectionAdd = VectorAdd_52_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
@@ -1457,15 +1467,15 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
             var that = (global::Microsoft.UI.Xaml.Controls.NavigationViewItem)instance;
             that.SelectsOnInvoked = (global::System.Boolean)Value;
         }
-        private object get_57_ProductPage_ProductRepo(object instance)
+        private object get_57_ProductPage_dao(object instance)
         {
             var that = (global::PointOfSaleSystem.Views.ProductPage)instance;
-            return that.ProductRepo;
+            return that.dao;
         }
-        private void set_57_ProductPage_ProductRepo(object instance, object Value)
+        private void set_57_ProductPage_dao(object instance, object Value)
         {
             var that = (global::PointOfSaleSystem.Views.ProductPage)instance;
-            that.ProductRepo = (global::PointOfSaleSystem.Models.ProductRepository)Value;
+            that.dao = (global::PointOfSaleSystem.Services.IDao)Value;
         }
         private object get_58_ProductPage_Products(object instance)
         {
@@ -2033,11 +2043,11 @@ namespace PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo
                 xamlMember.Getter = get_56_NavigationViewItem_SelectsOnInvoked;
                 xamlMember.Setter = set_56_NavigationViewItem_SelectsOnInvoked;
                 break;
-            case "PointOfSaleSystem.Views.ProductPage.ProductRepo":
+            case "PointOfSaleSystem.Views.ProductPage.dao":
                 userType = (global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType)GetXamlTypeByName("PointOfSaleSystem.Views.ProductPage");
-                xamlMember = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlMember(this, "ProductRepo", "PointOfSaleSystem.Models.ProductRepository");
-                xamlMember.Getter = get_57_ProductPage_ProductRepo;
-                xamlMember.Setter = set_57_ProductPage_ProductRepo;
+                xamlMember = new global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlMember(this, "dao", "PointOfSaleSystem.Services.IDao");
+                xamlMember.Getter = get_57_ProductPage_dao;
+                xamlMember.Setter = set_57_ProductPage_dao;
                 break;
             case "PointOfSaleSystem.Views.ProductPage.Products":
                 userType = (global::PointOfSaleSystem.PointOfSaleSystem_XamlTypeInfo.XamlUserType)GetXamlTypeByName("PointOfSaleSystem.Views.ProductPage");

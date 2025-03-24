@@ -66,9 +66,9 @@
                         <Border Background="#efebe2" Grid.Column="1" Margin="5">
                             <TextBlock x:ConnectionId='9'                      Foreground="Black" HorizontalAlignment="Center" Margin="5"/>
                         </Border>
-                        <Button x:ConnectionId='6' Content="Xem" Background="#ffb22c" Grid.Column="2" Margin="5" Width="90"                                Tag="{Binding}"/>
-                        <Button x:ConnectionId='7' Content="Sửa" Background="#ffb22c" Grid.Column="3" Margin="5" Width="90"                           />
-                        <Button x:ConnectionId='8' Content="Xóa" Background="#854836" Grid.Column="4" Margin="5" Width="90"                           />
+                        <Button x:ConnectionId='6' Content="Xem" Foreground="Black" Background="#ffb22c" Grid.Column="2" Margin="5" Width="90"                                Tag="{Binding}"/>
+                        <Button x:ConnectionId='7' Content="Sửa" Foreground="Black" Background="#ffb22c" Grid.Column="3" Margin="5" Width="90"                            Tag="{Binding}"/>
+                        <Button x:ConnectionId='8' Content="Xóa" Foreground="White" Background="#854836" Grid.Column="4" Margin="5" Width="90"                            Tag="{Binding}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

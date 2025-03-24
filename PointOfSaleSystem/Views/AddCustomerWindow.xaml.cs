@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Views.ViewModels;
 using PointOfSaleSystem.Models;
+using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -43,8 +44,8 @@ namespace PointOfSaleSystem.Views
                 Gender = (bool)MaleRadioButton.IsChecked ? "Nam" : (bool)FemaleRadioButton.IsChecked ? "Nữ" : ""
             };
 
-            var customerRepository = CustomerRepository.GetInstance();
-            customerRepository.Create(newCustomer);
+            var dao = Services.Services.GetKeyedSingleton<IDao>();
+            dao.Customers.Create(newCustomer);
             _customerViewModel.Customers.Add(newCustomer);
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PointOfSaleSystem.Models;
+using PointOfSaleSystem.Services;
 using PointOfSaleSystem.Utils;
 
 namespace PointOfSaleSystem.Views.ViewModels
@@ -14,7 +15,8 @@ namespace PointOfSaleSystem.Views.ViewModels
 
         public CustomerViewModel()
         {
-            var customerRepository = CustomerRepository.GetInstance();
+            var dao = Services.Services.GetKeyedSingleton<IDao>();
+            var customerRepository = dao.Customers;
             Customers = new FullObservableCollection<Customer>(customerRepository.GetAll());
         }
     }
