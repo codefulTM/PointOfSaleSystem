@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PointOfSaleSystem.Utils.Checkers;
 
 namespace PointOfSaleSystem.Models
 {
-    public class Customer : INotifyPropertyChanged
+    public class Customer : INotifyPropertyChanged, ICheckable
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -17,6 +18,11 @@ namespace PointOfSaleSystem.Models
         public string? Gender { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public string? acceptForChecking(IChecker checker)
+        {
+            return checker.Check(this);
+        }
 
         public bool Check()
         {
