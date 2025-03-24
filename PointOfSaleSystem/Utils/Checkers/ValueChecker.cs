@@ -11,7 +11,11 @@ namespace PointOfSaleSystem.Utils.Checkers
     {
         public string? Check(Customer customer)
         {
-            throw new NotImplementedException();
+            if(customer.Gender is not null && !customer.Gender.Equals("Nam") && !customer.Gender.Equals("Nữ"))
+            {
+                return "Giới tính phải là nam hoặc nữ";
+            }
+            return null;
         }
 
         public string? Check(Category category)
