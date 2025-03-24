@@ -9,6 +9,6 @@ namespace PointOfSaleSystem.Utils.Checkers
 {
     public interface ICheckable
     {
-        public string? acceptForChecking(IChecker checker);
+        public string? AcceptForChecking(IChecker checker);
     }
 }

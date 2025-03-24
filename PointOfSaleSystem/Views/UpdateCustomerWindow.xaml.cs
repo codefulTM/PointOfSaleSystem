@@ -16,6 +16,7 @@ using PointOfSaleSystem.Models;
 using PointOfSaleSystem.Services;
 using PointOfSaleSystem.Views.ViewModels;
 using System.Diagnostics;
+using PointOfSaleSystem.Utils.Checkers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -51,6 +52,7 @@ namespace PointOfSaleSystem.Views
         {
             var button = sender as Button;
             var customer = button?.Tag as Customer;
+            ContentDialog dialog;
 
             Customer newCustomer = new Customer()
             {
@@ -61,40 +63,70 @@ namespace PointOfSaleSystem.Views
                 Gender = (genderRadioButtons.SelectedItem as RadioButton)?.Content.ToString()
             };
 
-            Checker checker = new Checker();
-            var checkStatus = checker.Check(newCustomer);
-            if (checkStatus is null)
+            // Constraint checking
+            // Check format
+            string? checkRes = newCustomer.AcceptForChecking(new FormatChecker());
+            if (checkRes is not null)
             {
-                customer.Name = newCustomer.Name;
-                customer.PhoneNumber = newCustomer.PhoneNumber;
-                customer.Address = newCustomer.Address;
-                customer.Birthday = newCustomer.Birthday;
-                customer.Gender = newCustomer.Gender;
-
-                var dao = Services.Services.GetKeyedSingleton<IDao>();
-                dao.Customers.Update(customer);
-                var dialog = new ContentDialog
+                dialog = new ContentDialog
                 {
-                    Title = "Thành công",
-                    Content = "Khách hàng đã được cập nhật.",
+                    Title = "Nhập thông tin sai định dạng",
+                    Content = checkRes,
                     CloseButtonText = "OK"
                 };
                 dialog.XamlRoot = this.Content.XamlRoot;
                 await dialog.ShowAsync();
-
-                this.Close();
+                return;
             }
-            else
+
+            // Check required fields
+            checkRes = newCustomer.AcceptForChecking(new RequiredFieldChecker());
+            if (checkRes is not null)
             {
-                var dialog = new ContentDialog
+                dialog = new ContentDialog
                 {
-                    Title = "Lỗi",
-                    Content = checkStatus,
+                    Title = "Nhập thiếu thông tin cần thiết",
+                    Content = checkRes,
                     CloseButtonText = "OK"
                 };
                 dialog.XamlRoot = this.Content.XamlRoot;
                 await dialog.ShowAsync();
+                return;
             }
+
+            // Check values
+            checkRes = newCustomer.AcceptForChecking(new ValueChecker());
+            if (checkRes is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Nhập thông tin không hợp lệ",
+                    Content = checkRes,
+                    CloseButtonText = "OK"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
+            customer.Name = newCustomer.Name;
+            customer.PhoneNumber = newCustomer.PhoneNumber;
+            customer.Address = newCustomer.Address;
+            customer.Birthday = newCustomer.Birthday;
+            customer.Gender = newCustomer.Gender;
+
+            var dao = Services.Services.GetKeyedSingleton<IDao>();
+            dao.Customers.Update(customer);
+            dialog = new ContentDialog
+            {
+                Title = "Thành công",
+                Content = "Khách hàng đã được cập nhật.",
+                CloseButtonText = "OK"
+            };
+            dialog.XamlRoot = this.Content.XamlRoot;
+            await dialog.ShowAsync();
+
+            this.Close();
         }
     }
 }

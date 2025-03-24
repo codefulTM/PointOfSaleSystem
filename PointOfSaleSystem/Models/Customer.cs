@@ -19,7 +19,7 @@ namespace PointOfSaleSystem.Models
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public string? acceptForChecking(IChecker checker)
+        public string? AcceptForChecking(IChecker checker)
         {
             return checker.Check(this);
         }

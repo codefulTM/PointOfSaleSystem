@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Views.ViewModels;
 using PointOfSaleSystem.Models;
 using PointOfSaleSystem.Services;
+using PointOfSaleSystem.Utils.Checkers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -35,6 +36,8 @@ namespace PointOfSaleSystem.Views
 
         private async void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            ContentDialog dialog;
+
             var newCustomer = new Customer
             {
                 Name = NameTextBox.Text,
@@ -44,12 +47,58 @@ namespace PointOfSaleSystem.Views
                 Gender = (bool)MaleRadioButton.IsChecked ? "Nam" : (bool)FemaleRadioButton.IsChecked ? "Nữ" : ""
             };
 
+            // Constraint checking
+            // Check format
+            string? checkRes = newCustomer.AcceptForChecking(new FormatChecker());
+            if(checkRes is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Nhập thông tin sai định dạng",
+                    Content = checkRes,
+                    CloseButtonText = "OK"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Check required fields
+            checkRes = newCustomer.AcceptForChecking(new RequiredFieldChecker());
+            if(checkRes is not null)
+            {
+                var dialog = new ContentDialog
+                {
+                    Title = "Nhập thiếu thông tin cần thiết",
+                    Content = checkRes,
+                    CloseButtonText = "OK"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Check values
+            checkRes = newCustomer.AcceptForChecking(new ValueChecker());
+            if(checkRes is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Nhập thông tin không hợp lệ",
+                    Content = checkRes,
+                    CloseButtonText = "OK"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
             var dao = Services.Services.GetKeyedSingleton<IDao>();
             dao.Customers.Create(newCustomer);
             _customerViewModel.Customers.Add(newCustomer);
 
 
-            var dialog = new ContentDialog
+            dialog = new ContentDialog
             {
                 Title = "Thành công",
                 Content = "Khách hàng đã được thêm vào cơ sở dữ liệu.",
