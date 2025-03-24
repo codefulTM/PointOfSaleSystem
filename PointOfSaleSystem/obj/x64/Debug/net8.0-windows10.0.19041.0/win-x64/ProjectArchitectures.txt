@@ -1,1 +1,0 @@
-E:\LearningMaterial\KHTN\Năm 3\HK2\Lập trình Windows\Project\PointOfSaleSystem\PointOfSaleSystem\PointOfSaleSystem.csproj;x64
