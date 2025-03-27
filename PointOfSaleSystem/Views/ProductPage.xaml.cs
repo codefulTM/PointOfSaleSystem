@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Models;
 using System.Collections.ObjectModel;
 using PointOfSaleSystem.Views.ViewModels;
+using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,9 +27,11 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class ProductPage : Page
     {
+        public IDao dao { get; set; }
         public ProductViewModel ProductViewModel { get; set; } = new ProductViewModel();
         public ProductPage()
         {
+            dao = Services.Services.GetKeyedSingleton<IDao>();
             this.InitializeComponent();
             this.DataContext = ProductViewModel;
         }

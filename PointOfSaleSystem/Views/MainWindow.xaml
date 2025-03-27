@@ -11,12 +11,18 @@
 
     <Grid>
         <NavigationView x:Name="nav" 
-                        IsSettingsVisible="False">
+                        IsSettingsVisible="False"
+                        ItemInvoked="nav_ItemInvoked">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Hàng hóa" Tag="Products" IsSelected="True">
+                <NavigationViewItem Content="Hàng hóa" Tag="ProductPage" IsSelected="True">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="H"/>
                     </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Khách hàng" Tag="CustomerPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="K"/>
+                    </NavigationViewItem.Icon>  
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame"/>

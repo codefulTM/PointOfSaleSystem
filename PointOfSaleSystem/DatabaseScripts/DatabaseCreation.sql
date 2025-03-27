@@ -44,7 +44,8 @@ CREATE TABLE CUSTOMER (
     phone_number VARCHAR(50),
     address VARCHAR(255),
     birthday DATE,
-    gender VARCHAR(10)
+    gender VARCHAR(10),
+    deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE "order" (

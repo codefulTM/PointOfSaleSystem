@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using PointOfSaleSystem.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -21,28 +22,14 @@ namespace PointOfSaleSystem.Views
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : Window
+    public sealed partial class CustomerDetailsWindow : Window
     {
-        public MainWindow()
+        private Customer? _customer;
+        public CustomerDetailsWindow(Customer customer)
         {
             this.InitializeComponent();
-            contentFrame.Navigate(typeof(ProductPage));
-        }
-
-        private void nav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            if (args.IsSettingsInvoked)
-            {
-                Console.WriteLine("Settings clicked");
-                return;
-            }
-            else
-            {
-                var item = (NavigationViewItem)args.InvokedItemContainer;
-                var page = item.Tag.ToString();
-
-                contentFrame.Navigate(Type.GetType($"PointOfSaleSystem.Views.{page}"));
-            }
+            _customer = customer;
+            customerInfo.DataContext = _customer;
         }
     }
 }
