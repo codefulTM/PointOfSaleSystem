@@ -13,6 +13,8 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Models;
+using System.Collections.ObjectModel;
+using PointOfSaleSystem.Views.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,9 +27,11 @@ namespace PointOfSaleSystem.Views
     public sealed partial class ProductDetailsWindow : Window
     {
         Product product;
-        public ProductDetailsWindow(Product product)
+        ProductViewModel ProductViewModel = new ProductViewModel();
+        public ProductDetailsWindow(Product product, ProductViewModel productViewModel)
         {
             this.product = product;
+            this.ProductViewModel = productViewModel;
             this.InitializeComponent();
             this.Activated += ProductDetailsWindowActivated;
         }
@@ -35,7 +39,7 @@ namespace PointOfSaleSystem.Views
         private void ProductDetailsWindowActivated(object sender, WindowActivatedEventArgs args)
         {
             productInfo.DataContext = product;
-            if(product.Category == null)
+            if (product.Category == null)
             {
                 productCategory.Text = "Chưa có dữ liệu";
             }
@@ -54,6 +58,45 @@ namespace PointOfSaleSystem.Views
             if (product.SellingPrice == null)
             {
                 productSellingPrice.Text = "Chưa có dữ liệu";
+            }
+        }
+
+        private void OpenUpdateWindow(object sender, RoutedEventArgs e)
+        {
+            var updateProductWindow = new UpdateProductWindow(product);
+            updateProductWindow.Activate();
+            this.Close();
+        }
+
+        private async void DeleteProduct(object sender, RoutedEventArgs e)
+        {
+            ContentDialog deleteDialog = new ContentDialog
+            {
+                Title = "Xác nhận xóa",
+                Content = "Bạn có chắc chắn muốn xóa sản phẩm này không?",
+                PrimaryButtonText = "Xóa",
+                CloseButtonText = "Hủy",
+            };
+
+            deleteDialog.XamlRoot = this.Content.XamlRoot;
+            ContentDialogResult result = await deleteDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                ProductRepository productRepo = ProductRepository.GetInstance();
+                productRepo.Delete(product.Id);
+                ProductViewModel.Products.Remove(product);
+
+                ContentDialog successDialog = new ContentDialog
+                {
+                    Title = "Thành công",
+                    Content = "Sản phẩm đã được xóa thành công.",
+                    CloseButtonText = "OK"
+                };
+
+                successDialog.XamlRoot = this.Content.XamlRoot;
+                await successDialog.ShowAsync();
+                this.Close();
             }
         }
     }

@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Models;
 using System.Collections.ObjectModel;
+using PointOfSaleSystem.Views.ViewModels;
 using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -27,26 +28,19 @@ namespace PointOfSaleSystem.Views
     public sealed partial class ProductPage : Page
     {
         public IDao dao { get; set; }
-        public ObservableCollection<Product> Products { get; set; }
+        public ProductViewModel ProductViewModel { get; set; } = new ProductViewModel();
         public ProductPage()
         {
             dao = Services.Services.GetKeyedSingleton<IDao>();
-            Products = new ObservableCollection<Product>(dao.Products.GetAll());
             this.InitializeComponent();
+            this.DataContext = ProductViewModel;
         }
 
         public void AddProduct(object sender, RoutedEventArgs e)
         {
             // Add product to cart
-            AddProductWindow addProductWindow = new AddProductWindow();
-            addProductWindow.AddProductEvent += Refresh;
+            AddProductWindow addProductWindow = new AddProductWindow(ProductViewModel);
             addProductWindow.Activate();
-        }
-
-        private void Refresh(object? sender, EventArgs e)
-        {
-            Products = new ObservableCollection<Product>(dao.Products.GetAll());
-            productPage.ItemsSource = Products;
         }
 
         public void Search(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
@@ -58,7 +52,7 @@ namespace PointOfSaleSystem.Views
         {
             if(e.ClickedItem is Product product)
             {
-                ProductDetailsWindow productDetailsWindow = new ProductDetailsWindow(product);
+                ProductDetailsWindow productDetailsWindow = new ProductDetailsWindow(product, ProductViewModel);
                 productDetailsWindow.Activate();
             }
         }

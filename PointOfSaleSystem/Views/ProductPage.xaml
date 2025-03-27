@@ -20,7 +20,7 @@
                 Click="AddProduct" 
                 Margin="10"/>
         <GridView x:Name="productPage"
-                  ItemsSource="{x:Bind Products}"
+                  ItemsSource="{x:Bind ProductViewModel.Products}"
                   Padding="10"
                   IsItemClickEnabled="True"
                   ItemClick="OnItemClicked">
@@ -46,7 +46,7 @@
                                 VerticalAlignment="Stretch">
                             <TextBlock Text="{Binding Name}"
                                        Style="{StaticResource BodyStrongTextBlockStyle}"
-                                       Foreground="Black"
+                                       Foreground="White"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                         </Border>
