@@ -11,12 +11,16 @@ namespace PointOfSaleSystem.Utils.Checkers
     {
         public string? Check(Customer customer)
         {
+            if(string.IsNullOrWhiteSpace(customer.Name))
+            {
+                return "Tên không thể là rỗng";
+            }
             return null;
         }
 
         public string? Check(Category category)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public string? Check(Product product)
