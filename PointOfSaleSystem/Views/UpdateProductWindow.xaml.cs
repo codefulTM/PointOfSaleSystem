@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Models;
+using PointOfSaleSystem.Services;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage.Pickers;
@@ -42,7 +43,8 @@ namespace PointOfSaleSystem.Views
         public async void UpdateProduct(object sender, RoutedEventArgs e)
         {
             // Get an instance of the product repository
-            ProductRepository productRepo = ProductRepository.GetInstance();
+            IDao dao = Services.Services.GetKeyedSingleton<IDao>();
+            var productRepo = dao.Products;
 
             // Get information from the form
             string? prodName = productName.Text != "" ? productName.Text : null;
@@ -137,7 +139,7 @@ namespace PointOfSaleSystem.Views
             // If the category is detailed, add it to the database 
             if (prodCat != null)
             {
-                CategoryRepository catRepo = CategoryRepository.GetInstance();
+                var catRepo = dao.Categories;
                 var categories = catRepo.GetAll();
                 Category? foundCat = categories.FirstOrDefault(cat => cat.Name == prodCat);
                 if (foundCat == null)

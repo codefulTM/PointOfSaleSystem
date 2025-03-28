@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Models;
 using System.Collections.ObjectModel;
 using PointOfSaleSystem.Views.ViewModels;
+using PointOfSaleSystem.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -83,7 +84,8 @@ namespace PointOfSaleSystem.Views
 
             if (result == ContentDialogResult.Primary)
             {
-                ProductRepository productRepo = ProductRepository.GetInstance();
+                IDao dao = Services.Services.GetKeyedSingleton<IDao>();
+                var productRepo = dao.Products;
                 productRepo.Delete(product.Id);
                 ProductViewModel.Products.Remove(product);
 

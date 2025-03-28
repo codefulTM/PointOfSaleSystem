@@ -11,7 +11,7 @@ namespace PointOfSaleSystem.Utils.Checkers
     {
         public string? Check(Customer customer)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public string? Check(Category category)
