@@ -16,6 +16,7 @@ using PointOfSaleSystem.Models;
 using System.Collections.ObjectModel;
 using PointOfSaleSystem.Views.ViewModels;
 using PointOfSaleSystem.Services;
+using Windows.UI.Core;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.

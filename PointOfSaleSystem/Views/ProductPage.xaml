@@ -46,7 +46,7 @@
                                 VerticalAlignment="Stretch">
                             <TextBlock Text="{Binding Name}"
                                        Style="{StaticResource BodyStrongTextBlockStyle}"
-                                       Foreground="White"
+                                       Foreground="Black"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                         </Border>
@@ -61,6 +61,5 @@
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
         </GridView>
-        
     </StackPanel>
 </Page>
