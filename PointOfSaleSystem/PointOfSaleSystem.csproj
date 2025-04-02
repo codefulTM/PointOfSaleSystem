@@ -12,12 +12,6 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Views\AddCustomerWindow.xaml" />
-    <None Remove="Views\CustomerDetailsWindow.xaml" />
-    <None Remove="Views\CustomerPage.xaml" />
-    <None Remove="Views\UpdateCustomerWindow.xaml" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -46,6 +40,11 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250205002" />
     <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\PaymentMethodPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\UpdateCustomerWindow.xaml">
@@ -81,10 +80,6 @@
     <Page Update="Views\ProductPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\CustomerViews\" />
-    <Folder Include="Views\ProductViews\" />
   </ItemGroup>
 
   <!--

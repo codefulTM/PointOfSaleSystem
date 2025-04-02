@@ -24,6 +24,11 @@
                         <FontIcon Glyph="K"/>
                     </NavigationViewItem.Icon>  
                 </NavigationViewItem>
+                <NavigationViewItem Content="Phương thức thanh toán" Tag="PaymentMethodPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="P"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame"/>
         </NavigationView>
