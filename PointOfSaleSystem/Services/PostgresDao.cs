@@ -490,6 +490,11 @@ namespace PointOfSaleSystem.Services
 
             public void Create(OrderDetail entity)
             {
+                // Check if orderId and productId are not null
+                if (entity.OrderId == null || entity.ProductId == null)
+                {
+                    return;
+                }
                 string query = "INSERT INTO DETAIL(order_id, product_id, count) VALUES(@orderId, @productId, @count);";
                 using (var cmd = new NpgsqlCommand(query, _connection))
                 {
@@ -565,7 +570,26 @@ namespace PointOfSaleSystem.Services
 
             public void Update(OrderDetail entity)
             {
-                throw new NotImplementedException();
+                if(entity.OrderId == null || entity.ProductId == null)
+                {
+                    return;
+                }
+                string query = "UPDATE DETAIL SET count = @count WHERE order_id = @orderId AND product_id = @productId";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("count", entity.Quantity != null ? entity.Quantity : DBNull.Value);
+                    cmd.Parameters.AddWithValue("orderId", entity.OrderId);
+                    cmd.Parameters.AddWithValue("productId", entity.ProductId);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+                // Update the order detail in the list
+                var existingOrderDetail = orderDetails.FirstOrDefault(od => od.OrderId == entity.OrderId && od.ProductId == entity.ProductId);
+                if (existingOrderDetail != null)
+                {
+                    existingOrderDetail.Quantity = entity.Quantity;
+                }
             }
         }
     }
