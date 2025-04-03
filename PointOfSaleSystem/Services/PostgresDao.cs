@@ -502,9 +502,22 @@ namespace PointOfSaleSystem.Services
                 orderDetails.Add(entity);
             }
 
-            public void Delete(int id)
+            public void Delete(int orderId)
             {
-                throw new NotImplementedException();
+                string query = "UPDATE PRODUCT SET deleted = TRUE WHERE order_id = @orderId";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("orderId", orderId);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+                // Find order details by orderId and remove them from the list
+                var orderDetailsToRemove = orderDetails.Where(od => od.OrderId == orderId).ToList();
+                foreach(var orderDetail in orderDetailsToRemove)
+                {
+                    orderDetails.Remove(orderDetail);
+                }
             }
 
             public IEnumerable<OrderDetail> GetAll()
