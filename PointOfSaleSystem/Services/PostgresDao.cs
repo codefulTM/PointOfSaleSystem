@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Npgsql;
 using PointOfSaleSystem.Models;
+using Windows.ApplicationModel.Store;
 
 namespace PointOfSaleSystem.Services
 {
@@ -522,12 +523,44 @@ namespace PointOfSaleSystem.Services
 
             public IEnumerable<OrderDetail> GetAll()
             {
-                throw new NotImplementedException();
+                if(orderDetails.Count == 0)
+                {
+                    string query = "SELECT d.order_id, d.product_id, d.count " +
+                        "FROM DETAIL d " +
+                        "WHERE d.deleted = @deleted";
+                    using (var cmd = new NpgsqlCommand(query, _connection))
+                    {
+                        cmd.Parameters.AddWithValue("deleted", false);
+                        _connection.Open();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while(reader.Read())
+                            {
+                                OrderDetail orderDetail = new OrderDetail();
+                                orderDetail.OrderId = reader.GetInt32(0);
+                                orderDetail.ProductId = reader.GetInt32(1);
+                                orderDetail.Quantity = reader.GetInt32(2);
+                                orderDetails.Add(orderDetail);
+                            }
+                        }
+                        _connection.Close();
+                    }
+                }
+                return orderDetails;
             }
 
             public OrderDetail GetById(int id)
             {
                 throw new NotImplementedException();
+            }
+
+            public IEnumerable<OrderDetail> GetByOrderId(int orderId)
+            {
+                if(orderDetails.Count == 0)
+                {
+                    GetAll();
+                }
+                return orderDetails.Where(od => od.OrderId == orderId);
             }
 
             public void Update(OrderDetail entity)
