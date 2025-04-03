@@ -61,6 +61,7 @@ CREATE TABLE DETAIL (
     order_id INT,
     product_id INT,
     count INT,
+    deleted BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (order_id, product_id),
     FOREIGN KEY (order_id) REFERENCES "order"(order_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES PRODUCT(product_id) ON DELETE CASCADE
