@@ -20,6 +20,7 @@ namespace PointOfSaleSystem.Services
         public IRepository<Category> Categories { get; set; }
         public IRepository<Product> Products { get; set; }
         public IRepository<Customer> Customers { get; set; }
+        public IRepository<OrderDetail> OrderDetails { get; set; }
 
         public class PostgresCategoryRepository : IRepository<Category>
         {
@@ -461,6 +462,64 @@ namespace PointOfSaleSystem.Services
                     customers.Remove(existingProduct);
                     customers.Add(entity);
                 }
+            }
+        }
+        public class PostgresOrderDetailRepository : IRepository<OrderDetail>
+        {
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            private NpgsqlConnection _connection;
+
+            // singleton instance
+            private static PostgresOrderDetailRepository? _instance = null;
+
+            private PostgresOrderDetailRepository(NpgsqlConnection connection)
+            {
+                _connection = connection;
+                GetAll();
+            }
+
+            public static PostgresOrderDetailRepository GetInstance()
+            {
+                if(_instance == null)
+                {
+                    _instance = new PostgresOrderDetailRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
+                }
+                return _instance;
+            }
+
+            public void Create(OrderDetail entity)
+            {
+                string query = "INSERT INTO DETAIL(order_id, product_id, count) VALUES(@orderId, @productId, @count);";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("orderId", entity.OrderId);
+                    cmd.Parameters.AddWithValue("productId", entity.ProductId);
+                    cmd.Parameters.AddWithValue("count", entity.Quantity);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+                orderDetails.Add(entity);
+            }
+
+            public void Delete(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerable<OrderDetail> GetAll()
+            {
+                throw new NotImplementedException();
+            }
+
+            public OrderDetail GetById(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Update(OrderDetail entity)
+            {
+                throw new NotImplementedException();
             }
         }
     }
