@@ -103,6 +103,6 @@ CREATE TABLE PAYMENT_METHOD (
     bank_name TEXT,
     account_holder TEXT,
     phone_number TEXT,
-    is_default BOOLEAN DEFAULT FALSE
+    is_default BOOLEAN DEFAULT FALSE,
 	deleted BOOLEAN DEFAULT FALSE
 );

@@ -11,13 +11,15 @@ namespace PointOfSaleSystem.Views.ViewModels
 {
     public class PaymentMethodViewModel
     {
-        public FullObservableCollection<PaymentMethod> PaymentMethods { get; set; }
-
+        public FullObservableCollection<PaymentMethod> BankPaymentMethods { get; set; }
+        public FullObservableCollection<PaymentMethod> MomoPaymentMethods { get; set; }
         public PaymentMethodViewModel()
         {
             var dao = Services.Services.GetKeyedSingleton<IDao>();
             var paymentMethodRepository = dao.PaymentMethods;
-            PaymentMethods = new FullObservableCollection<PaymentMethod>(paymentMethodRepository.GetAll());
+
+            BankPaymentMethods = new FullObservableCollection<PaymentMethod>(paymentMethodRepository.GetAll().Where(x => x.Type == "bank") ?? new List<PaymentMethod>());
+            MomoPaymentMethods = new FullObservableCollection<PaymentMethod>(paymentMethodRepository.GetAll().Where(x => x.Type == "momo") ?? new List<PaymentMethod>());
         }
     }
 }
