@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
 using Npgsql;
 using PointOfSaleSystem.Models;
 using Windows.ApplicationModel.Store;
@@ -22,6 +23,7 @@ namespace PointOfSaleSystem.Services
         public IRepository<Product> Products { get; set; }
         public IRepository<Customer> Customers { get; set; }
         public IRepository<OrderDetail> OrderDetails { get; set; }
+        public IRepository<PaymentMethod> PaymentMethods { get; set; }
 
         public class PostgresCategoryRepository : IRepository<Category>
         {
@@ -592,5 +594,83 @@ namespace PointOfSaleSystem.Services
                 }
             }
         }
+        public class PostgresPaymentMethodRepository : IRepository<PaymentMethod>
+        {
+            List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
+            private NpgsqlConnection _connection;
+
+            // singleton instance
+            private static PostgresPaymentMethodRepository? _instance = null;
+
+            private PostgresPaymentMethodRepository(NpgsqlConnection connection)
+            {
+                _connection = connection;
+                GetAll();
+            }
+
+            public static PostgresPaymentMethodRepository GetInstance()
+            {
+                if(_instance == null)
+                {
+                    _instance = new PostgresPaymentMethodRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
+                }
+                return _instance;
+            }
+
+            public IEnumerable<PaymentMethod> GetAll()
+            {
+                if(paymentMethods.Count == 0)
+                {
+                    string query = "SELECT pm.id, pm.type, pm.account_number, pm.bank_name, pm.account_holder, pm.phone_number, is_default " +
+                        "FROM PAYMENT_METHOD pm " +
+                        "WHERE pm.deleted = @deleted";
+                    using (var cmd = new NpgsqlCommand(query, _connection))
+                    {
+                        cmd.Parameters.AddWithValue("deleted", false);
+                        _connection.Open();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                PaymentMethod paymentMethod = new PaymentMethod();
+                                paymentMethod.Id = reader.GetInt32(0);
+                                paymentMethod.Type = reader.GetString(1);
+                                paymentMethod.AccountNumber = reader.IsDBNull(2) ? null : reader.GetString(2);
+                                paymentMethod.BankName = reader.IsDBNull(3) ? null : reader.GetString(3);
+                                paymentMethod.AccountHolder = reader.IsDBNull(4) ? null : reader.GetString(4);
+                                paymentMethod.PhoneNumber = reader.IsDBNull(5) ? null : reader.GetString(5);
+                                paymentMethod.IsDefault = reader.GetBoolean(6);
+                                paymentMethods.Add(paymentMethod);
+                            }
+                        }
+                        _connection.Close();
+                    }
+                }
+                return paymentMethods;
+            }
+
+            public PaymentMethod GetById(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Create(PaymentMethod entity)
+            {
+                string query;
+
+                
+            }
+
+            public void Update(PaymentMethod entity)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Delete(int id)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
     }
 }

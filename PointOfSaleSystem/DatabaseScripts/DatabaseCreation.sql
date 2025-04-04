@@ -97,10 +97,12 @@ CREATE TABLE PRODUCT_SUPPLIES (
 );
 
 CREATE TABLE PAYMENT_METHOD (
-    id INT SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     type VARCHAR(10) NOT NULL CHECK(type IN ('bank', 'momo')),
     account_number TEXT,
     bank_name TEXT,
     account_holder TEXT,
-    phone_number TEXT
+    phone_number TEXT,
+    is_default BOOLEAN DEFAULT FALSE
+	deleted BOOLEAN DEFAULT FALSE
 );
