@@ -660,9 +660,23 @@ namespace PointOfSaleSystem.Services
 
             public void Create(PaymentMethod entity)
             {
-                string query;
+                string query = "INSERT INTO PAYMENT_METHOD(type, account_number, bank_name, account_holder, phone_number, is_default) " +
+                    "VALUES(@type, @accountNumber, @bankName, @accountHolder, @phoneNumber, @isDefault) RETURNING id;";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("type", entity.Type);
+                    cmd.Parameters.AddWithValue("accountNumber", entity.AccountNumber == null ? DBNull.Value : entity.AccountNumber);
+                    cmd.Parameters.AddWithValue("bankName", entity.BankName == null ? DBNull.Value : entity.BankName);
+                    cmd.Parameters.AddWithValue("accountHolder", entity.AccountHolder == null ? DBNull.Value : entity.AccountHolder);
+                    cmd.Parameters.AddWithValue("phoneNumber", entity.PhoneNumber == null ? DBNull.Value : entity.PhoneNumber);
+                    cmd.Parameters.AddWithValue("isDefault", entity.IsDefault);
 
-                
+                    _connection.Open();
+                    int paymentMethodId = (int)cmd.ExecuteScalar();
+                    entity.Id = paymentMethodId;
+                    paymentMethods.Add(entity);
+                    _connection.Close();
+                }
             }
 
             public void Update(PaymentMethod entity)
