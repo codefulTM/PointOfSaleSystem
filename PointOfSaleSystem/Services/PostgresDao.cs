@@ -681,12 +681,46 @@ namespace PointOfSaleSystem.Services
 
             public void Update(PaymentMethod entity)
             {
-                throw new NotImplementedException();
+                string query = "UPDATE PAYMENT_METHOD " +
+                    "SET type = @type, account_number = @accountNumber, bank_name = @bankName, account_holder = @accountHolder, phone_number = @phoneNumber, is_default = @isDefault " +
+                    "WHERE id = @id";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("type", entity.Type);
+                    cmd.Parameters.AddWithValue("accountNumber", entity.AccountNumber == null ? DBNull.Value : entity.AccountNumber);
+                    cmd.Parameters.AddWithValue("bankName", entity.BankName == null ? DBNull.Value : entity.BankName);
+                    cmd.Parameters.AddWithValue("accountHolder", entity.AccountHolder == null ? DBNull.Value : entity.AccountHolder);
+                    cmd.Parameters.AddWithValue("phoneNumber", entity.PhoneNumber == null ? DBNull.Value : entity.PhoneNumber);
+                    cmd.Parameters.AddWithValue("isDefault", entity.IsDefault);
+                    cmd.Parameters.AddWithValue("id", entity.Id);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+
+                var existingPaymentMethod = paymentMethods.FirstOrDefault(pm => pm.Id == entity.Id);
+                if(existingPaymentMethod != null)
+                {
+                    paymentMethods.Remove(existingPaymentMethod);
+                    paymentMethods.Add(entity);
+                }
             }
 
             public void Delete(int id)
             {
-                throw new NotImplementedException();
+                string query = "UPDATE PAYMENT_METHOD SET deleted = TRUE WHERE id = @id";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("id", id);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+                var paymentMethodToRemove = paymentMethods.FirstOrDefault(pm => pm.Id == id);
+                if (paymentMethodToRemove != null)
+                {
+                    paymentMethods.Remove(paymentMethodToRemove);
+                }
             }
         }
 
