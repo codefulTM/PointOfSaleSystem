@@ -649,9 +649,13 @@ namespace PointOfSaleSystem.Services
                 return paymentMethods;
             }
 
-            public PaymentMethod GetById(int id)
+            public PaymentMethod? GetById(int id)
             {
-                throw new NotImplementedException();
+                if(paymentMethods.Count == 0)
+                {
+                    GetAll();
+                }
+                return paymentMethods.Find(pm => pm.Id == id);
             }
 
             public void Create(PaymentMethod entity)
