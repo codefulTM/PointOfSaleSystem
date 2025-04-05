@@ -22,6 +22,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Button Click="Bank_SetDefaultClick" Background="#FFB22C">Đặt làm mặc định</Button>
                     <Button Click="Bank_AddPaymentMethodClick" Background="#FFB22C">Thêm</Button>
+                    <Button Click="ShowBankQR" Background="#FFB22C">Xem QR</Button>
                     <Button Click="Bank_RemovePaymentMethodClick" Background="#854836">Xóa</Button>
                 </StackPanel>
                 <ListView x:Name="bankPaymentMethods" ItemsSource="{x:Bind ViewModel.BankPaymentMethods}">
@@ -45,14 +46,16 @@
                 <StackPanel Orientation="Horizontal">
                     <Button Click="Momo_SetDefaultClick" Background="#FFB22C">Đặt làm mặc định</Button>
                     <Button Click="Momo_AddPaymentMethodClick" Background="#FFB22C">Thêm</Button>
+                    <Button Click="ShowMomoQR" Background="#FFB22C">Xem QR</Button>
                     <Button Click="Momo_RemovePaymentMethodClick" Background="#854836">Xóa</Button>
                 </StackPanel>
-                <ListView ItemsSource="{x:Bind ViewModel.MomoPaymentMethods}">
+                <ListView x:Name="momoPaymentMethods" ItemsSource="{x:Bind ViewModel.MomoPaymentMethods}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="models:PaymentMethod">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding AccountHolder}"/>
-                                <TextBlock Text="{Binding AccountNumber}"/>
+                                <TextBlock Text="-"/>
+                                <TextBlock Text="{Binding PhoneNumber}"/>
                                 <TextBlock Text="(Mặc định)"
                            Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibility}}"/>
                             </StackPanel>
