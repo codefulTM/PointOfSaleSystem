@@ -66,8 +66,8 @@ namespace PointOfSaleSystem.Views
             {
                 return;
             }
-            string qrUrl = $"https://img.vietqr.io/image/{BankCodes[paymentMethod.BankName]}-{paymentMethod.AccountNumber}-compact2.png?amount={amount}";
+            string qrUrl = $"https://img.vietqr.io/image/{BankCodes[paymentMethod.BankName]}-{paymentMethod.AccountNumber}-compact2.png?amount={amount}&addInfo={Uri.EscapeDataString("Thanh toan hoa don")}";
             qrCodeImage.Source = new BitmapImage(new Uri(qrUrl));
-        }
+        } 
     }
 }
