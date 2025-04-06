@@ -43,6 +43,11 @@
     <PackageReference Include="QRCoder" Version="1.6.0" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\PaymentWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\AddMomoPaymentMethodWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

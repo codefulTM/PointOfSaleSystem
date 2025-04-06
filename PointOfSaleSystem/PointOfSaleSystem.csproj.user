@@ -4,7 +4,7 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>PointOfSaleSystem (Unpackaged)</ActiveDebugProfile>
+    <ActiveDebugProfile>PointOfSaleSystem (Package)</ActiveDebugProfile>
   </PropertyGroup>
   <ItemGroup>
     <None Update="App.xaml">
@@ -13,6 +13,9 @@
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Views\PaymentWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ShowMomoQRWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

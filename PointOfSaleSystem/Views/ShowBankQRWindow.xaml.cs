@@ -54,7 +54,6 @@ namespace PointOfSaleSystem.Views
             { "Nam A Bank", "NAB" }
         };
 
-
         public ShowBankQRWindow(PaymentMethod paymentMethod, int amount)
         {
             this.PaymentMethodInfo = paymentMethod;

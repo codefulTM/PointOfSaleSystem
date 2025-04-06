@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="PointOfSaleSystem.Views.PaymentWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PointOfSaleSystem.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="BlankWindow1">
+
+    <Grid>
+        <TextBlock>Khách lẻ</TextBlock>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Tổng tiền hàng: </TextBlock>
+            <TextBlock x:Name="totalAmount"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Giảm giá:</TextBlock>
+            <TextBlock x:Name="discount"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock x:Name="amountDue">Khách cần trả: </TextBlock>
+        </StackPanel>
+        <TextBox Header="Khách trả"
+                 TextChanged="AmountPaidTextBox_TextChanged"
+                 x:Name="amountPaid"/>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Tiền thừa thối khách:</TextBlock>
+            <TextBlock x:Name="change"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button Click="ShowBankQR">QR ngân hàng</Button>
+            <Button Click="ShowMomoQR">QR Momo</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button>In hóa đơn</Button>
+            <Button Click="PayButton_Click">Thanh toán</Button>
+        </StackPanel>
+    </Grid>
+</Window>
