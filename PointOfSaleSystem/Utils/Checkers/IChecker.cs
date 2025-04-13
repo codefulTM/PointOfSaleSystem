@@ -23,6 +23,7 @@ namespace PointOfSaleSystem.Models
         //}
         public string? Check(Category category);
         public string? Check(Product product);
+        public string? Check(Order order);
 
     }
 }
