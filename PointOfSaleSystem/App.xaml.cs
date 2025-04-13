@@ -18,6 +18,7 @@ using Microsoft.UI.Xaml.Shapes;
 using PointOfSaleSystem.Views;
 using PointOfSaleSystem.Services;
 using DotNetEnv;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,8 +37,6 @@ namespace PointOfSaleSystem
         public App()
         {
             this.InitializeComponent();
-
-            Services.Services.AddKeyedSingleton<IDao, PostgresDao>();
         }
 
         /// <summary>
@@ -53,6 +52,10 @@ namespace PointOfSaleSystem
             string? dbPassword = Env.GetString("DB_PASSWORD");
             string? dbName = Env.GetString("DB_NAME");
             Configuration.CONNECTION_STRING = $"Host={dbHost};Username={dbUsername};Password={dbPassword};Database={dbName}";
+            Debug.WriteLine(Configuration.CONNECTION_STRING);
+
+            // Set up the proper IDao
+            Services.Services.AddKeyedSingleton<IDao, PostgresDao>();
 
             m_window = new MainWindow();
             m_window.Activate();

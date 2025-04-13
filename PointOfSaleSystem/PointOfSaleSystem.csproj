@@ -43,6 +43,11 @@
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <None Update=".env">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\PaymentMethodPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
