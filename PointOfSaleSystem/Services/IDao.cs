@@ -12,6 +12,7 @@ namespace PointOfSaleSystem.Services
         IRepository<Category> Categories { get; set; }
         IRepository<Product> Products { get; set; }
         IRepository<Customer> Customers { get; set; }
+        IRepository<Order> Orders { get; set; }
         IRepository<OrderDetail> OrderDetails { get; set; }
     }
 }
