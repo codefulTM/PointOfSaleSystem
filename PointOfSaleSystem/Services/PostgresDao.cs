@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Npgsql;
 using PointOfSaleSystem.Models;
+using Windows.ApplicationModel.Store;
 
 namespace PointOfSaleSystem.Services
 {
@@ -22,6 +23,7 @@ namespace PointOfSaleSystem.Services
         public IRepository<Product> Products { get; set; }
         public IRepository<Customer> Customers { get; set; }
         public IRepository<Order> Orders { get; set; }
+        public IRepository<OrderDetail> OrderDetails { get; set; }
 
         public class PostgresCategoryRepository : IRepository<Category>
         {
@@ -465,7 +467,7 @@ namespace PointOfSaleSystem.Services
                 }
             }
         }
-
+        
         public class PostgresOrderRepository : IRepository<Order>
         {
             List<Order> orders = new List<Order>();
@@ -579,6 +581,137 @@ namespace PointOfSaleSystem.Services
                 {
                     orders.Remove(existingOrder);
                     orders.Add(entity);
+                }
+            }
+        }
+
+        public class PostgresOrderDetailRepository : IRepository<OrderDetail>
+        {
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            private NpgsqlConnection _connection;
+
+            // singleton instance
+            private static PostgresOrderDetailRepository? _instance = null;
+
+            private PostgresOrderDetailRepository(NpgsqlConnection connection)
+            {
+                _connection = connection;
+                GetAll();
+            }
+
+            public static PostgresOrderDetailRepository GetInstance()
+            {
+                if(_instance == null)
+                {
+                    _instance = new PostgresOrderDetailRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
+                }
+                return _instance;
+            }
+
+            public void Create(OrderDetail entity)
+            {
+                // Check if orderId and productId are not null
+                if (entity.OrderId == null || entity.ProductId == null)
+                {
+                    return;
+                }
+                string query = "INSERT INTO DETAIL(order_id, product_id, count) VALUES(@orderId, @productId, @count);";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("orderId", entity.OrderId);
+                    cmd.Parameters.AddWithValue("productId", entity.ProductId);
+                    cmd.Parameters.AddWithValue("count", entity.Quantity);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+                orderDetails.Add(entity);
+            }
+
+            public void Delete(int orderId)
+            {
+                string query = "UPDATE PRODUCT SET deleted = TRUE WHERE order_id = @orderId";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("orderId", orderId);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+
+                // Find order details by orderId and remove them from the list
+                var orderDetailsToRemove = orderDetails.Where(od => od.OrderId == orderId).ToList();
+                foreach(var orderDetail in orderDetailsToRemove)
+                {
+                    orderDetails.Remove(orderDetail);
+                }
+            }
+
+            public IEnumerable<OrderDetail> GetAll()
+            {
+                if(orderDetails.Count == 0)
+                {
+                    string query = "SELECT d.order_id, d.product_id, d.count " +
+                        "FROM DETAIL d " +
+                        "WHERE d.deleted = @deleted";
+                        
+                    using (var cmd = new NpgsqlCommand(query, _connection))
+                    {
+                        cmd.Parameters.AddWithValue("deleted", false);
+                        _connection.Open();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while(reader.Read())
+                            {
+                                OrderDetail orderDetail = new OrderDetail();
+                                orderDetail.OrderId = reader.GetInt32(0);
+                                orderDetail.ProductId = reader.GetInt32(1);
+                                orderDetail.Quantity = reader.GetInt32(2);
+                                orderDetails.Add(orderDetail);
+                            }
+                        }
+                        _connection.Close();
+                    }
+                }
+                return orderDetails;
+            }
+
+            public OrderDetail GetById(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerable<OrderDetail> GetByOrderId(int orderId)
+            {
+                if(orderDetails.Count == 0)
+                {
+                    GetAll();
+                }
+                return orderDetails.Where(od => od.OrderId == orderId);
+            }
+
+            public void Update(OrderDetail entity)
+            {
+                if(entity.OrderId == null || entity.ProductId == null)
+                {
+                    return;
+                }
+                string query = "UPDATE DETAIL SET count = @count WHERE order_id = @orderId AND product_id = @productId";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("count", entity.Quantity != null ? entity.Quantity : DBNull.Value);
+                    cmd.Parameters.AddWithValue("orderId", entity.OrderId);
+                    cmd.Parameters.AddWithValue("productId", entity.ProductId);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+
+                // Update the order detail in the list
+                var existingOrderDetail = orderDetails.FirstOrDefault(od => od.OrderId == entity.OrderId && od.ProductId == entity.ProductId);
+                if (existingOrderDetail != null)
+                {
+                    existingOrderDetail.Quantity = entity.Quantity;
                 }
             }
         }
