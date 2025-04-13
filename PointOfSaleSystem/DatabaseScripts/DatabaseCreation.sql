@@ -54,6 +54,7 @@ CREATE TABLE "order" (
     total_price INT,
     discount INT,
     paid BOOLEAN,
+    deleted BOOLEAN NOT NULL DEFAULT FALSE,
     order_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES CUSTOMER(customer_id)
 );
