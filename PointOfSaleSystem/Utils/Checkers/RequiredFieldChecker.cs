@@ -31,5 +31,10 @@ namespace PointOfSaleSystem.Utils.Checkers
             }
             return null;
         }
+
+        public string? Check(Order order)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
