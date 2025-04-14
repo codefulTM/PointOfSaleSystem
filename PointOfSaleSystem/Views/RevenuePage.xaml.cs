@@ -14,6 +14,9 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Services;
 using System.Data;
+using PointOfSaleSystem.Views.ViewModels;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.Kernel.Sketches;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,9 +28,18 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class RevenuePage : Page
     {
+        public ChartViewModel WeeklyChartViewModel { get; set; }
+        public IEnumerable<ICartesianAxis> WeeklyXAxes { get; set; }
+        public IEnumerable<ICartesianAxis> WeeklyYAxes { get; set; }
+        public ChartViewModel MonthlyChartViewModel { get; set; }
+        public IEnumerable<ICartesianAxis> MonthlyXAxes { get; set; }
+        public IEnumerable<ICartesianAxis> MonthlyYAxes { get; set; }
+
         public RevenuePage()
         {
             this.InitializeComponent();
+
+            this.DataContext = this;
         }
 
         private void DailyRevenueDatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
@@ -63,6 +75,24 @@ namespace PointOfSaleSystem.Views
                 DateTime date = selectedDate.Value.Date;
                 // Filter orders by date
                 var filteredOrders = orders.Where(order => order.OrderTime.Date >= date && order.OrderTime.Date < date.AddDays(7)).ToList();
+                // Initialize weekly chart view model
+                WeeklyChartViewModel = new ChartViewModel(filteredOrders);
+                // Set the X and Y axes for the weekly chart
+                WeeklyXAxes = new Axis[]
+                {
+                    new Axis
+                    {
+                        Name = "Ngày",
+                        Labels = WeeklyChartViewModel.Labels
+                    }
+                }.Cast<ICartesianAxis>();
+                WeeklyYAxes = new Axis[]
+                {
+                    new Axis
+                    {
+                        Name = "Doanh thu"
+                    }
+                }.Cast<ICartesianAxis>();
                 // Calculate total revenue
                 int totalRevenue = filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
                 // Display total revenue
@@ -83,6 +113,24 @@ namespace PointOfSaleSystem.Views
                 DateTime date = selectedDate.Value.Date;
                 // Filter orders by date
                 var filteredOrders = orders.Where(order => order.OrderTime.Date >= date && order.OrderTime.Date < date.AddDays(30)).ToList();
+                // Initialize monthly chart view model
+                MonthlyChartViewModel = new ChartViewModel(filteredOrders);
+                // Set the X and Y axes for the weekly chart
+                MonthlyXAxes = new Axis[]
+                {
+                    new Axis
+                    {
+                        Name = "Ngày",
+                        Labels = MonthlyChartViewModel.Labels
+                    }
+                }.Cast<ICartesianAxis>();
+                MonthlyYAxes = new Axis[]
+                {
+                    new Axis
+                    {
+                        Name = "Doanh thu"
+                    }
+                }.Cast<ICartesianAxis>();
                 // Calculate total revenue
                 int totalRevenue = filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
                 // Display total revenue

@@ -6,7 +6,7 @@
     xmlns:local="using:PointOfSaleSystem.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:lvc="using:LiveChartsCore"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -31,6 +31,16 @@
                     <DatePicker DateChanged="WeeklyRevenueDatePicker_DateChanged" 
                                 Header="Chọn ngày bắt đầu" 
                                 Margin="5" />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto">
+                        <lvc:CartesianChart 
+                            Series="{x:Bind WeeklyChartViewModel.Series}" 
+                            XAxes="{x:Bind WeeklyXAxes}" 
+                            YAxes="{x:Bind WeeklyYAxes}" 
+                            Height="200"
+                            Width="800"
+                            LegendPosition="Right"/>
+                    </ScrollViewer>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5">Tổng doanh thu của tuần:</TextBlock>
                         <TextBlock x:Name="weeklyTotalRevenue"
@@ -42,6 +52,16 @@
                     <DatePicker DateChanged="MonthlyRevenueDatePicker_DateChanged" 
                                 Header="Chọn ngày bắt đầu" 
                                 Margin="5" />
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto">
+                        <lvc:CartesianChart 
+                            Series="{x:Bind MonthlyChartViewModel.Series}" 
+                            XAxes="{x:Bind MonthlyXAxes}" 
+                            YAxes="{x:Bind MonthlyYAxes}"
+                            Height="200"
+                            Width="800"
+                            LegendPosition="Right"/>
+                    </ScrollViewer>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5">Tổng doanh thu của tháng:</TextBlock>
                         <TextBlock x:Name="monthlyTotalRevenue" 
