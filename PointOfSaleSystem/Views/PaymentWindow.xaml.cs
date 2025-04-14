@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Services;
+using PointOfSaleSystem.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -28,12 +29,17 @@ namespace PointOfSaleSystem.Views
         public int Discount { get; set; } = 0;
         public int AmountDue { get; set; } = 0;
 
-        public PaymentWindow(int totalAmountValue, int discountValue)
+        public Order CurrentOrder { get; set; }
+        public List<OrderDetail> OrderDetails { get; set; } 
+
+        public PaymentWindow(Order order, List<OrderDetail> orderDetails)
         {
             this.InitializeComponent();
-            this.TotalAmount = totalAmountValue;
-            this.Discount = discountValue;
-            this.AmountDue = totalAmountValue - discountValue;
+            this.TotalAmount = order.TotalPrice;
+            this.Discount = order.Discount;
+            this.AmountDue = this.TotalAmount - this.Discount;
+            this.CurrentOrder = order;
+            this.OrderDetails = orderDetails;
 
             totalAmount.Text = TotalAmount.ToString();
             discount.Text = Discount.ToString();
@@ -55,7 +61,7 @@ namespace PointOfSaleSystem.Views
                 int changeValue = amountPaidValue - AmountDue;
                 if (changeValue < 0)
                 {
-                    change.Text = "0";
+                    change.Text = "Không đủ số tiền thanh toán";
                 }
                 else
                 {
@@ -84,6 +90,15 @@ namespace PointOfSaleSystem.Views
                 }
                 else
                 {
+                    CurrentOrder.IsPaid = true;
+
+                    var dao = Services.Services.GetKeyedSingleton<IDao>();
+                    dao.Orders.Create(CurrentOrder);
+                    foreach (var orderDetail in OrderDetails)
+                    {
+                        dao.OrderDetails.Create(orderDetail);
+                    }
+
                     this.Close();
                 }
             }
