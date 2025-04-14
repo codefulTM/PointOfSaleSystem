@@ -29,6 +29,11 @@
                         <FontIcon Glyph="P"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem Content="Doanh thu" Tag="RevenuePage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="D"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame"/>
         </NavigationView>
