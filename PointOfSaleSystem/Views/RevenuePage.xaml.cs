@@ -19,6 +19,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.Kernel.Sketches;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using PointOfSaleSystem.Views.Converters;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -53,7 +54,9 @@ namespace PointOfSaleSystem.Views
                 // Calculate total revenue
                 int totalRevenue = (int)filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
                 // Display total revenue
-                dailyTotalRevenue.Text = totalRevenue.ToString();
+                var formatter = new CurrencyFormatter();
+                string? formattedRevenue = formatter.Convert(totalRevenue, null, null, "vi-VN") as string;
+                dailyTotalRevenue.Text = formattedRevenue;
             }
         }
 
@@ -77,7 +80,9 @@ namespace PointOfSaleSystem.Views
                 // Calculate total revenue
                 int totalRevenue = (int)filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
                 // Display total revenue
-                weeklyTotalRevenue.Text = totalRevenue.ToString();
+                var formatter = new CurrencyFormatter();
+                string? formattedRevenue = formatter.Convert(totalRevenue, null, null, "vi-VN") as string;
+                weeklyTotalRevenue.Text = formattedRevenue;
             }
         }
 
@@ -99,7 +104,9 @@ namespace PointOfSaleSystem.Views
                 // Calculate total revenue
                 int totalRevenue = (int)filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
                 // Display total revenue
-                monthlyTotalRevenue.Text = totalRevenue.ToString();
+                var formatter = new CurrencyFormatter();
+                string? formattedRevenue = formatter.Convert(totalRevenue, null, null, "vi-VN") as string;
+                monthlyTotalRevenue.Text = formattedRevenue;
             }
         }
     }
