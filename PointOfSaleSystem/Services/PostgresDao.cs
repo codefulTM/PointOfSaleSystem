@@ -538,11 +538,11 @@ namespace PointOfSaleSystem.Services
                             {
                                 Order order = new Order();
                                 order.Id = reader.GetInt32(0);
-                                order.CustomerId = reader.GetInt32(1);
-                                order.TotalPrice = reader.GetInt32(2);
-                                order.Discount = reader.GetInt32(3);
-                                order.IsPaid = reader.GetBoolean(4);
-                                order.OrderTime = reader.GetDateTime(5);
+                                order.CustomerId = reader.IsDBNull(1) ? null : reader.GetInt32(1);
+                                order.TotalPrice = reader.IsDBNull(2) ? null : reader.GetInt32(2);
+                                order.Discount = reader.IsDBNull(3) ? null : reader.GetInt32(3);
+                                order.IsPaid = reader.IsDBNull(4) ? null : reader.GetBoolean(4);
+                                order.OrderTime = reader.IsDBNull(5) ? null : reader.GetDateTime(5);
                                 orders.Add(order);
                             }
                         }
