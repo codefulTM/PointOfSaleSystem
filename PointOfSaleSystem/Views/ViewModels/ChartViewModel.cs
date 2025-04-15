@@ -15,6 +15,7 @@ namespace PointOfSaleSystem.Views.ViewModels
     public class ChartViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<int?> ValuesCollection { get; set; } = new ObservableCollection<int?>();
+        public ObservableCollection<string> LabelsCollection { get; set; } = new ObservableCollection<string>();
         public ISeries[] Series { get; set; } 
         public IEnumerable<ICartesianAxis> XAxes { get; set; }
         public IEnumerable<ICartesianAxis> YAxes { get; set; }
@@ -26,8 +27,7 @@ namespace PointOfSaleSystem.Views.ViewModels
             {
                 new LineSeries<int?>
                 {
-                    Values = ValuesCollection,
-                    Name = "Doanh thu theo ngày"
+                    Values = ValuesCollection
                 }
             };
             XAxes = new Axis[]
@@ -35,7 +35,7 @@ namespace PointOfSaleSystem.Views.ViewModels
                 new Axis
                 {
                     Name = "Ngày",
-                    Labels = Array.Empty<string>()
+                    Labels = LabelsCollection
                 }
             }.Cast<ICartesianAxis>();
             YAxes = new Axis[]
@@ -58,10 +58,10 @@ namespace PointOfSaleSystem.Views.ViewModels
                                             })
                                             .OrderBy(g => g.Date);
             // Create an array of labels
-            var labels = revenuesByDate.Select(r => r.Date.ToString()).ToArray();
+            var labels = revenuesByDate.Select(r => r.Date.ToString());
 
             // Create an array of revenues
-            var revenues = revenuesByDate.Select(r => r.Revenue).ToArray();
+            var revenues = revenuesByDate.Select(r => r.Revenue);
 
             // Update Series' values collection
             ValuesCollection.Clear();
@@ -70,15 +70,13 @@ namespace PointOfSaleSystem.Views.ViewModels
                 ValuesCollection.Add(revenue);
             }
 
-            // Update the label
-            XAxes = new Axis[]
+            // Update XAxes' labels collection
+            LabelsCollection.Clear();
+            foreach (var label in labels)
             {
-                new Axis
-                {
-                    Name = "Ngày",
-                    Labels = labels
-                }
-            }.Cast<ICartesianAxis>();
+                LabelsCollection.Add(label);
+            }
+
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
