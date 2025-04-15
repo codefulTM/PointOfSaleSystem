@@ -17,6 +17,8 @@ using System.Data;
 using PointOfSaleSystem.Views.ViewModels;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.Kernel.Sketches;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -28,18 +30,11 @@ namespace PointOfSaleSystem.Views
     /// </summary>
     public sealed partial class RevenuePage : Page
     {
-        public ChartViewModel WeeklyChartViewModel { get; set; }
-        public IEnumerable<ICartesianAxis> WeeklyXAxes { get; set; }
-        public IEnumerable<ICartesianAxis> WeeklyYAxes { get; set; }
-        public ChartViewModel MonthlyChartViewModel { get; set; }
-        public IEnumerable<ICartesianAxis> MonthlyXAxes { get; set; }
-        public IEnumerable<ICartesianAxis> MonthlyYAxes { get; set; }
-
+        public ChartViewModel WeeklyChartViewModel { get; set; } = new ChartViewModel();
+        public ChartViewModel MonthlyChartViewModel { get; set; } = new ChartViewModel();
         public RevenuePage()
         {
             this.InitializeComponent();
-
-            this.DataContext = this;
         }
 
         private void DailyRevenueDatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
@@ -49,14 +44,14 @@ namespace PointOfSaleSystem.Views
             var orders = dao.Orders.GetAll();
 
             // Get the current date
-            DateTimeOffset? selectedDate = weeklyRevenueDatePicker.Date;
+            DateTimeOffset? selectedDate = dailyRevenueDatePicker.Date;
             if(selectedDate.HasValue)
             {
                 DateTime date = selectedDate.Value.Date;
                 // Filter orders by date
-                var filteredOrders = orders.Where(order => order.OrderTime.Date == date).ToList();
+                var filteredOrders = orders.Where(order => order.OrderTime?.Date == date).ToList();
                 // Calculate total revenue
-                int totalRevenue = filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
+                int totalRevenue = (int)filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
                 // Display total revenue
                 dailyTotalRevenue.Text = totalRevenue.ToString();
             }
@@ -74,27 +69,13 @@ namespace PointOfSaleSystem.Views
             {
                 DateTime date = selectedDate.Value.Date;
                 // Filter orders by date
-                var filteredOrders = orders.Where(order => order.OrderTime.Date >= date && order.OrderTime.Date < date.AddDays(7)).ToList();
+                var filteredOrders = orders.Where(order => order.OrderTime?.Date >= date && order.OrderTime?.Date < date.AddDays(7)).ToList();
+                //// Testing
+                //testBlock.Text = date.ToString();
                 // Initialize weekly chart view model
-                WeeklyChartViewModel = new ChartViewModel(filteredOrders);
-                // Set the X and Y axes for the weekly chart
-                WeeklyXAxes = new Axis[]
-                {
-                    new Axis
-                    {
-                        Name = "Ngày",
-                        Labels = WeeklyChartViewModel.Labels
-                    }
-                }.Cast<ICartesianAxis>();
-                WeeklyYAxes = new Axis[]
-                {
-                    new Axis
-                    {
-                        Name = "Doanh thu"
-                    }
-                }.Cast<ICartesianAxis>();
+                WeeklyChartViewModel.UpdateSeriesAndLabels(filteredOrders);
                 // Calculate total revenue
-                int totalRevenue = filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
+                int totalRevenue = (int)filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
                 // Display total revenue
                 weeklyTotalRevenue.Text = totalRevenue.ToString();
             }
@@ -107,32 +88,16 @@ namespace PointOfSaleSystem.Views
             var orders = dao.Orders.GetAll();
 
             // Get the current date
-            DateTimeOffset? selectedDate = weeklyRevenueDatePicker.Date;
+            DateTimeOffset? selectedDate = monthlyRevenueDatePicker.Date;
             if (selectedDate.HasValue)
             {
                 DateTime date = selectedDate.Value.Date;
                 // Filter orders by date
-                var filteredOrders = orders.Where(order => order.OrderTime.Date >= date && order.OrderTime.Date < date.AddDays(30)).ToList();
+                var filteredOrders = orders.Where(order => order.OrderTime?.Date >= date && order.OrderTime?.Date < date.AddDays(30)).ToList();
                 // Initialize monthly chart view model
-                MonthlyChartViewModel = new ChartViewModel(filteredOrders);
-                // Set the X and Y axes for the weekly chart
-                MonthlyXAxes = new Axis[]
-                {
-                    new Axis
-                    {
-                        Name = "Ngày",
-                        Labels = MonthlyChartViewModel.Labels
-                    }
-                }.Cast<ICartesianAxis>();
-                MonthlyYAxes = new Axis[]
-                {
-                    new Axis
-                    {
-                        Name = "Doanh thu"
-                    }
-                }.Cast<ICartesianAxis>();
+                MonthlyChartViewModel.UpdateSeriesAndLabels(filteredOrders);
                 // Calculate total revenue
-                int totalRevenue = filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
+                int totalRevenue = (int)filteredOrders.Sum(order => order.TotalPrice - order.Discount >= 0 ? order.TotalPrice - order.Discount : 0);
                 // Display total revenue
                 monthlyTotalRevenue.Text = totalRevenue.ToString();
             }

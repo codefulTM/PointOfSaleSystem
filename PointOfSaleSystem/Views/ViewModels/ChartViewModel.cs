@@ -1,46 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LiveChartsCore;
+using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 using PointOfSaleSystem.Models;
 
 namespace PointOfSaleSystem.Views.ViewModels
 {
-    public class ChartViewModel
+    public class ChartViewModel : INotifyPropertyChanged
     {
-        public ISeries[] Series { get; set; }
+        public ObservableCollection<int?> ValuesCollection { get; set; } = new ObservableCollection<int?>();
+        public ISeries[] Series { get; set; } 
+        public IEnumerable<ICartesianAxis> XAxes { get; set; }
+        public IEnumerable<ICartesianAxis> YAxes { get; set; }
 
-        public string[] Labels { get; set; }
+        public ChartViewModel()
+        {
+            // Initialize the chart with empty values
+            Series = new ISeries[]
+            {
+                new LineSeries<int?>
+                {
+                    Values = ValuesCollection,
+                    Name = "Doanh thu theo ngày"
+                }
+            };
+            XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Ngày",
+                    Labels = Array.Empty<string>()
+                }
+            }.Cast<ICartesianAxis>();
+            YAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Doanh thu"
+                }
+            }.Cast<ICartesianAxis>();
+        }
 
-        public ChartViewModel(List<Order> ordersList)
+        public void UpdateSeriesAndLabels(List<Order> ordersList)
         {
             // Get revenues by date
-            var revenuesByDate = ordersList.GroupBy(o => o.OrderTime.Date)
+            var revenuesByDate = ordersList.GroupBy(o => o.OrderTime?.Date)
                                             .Select(g => new
                                             {
                                                 Date = g.Key,
                                                 Revenue = g.Sum(o => o.TotalPrice - o.Discount >= 0 ? o.TotalPrice - o.Discount : 0)
                                             });
             // Create an array of labels
-            var labels = revenuesByDate.Select(r => r.Date.ToString("dd/MM")).ToArray();
+            var labels = revenuesByDate.Select(r => r.Date.ToString()).ToArray();
 
             // Create an array of revenues
             var revenues = revenuesByDate.Select(r => r.Revenue).ToArray();
 
-            Series = new ISeries[]
+            // Update Series' values collection
+            ValuesCollection.Clear();
+            foreach (var revenue in revenues)
             {
-                new LineSeries<int>
-                {
-                    Values = revenues,
-                    Name = "Doanh thu theo ngày"
-                }
-            };
+                ValuesCollection.Add(revenue);
+            }
 
-            // Set the labels for the X-axis
-            Labels = labels;
+            // Update the label
+            XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Ngày",
+                    Labels = labels
+                }
+            }.Cast<ICartesianAxis>();
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

@@ -16,7 +16,7 @@
                         Padding="10">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}">Doanh thu theo ngày</TextBlock>
-                    <DatePicker x:Name="weeklyRevenueDatePicker" 
+                    <DatePicker x:Name="dailyRevenueDatePicker" 
                                 DateChanged="DailyRevenueDatePicker_DateChanged" 
                                 Header="Chọn ngày" 
                                 Margin="5" />
@@ -28,15 +28,16 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}">Doanh thu theo tuần</TextBlock>
-                    <DatePicker DateChanged="WeeklyRevenueDatePicker_DateChanged" 
+                    <DatePicker x:Name="weeklyRevenueDatePicker" 
+                                DateChanged="WeeklyRevenueDatePicker_DateChanged" 
                                 Header="Chọn ngày bắt đầu" 
                                 Margin="5" />
                     <ScrollViewer VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Auto">
                         <lvc:CartesianChart 
                             Series="{x:Bind WeeklyChartViewModel.Series}" 
-                            XAxes="{x:Bind WeeklyXAxes}" 
-                            YAxes="{x:Bind WeeklyYAxes}" 
+                            XAxes="{x:Bind WeeklyChartViewModel.XAxes}" 
+                            YAxes="{x:Bind WeeklyChartViewModel.YAxes}" 
                             Height="200"
                             Width="800"
                             LegendPosition="Right"/>
@@ -49,15 +50,16 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}">Doanh thu theo tháng</TextBlock>
-                    <DatePicker DateChanged="MonthlyRevenueDatePicker_DateChanged" 
+                    <DatePicker x:Name="monthlyRevenueDatePicker" 
+                                DateChanged="MonthlyRevenueDatePicker_DateChanged" 
                                 Header="Chọn ngày bắt đầu" 
                                 Margin="5" />
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                   VerticalScrollBarVisibility="Auto">
                         <lvc:CartesianChart 
                             Series="{x:Bind MonthlyChartViewModel.Series}" 
-                            XAxes="{x:Bind MonthlyXAxes}" 
-                            YAxes="{x:Bind MonthlyYAxes}"
+                            XAxes="{x:Bind MonthlyChartViewModel.XAxes}" 
+                            YAxes="{x:Bind MonthlyChartViewModel.YAxes}"
                             Height="200"
                             Width="800"
                             LegendPosition="Right"/>
