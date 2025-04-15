@@ -38,7 +38,7 @@
                             Series="{x:Bind WeeklyChartViewModel.Series}" 
                             XAxes="{x:Bind WeeklyChartViewModel.XAxes}" 
                             YAxes="{x:Bind WeeklyChartViewModel.YAxes}" 
-                            Height="200"
+                            Height="300"
                             Width="800"
                             LegendPosition="Right"/>
                     </ScrollViewer>
@@ -60,7 +60,7 @@
                             Series="{x:Bind MonthlyChartViewModel.Series}" 
                             XAxes="{x:Bind MonthlyChartViewModel.XAxes}" 
                             YAxes="{x:Bind MonthlyChartViewModel.YAxes}"
-                            Height="200"
+                            Height="300"
                             Width="800"
                             LegendPosition="Right"/>
                     </ScrollViewer>

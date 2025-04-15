@@ -54,8 +54,9 @@ namespace PointOfSaleSystem.Views.ViewModels
                                             .Select(g => new
                                             {
                                                 Date = g.Key,
-                                                Revenue = g.Sum(o => o.TotalPrice - o.Discount >= 0 ? o.TotalPrice - o.Discount : 0)
-                                            });
+                                                Revenue = g.Sum(o => Math.Max((o.TotalPrice ?? 0) - (o.Discount ?? 0), 0))
+                                            })
+                                            .OrderBy(g => g.Date);
             // Create an array of labels
             var labels = revenuesByDate.Select(r => r.Date.ToString()).ToArray();
 
