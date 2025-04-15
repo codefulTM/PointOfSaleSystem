@@ -58,7 +58,7 @@ namespace PointOfSaleSystem.Views.ViewModels
                                             })
                                             .OrderBy(g => g.Date);
             // Create an array of labels
-            var labels = revenuesByDate.Select(r => r.Date.ToString());
+            var labels = revenuesByDate.Select(r => r.Date?.ToString("dd/MM/yyyy"));
 
             // Create an array of revenues
             var revenues = revenuesByDate.Select(r => r.Revenue);
