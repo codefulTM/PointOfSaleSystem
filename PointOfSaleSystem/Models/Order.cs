@@ -15,7 +15,7 @@ namespace PointOfSaleSystem.Models
         public int? TotalPrice { get; set; }
         public int? Discount { get; set; }
         public bool? IsPaid { get; set; }
-        public DateTime OrderTime { get; set; }
+        public DateTime? OrderTime { get; set; }
 
         public List<int> ProductIds { get; set; } = new List<int>();
 
