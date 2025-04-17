@@ -29,9 +29,16 @@
                         <FontIcon Glyph="P"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
                 <NavigationViewItem Content="Doanh thu" Tag="RevenuePage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="D"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+          
+                <NavigationViewItem Content="Chọn món" Tag="OrderPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="O"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
