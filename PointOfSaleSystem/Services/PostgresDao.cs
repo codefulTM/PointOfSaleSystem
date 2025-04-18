@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Npgsql;
 using PointOfSaleSystem.Models;
+using Windows.ApplicationModel.Store;
 
 namespace PointOfSaleSystem.Services
 {
@@ -15,11 +16,14 @@ namespace PointOfSaleSystem.Services
             Categories = PostgresCategoryRepository.GetInstance();
             Products = PostgresProductRepository.GetInstance();
             Customers = PostgresCustomerRepository.GetInstance();
+            Orders = PostgresOrderRepository.GetInstance();
         }
 
         public IRepository<Category> Categories { get; set; }
         public IRepository<Product> Products { get; set; }
         public IRepository<Customer> Customers { get; set; }
+        public IRepository<Order> Orders { get; set; }
+        public IRepository<OrderDetail> OrderDetails { get; set; }
 
         public class PostgresCategoryRepository : IRepository<Category>
         {
@@ -460,6 +464,254 @@ namespace PointOfSaleSystem.Services
                 {
                     customers.Remove(existingProduct);
                     customers.Add(entity);
+                }
+            }
+        }
+        
+        public class PostgresOrderRepository : IRepository<Order>
+        {
+            List<Order> orders = new List<Order>();
+            private NpgsqlConnection _connection;
+            // singleton instance
+            private static PostgresOrderRepository? _instance = null;
+            private PostgresOrderRepository(NpgsqlConnection connection)
+            {
+                _connection = connection;
+                GetAll();
+            }
+            public static PostgresOrderRepository GetInstance()
+            {
+                if (_instance == null)
+                {
+                    _instance = new PostgresOrderRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
+                }
+                return _instance;
+            }
+            public void Create(Order entity)
+            {
+                string query = "INSERT INTO \"order\"(customer_id, total_price, discount, paid, order_time) VALUES(@customerId, @totalPrice, @discount, @isPaid, @orderTime) RETURNING order_id;";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("customerId", entity.CustomerId);
+                    cmd.Parameters.AddWithValue("totalPrice", entity.TotalPrice);
+                    cmd.Parameters.AddWithValue("discount", entity.Discount);
+                    cmd.Parameters.AddWithValue("isPaid", entity.IsPaid);
+                    cmd.Parameters.AddWithValue("orderTime", entity.OrderTime);
+
+                    _connection.Open();
+                    int orderId = (int)cmd.ExecuteScalar();
+                    entity.Id = orderId;
+                    orders.Add(entity);
+                    _connection.Close();
+                }
+            }
+            public void Delete(int id)
+            {
+                string query = "UPDATE \"order\" SET deleted = TRUE WHERE order_id = @id";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("id", id);
+
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+
+                var orderToRemove = orders.FirstOrDefault(o => o.Id == id);
+                if (orderToRemove != null)
+                {
+                    orders.Remove(orderToRemove);
+                }
+            }
+            public IEnumerable<Order> GetAll()
+            {
+                if (orders.Count == 0)
+                {
+                    string query = "SELECT * FROM \"order\" WHERE deleted = @deleted";
+                    using (var cmd = new NpgsqlCommand(query, _connection))
+                    {
+                        cmd.Parameters.AddWithValue("deleted", false);
+                        _connection.Open();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Order order = new Order();
+                                order.Id = reader.GetInt32(0);
+                                order.CustomerId = reader.IsDBNull(1) ? null : reader.GetInt32(1);
+                                order.TotalPrice = reader.IsDBNull(2) ? null : reader.GetInt32(2);
+                                order.Discount = reader.IsDBNull(3) ? null : reader.GetInt32(3);
+                                order.IsPaid = reader.IsDBNull(4) ? null : reader.GetBoolean(4);
+                                order.OrderTime = reader.IsDBNull(5) ? null : reader.GetDateTime(5);
+                                orders.Add(order);
+                            }
+                        }
+                        _connection.Close();
+                    }
+                }
+                return orders;
+            }
+            public Order GetById(int id)
+            {
+                if (orders.Count == 0)
+                {
+                    GetAll();
+                }
+                return orders.Find(order => order.Id == id);
+            }
+            public void Update(Order entity)
+            {
+                string query = "UPDATE \"order\" SET customer_id = @customerId, total_price = @totalPrice, discount = @discount, is_paid = @isPaid, order_time = @orderTime WHERE order_id = @id";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("customerId", entity.CustomerId);
+                    cmd.Parameters.AddWithValue("totalPrice", entity.TotalPrice);
+                    cmd.Parameters.AddWithValue("discount", entity.Discount);
+                    cmd.Parameters.AddWithValue("isPaid", entity.IsPaid);
+                    cmd.Parameters.AddWithValue("orderTime", entity.OrderTime);
+                    cmd.Parameters.AddWithValue("id", entity.Id);
+
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+
+                var existingOrder = orders.FirstOrDefault(o => o.Id == entity.Id);
+                if (existingOrder != null)
+                {
+                    orders.Remove(existingOrder);
+                    orders.Add(entity);
+                }
+            }
+        }
+
+        public class PostgresOrderDetailRepository : IRepository<OrderDetail>
+        {
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            private NpgsqlConnection _connection;
+
+            // singleton instance
+            private static PostgresOrderDetailRepository? _instance = null;
+
+            private PostgresOrderDetailRepository(NpgsqlConnection connection)
+            {
+                _connection = connection;
+                GetAll();
+            }
+
+            public static PostgresOrderDetailRepository GetInstance()
+            {
+                if(_instance == null)
+                {
+                    _instance = new PostgresOrderDetailRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
+                }
+                return _instance;
+            }
+
+            public void Create(OrderDetail entity)
+            {
+                // Check if orderId and productId are not null
+                if (entity.OrderId == null || entity.ProductId == null)
+                {
+                    return;
+                }
+                string query = "INSERT INTO DETAIL(order_id, product_id, count) VALUES(@orderId, @productId, @count);";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("orderId", entity.OrderId);
+                    cmd.Parameters.AddWithValue("productId", entity.ProductId);
+                    cmd.Parameters.AddWithValue("count", entity.Quantity);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+                orderDetails.Add(entity);
+            }
+
+            public void Delete(int orderId)
+            {
+                string query = "UPDATE PRODUCT SET deleted = TRUE WHERE order_id = @orderId";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("orderId", orderId);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+
+                // Find order details by orderId and remove them from the list
+                var orderDetailsToRemove = orderDetails.Where(od => od.OrderId == orderId).ToList();
+                foreach(var orderDetail in orderDetailsToRemove)
+                {
+                    orderDetails.Remove(orderDetail);
+                }
+            }
+
+            public IEnumerable<OrderDetail> GetAll()
+            {
+                if(orderDetails.Count == 0)
+                {
+                    string query = "SELECT d.order_id, d.product_id, d.count " +
+                        "FROM DETAIL d " +
+                        "WHERE d.deleted = @deleted";
+                        
+                    using (var cmd = new NpgsqlCommand(query, _connection))
+                    {
+                        cmd.Parameters.AddWithValue("deleted", false);
+                        _connection.Open();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while(reader.Read())
+                            {
+                                OrderDetail orderDetail = new OrderDetail();
+                                orderDetail.OrderId = reader.GetInt32(0);
+                                orderDetail.ProductId = reader.GetInt32(1);
+                                orderDetail.Quantity = reader.GetInt32(2);
+                                orderDetails.Add(orderDetail);
+                            }
+                        }
+                        _connection.Close();
+                    }
+                }
+                return orderDetails;
+            }
+
+            public OrderDetail GetById(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IEnumerable<OrderDetail> GetByOrderId(int orderId)
+            {
+                if(orderDetails.Count == 0)
+                {
+                    GetAll();
+                }
+                return orderDetails.Where(od => od.OrderId == orderId);
+            }
+
+            public void Update(OrderDetail entity)
+            {
+                if(entity.OrderId == null || entity.ProductId == null)
+                {
+                    return;
+                }
+                string query = "UPDATE DETAIL SET count = @count WHERE order_id = @orderId AND product_id = @productId";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("count", entity.Quantity != null ? entity.Quantity : DBNull.Value);
+                    cmd.Parameters.AddWithValue("orderId", entity.OrderId);
+                    cmd.Parameters.AddWithValue("productId", entity.ProductId);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+
+                // Update the order detail in the list
+                var existingOrderDetail = orderDetails.FirstOrDefault(od => od.OrderId == entity.OrderId && od.ProductId == entity.ProductId);
+                if (existingOrderDetail != null)
+                {
+                    existingOrderDetail.Quantity = entity.Quantity;
                 }
             }
         }
