@@ -20,6 +20,7 @@ namespace PointOfSaleSystem.Models
         public int? CostPrice { get; set; } = null;
         public int? SellingPrice { get; set; } = null;
         public string? Image { get; set; } = null;
+        public bool LowStockWarning => Quantity.HasValue && Quantity < 10;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         
