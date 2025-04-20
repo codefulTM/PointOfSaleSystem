@@ -8,11 +8,15 @@ using Microsoft.UI.Xaml.Data;
 
 namespace PointOfSaleSystem.Views.Converters
 {
-    class CurrencyFormatter : IValueConverter
+    public class CurrencyFormatter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            int amount = (int)value;
+            if (value == null || !(value is int amount))
+            {
+                return "0 đ";
+            }
+
             CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
             return amount.ToString("#,### đ", cul);
         }

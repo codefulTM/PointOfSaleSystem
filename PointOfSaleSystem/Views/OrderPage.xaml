@@ -6,11 +6,17 @@
     xmlns:local="using:PointOfSaleSystem.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:PointOfSaleSystem.Models"
+    xmlns:vm="using:PointOfSaleSystem.Views.ViewModels" 
+    xmlns:converter="using:PointOfSaleSystem.Views.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
     <Grid>
+        <Grid.Resources>
+            <converter:CurrencyFormatter x:Key="currency"/>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -33,106 +39,48 @@
                             PlaceholderText="Tìm hạng mục"
                             QueryIcon="Find"
                             Margin="10"/>
-        <ListView Grid.Column="0" Grid.Row="1">
-            <ListViewItem Content="Nước ngọt" />
-            <ListViewItem Content="Nước lọc" />
-            <ListViewItem Content="Cà phê" />
-            <ListViewItem Content="Trà sữa" />
-            <ListViewItem Content="Trà" />
+        <!-- List Categor -->
+        <ListView Grid.Column="0" Grid.Row="1" 
+                  ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}">  
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Category">
+                    <TextBlock Text="{x:Bind Name}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
-        
-        
-        <GridView Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center">
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item1.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 1" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item2.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 2" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item3.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 3" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item4.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 4" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item5.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 5" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item1.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 6" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item2.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 7" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item3.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 8" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item4.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 9" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem>
-                <StackPanel Background="LightGray">
-                    <Image Source="Assets/Item5.png" Width="200" Height="100"/>
-                    <TextBlock Text="Item 10" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </GridViewItem>
+        <!-- List sản phẩm -->
+        <GridView Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" 
+                  ItemsSource="{x:Bind ViewModel.Products}"
+                  IsItemClickEnabled="True" 
+                  ItemClick="OnProductClicked">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Background="LightGray">
+                        <Image Source="{Binding Image}" Width="200" Height="100"/>
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
         </GridView>
 
         <TextBlock Grid.Column="4" 
-                   Grid.Row="0" 
-                   Text="Đơn hàng" 
-                   Style="{StaticResource TitleTextBlockStyle}" 
-                   TextAlignment="Center"
-                   VerticalAlignment="Center"/>
-        <ListView Grid.Column="4" Grid.Row="1">
-            <ListViewItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Width="20" Text="1" Margin="10" VerticalAlignment="Center"></TextBox>
-                    <TextBlock Margin="10" VerticalAlignment="Center">CocaCola</TextBlock>
-                    <TextBlock Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right">10.000đ</TextBlock>
-                </StackPanel>
-            </ListViewItem>
-            <ListViewItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Width="20" Text="1" Margin="10" VerticalAlignment="Center"></TextBox>
-                    <TextBlock Margin="10" VerticalAlignment="Center">Trà sữa</TextBlock>
-                    <TextBlock Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right">20.000đ</TextBlock>
-                </StackPanel>
-            </ListViewItem>
-            <ListViewItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Width="20" Text="1" Margin="10" VerticalAlignment="Center"></TextBox>
-                    <TextBlock Margin="10" VerticalAlignment="Center">Bánh kem</TextBlock>
-                    <TextBlock Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right">15.000đ</TextBlock>
-                </StackPanel>
-            </ListViewItem>
+                Grid.Row="0" 
+                Text="Đơn hàng" 
+                Style="{StaticResource TitleTextBlockStyle}" 
+                TextAlignment="Center"
+                VerticalAlignment="Center"/>
+        <ListView Grid.Column="4" Grid.Row="1" ItemsSource="{x:Bind ViewModel.OrderProducts, Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedProduct, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="40" Text="{x:Bind Quantity, Mode=TwoWay}" Margin="10" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Name}" Margin="10" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding SellingPrice, Converter={StaticResource currency}}" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
         <Border Grid.Column="4" Grid.Row="2" BorderBrush="Black" BorderThickness="0.5" VerticalAlignment="Stretch" />
         <TextBlock Grid.Column="4" 
@@ -143,17 +91,32 @@
                    VerticalAlignment="Center"
                    Margin="10"/>
         <TextBlock Grid.Column="4" 
+                   Grid.Row="3" 
+                   Text="{Binding Total, Converter={StaticResource currency}}" 
+                   FontWeight="Bold"
+                   TextAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="10" />
+
+        <TextBlock Grid.Column="4" 
                    Grid.Row="4" 
                    Text="Thuế:" 
                    FontWeight="Bold"
                    TextAlignment="Left"
                    VerticalAlignment="Center"
                    Margin="10"/>
+        <TextBlock Grid.Column="4" 
+                   Grid.Row="4" 
+                   Text="{Binding Tax, Converter={StaticResource currency}}"
+                   FontWeight="Bold"
+                   TextAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="10" />
         <StackPanel Grid.Column="4"
                     Grid.Row="5"
                     Orientation="Horizontal">
             <Button Background="Aqua" Width="150" HorizontalAlignment="Left" Padding="10">Thêm ghi chú</Button>
-            <Button Background="Aquamarine" Width="150" HorizontalAlignment="Right" Padding="10">Xóa</Button>
+            <Button Background="Aquamarine" Width="150" HorizontalAlignment="Right" Padding="10" Click="DeleteSelectedProduct_Click">Xóa</Button>
         </StackPanel>
         <Button Grid.Column="4" Grid.Row="6" Width="300" Background="CadetBlue" Padding="10">Thêm khách hàng</Button>
         <Border Grid.Column="4" Grid.Row="7" BorderBrush="Black" BorderThickness="0.5" VerticalAlignment="Stretch" />
