@@ -10,32 +10,50 @@
     Title="BlankWindow1">
 
     <Grid>
-        <TextBlock>Khách lẻ</TextBlock>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock>Tổng tiền hàng: </TextBlock>
-            <TextBlock x:Name="totalAmount"></TextBlock>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock>Giảm giá:</TextBlock>
-            <TextBlock x:Name="discount"></TextBlock>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock x:Name="amountDue">Khách cần trả: </TextBlock>
-        </StackPanel>
-        <TextBox Header="Khách trả"
-                 TextChanged="AmountPaidTextBox_TextChanged"
-                 x:Name="amountPaid"/>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock>Tiền thừa thối khách:</TextBlock>
-            <TextBlock x:Name="change"></TextBlock>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button Click="ShowBankQR">QR ngân hàng</Button>
-            <Button Click="ShowMomoQR">QR Momo</Button>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button>In hóa đơn</Button>
-            <Button Click="PayButton_Click">Thanh toán</Button>
+        <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                       FontWeight="Bold"
+                       Foreground="#ffb22c"
+                       Margin="5">Khách lẻ</TextBlock>
+            <StackPanel Orientation="Horizontal"
+                        Margin="5">
+                <TextBlock Margin="0 0 5 0">Tổng tiền hàng: </TextBlock>
+                <TextBlock x:Name="totalAmount"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Margin="5">
+                <TextBlock Margin="0 0 5 0">Giảm giá:</TextBlock>
+                <TextBlock x:Name="discount"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Margin="5">
+                <TextBlock Margin="0 0 5 0">Khách cần trả:</TextBlock>
+                <TextBlock x:Name="amountDue"></TextBlock>
+            </StackPanel>
+            <TextBox Header="Khách trả"
+                     TextChanged="AmountPaidTextBox_TextChanged"
+                     x:Name="amountPaid"
+                     Margin="5"/>
+            <StackPanel Orientation="Horizontal"
+                        Margin="5">
+                <TextBlock Margin="0 0 5 0">Tiền thừa thối khách:</TextBlock>
+                <TextBlock x:Name="change"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Margin="5">
+                <Button Click="ShowBankQR"
+                        Margin="5">QR ngân hàng</Button>
+                <Button Click="ShowMomoQR"
+                        Margin="5">QR Momo</Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Margin="5">
+                <Button Margin="5">In hóa đơn</Button>
+                <Button Click="PayButton_Click"
+                        Margin="5">Thanh toán</Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
