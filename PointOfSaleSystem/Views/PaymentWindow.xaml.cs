@@ -92,11 +92,7 @@ namespace PointOfSaleSystem.Views
                     CurrentOrder.IsPaid = true;
 
                     var dao = Services.Services.GetKeyedSingleton<IDao>();
-                    dao.Orders.Create(CurrentOrder);
-                    foreach (var orderDetail in OrderDetails)
-                    {
-                        dao.OrderDetails.Create(orderDetail);
-                    }
+                    dao.Orders.Update(CurrentOrder);
 
                     this.Close();
                 }

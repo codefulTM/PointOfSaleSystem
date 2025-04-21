@@ -88,17 +88,20 @@ namespace PointOfSaleSystem.Views
             try
             {
                 // Gọi phương thức CreateOrder trong ViewModel
-                ViewModel.CreateOrder();
+                var order = ViewModel.CreateOrder();
 
-                // Hiển thị thông báo thành công
-                var successDialog = new ContentDialog
-                {
-                    Title = "Thành công",
-                    Content = "Chuyển đến giao diện thanh toán",
-                    CloseButtonText = "OK",
-                    XamlRoot = this.Content.XamlRoot
-                };
-                await successDialog.ShowAsync();
+                // Mở cửa sổ thanh toán
+                var paymentWindow = new PaymentWindow(order);
+                paymentWindow.Activate();
+                //// Hiển thị thông báo thành công 
+                //var successDialog = new ContentDialog
+                //{
+                //    Title = "Thành công",
+                //    Content = "Chuyển đến giao diện thanh toán",
+                //    CloseButtonText = "OK",
+                //    XamlRoot = this.Content.XamlRoot
+                //};
+                //await successDialog.ShowAsync();
             }
             catch (InvalidOperationException ex)
             {
