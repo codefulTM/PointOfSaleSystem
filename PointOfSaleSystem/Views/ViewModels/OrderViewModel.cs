@@ -172,7 +172,7 @@ namespace PointOfSaleSystem.Views.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public void CreateOrder()
+        public Order CreateOrder()
         {
             if (OrderProducts.Count == 0)
             {
@@ -213,6 +213,8 @@ namespace PointOfSaleSystem.Views.ViewModels
             // Cập nhật lại Total và Tax
             RaisePropertyChanged(nameof(Total));
             RaisePropertyChanged(nameof(Tax));
+
+            return newOrder;
         }
     }
 }

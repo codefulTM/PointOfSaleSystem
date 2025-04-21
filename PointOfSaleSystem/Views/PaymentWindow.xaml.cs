@@ -32,14 +32,13 @@ namespace PointOfSaleSystem.Views
         public Order CurrentOrder { get; set; }
         public List<OrderDetail> OrderDetails { get; set; } 
 
-        public PaymentWindow(Order order, List<OrderDetail> orderDetails)
+        public PaymentWindow(Order order)
         {
             this.InitializeComponent();
-            this.TotalAmount = order.TotalPrice;
-            this.Discount = order.Discount;
+            this.TotalAmount = (int)order.TotalPrice;
+            this.Discount = (int)order.Discount;
             this.AmountDue = this.TotalAmount - this.Discount;
             this.CurrentOrder = order;
-            this.OrderDetails = orderDetails;
 
             totalAmount.Text = TotalAmount.ToString();
             discount.Text = Discount.ToString();
