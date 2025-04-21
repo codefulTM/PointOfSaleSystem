@@ -564,7 +564,7 @@ namespace PointOfSaleSystem.Services
             }
             public void Update(Order entity)
             {
-                string query = "UPDATE \"order\" SET customer_id = @customerId, total_price = @totalPrice, discount = @discount, is_paid = @isPaid, order_time = @orderTime WHERE order_id = @id";
+                string query = "UPDATE \"order\" SET customer_id = @customerId, total_price = @totalPrice, discount = @discount, paid = @isPaid, order_time = @orderTime WHERE order_id = @id";
                 using (var cmd = new NpgsqlCommand(query, _connection))
                 {
                     cmd.Parameters.AddWithValue("customerId", entity.CustomerId);
