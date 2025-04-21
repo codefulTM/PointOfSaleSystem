@@ -85,6 +85,7 @@ namespace PointOfSaleSystem.Views
                         Content = "Số tiền khách trả ít hơn số tiền cần trả",
                         CloseButtonText = "OK"
                     };
+                    dialog.XamlRoot = this.Content.XamlRoot;
                     await dialog.ShowAsync();
                 }
                 else
@@ -115,7 +116,7 @@ namespace PointOfSaleSystem.Views
                     Content = "Số tiền khách trả phải là một số nguyên",
                     CloseButtonText = "OK"
                 };
-                
+                dialog.XamlRoot = this.Content.XamlRoot;
                 await dialog.ShowAsync();
             }
         }
