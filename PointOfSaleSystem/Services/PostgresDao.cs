@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
 using Npgsql;
 using PointOfSaleSystem.Models;
 using Windows.ApplicationModel.Store;
@@ -16,6 +17,7 @@ namespace PointOfSaleSystem.Services
             Categories = PostgresCategoryRepository.GetInstance();
             Products = PostgresProductRepository.GetInstance();
             Customers = PostgresCustomerRepository.GetInstance();
+            PaymentMethods = PostgresPaymentMethodRepository.GetInstance();
             Orders = PostgresOrderRepository.GetInstance();
         }
 
@@ -24,6 +26,7 @@ namespace PointOfSaleSystem.Services
         public IRepository<Customer> Customers { get; set; }
         public IRepository<Order> Orders { get; set; }
         public IRepository<OrderDetail> OrderDetails { get; set; }
+        public IRepository<PaymentMethod> PaymentMethods { get; set; }
 
         public class PostgresCategoryRepository : IRepository<Category>
         {
@@ -561,7 +564,7 @@ namespace PointOfSaleSystem.Services
             }
             public void Update(Order entity)
             {
-                string query = "UPDATE \"order\" SET customer_id = @customerId, total_price = @totalPrice, discount = @discount, is_paid = @isPaid, order_time = @orderTime WHERE order_id = @id";
+                string query = "UPDATE \"order\" SET customer_id = @customerId, total_price = @totalPrice, discount = @discount, paid = @isPaid, order_time = @orderTime WHERE order_id = @id";
                 using (var cmd = new NpgsqlCommand(query, _connection))
                 {
                     cmd.Parameters.AddWithValue("customerId", entity.CustomerId);
@@ -715,5 +718,135 @@ namespace PointOfSaleSystem.Services
                 }
             }
         }
+        public class PostgresPaymentMethodRepository : IRepository<PaymentMethod>
+        {
+            List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
+            private NpgsqlConnection _connection;
+
+            // singleton instance
+            private static PostgresPaymentMethodRepository? _instance = null;
+
+            private PostgresPaymentMethodRepository(NpgsqlConnection connection)
+            {
+                _connection = connection;
+                GetAll();
+            }
+
+            public static PostgresPaymentMethodRepository GetInstance()
+            {
+                if(_instance == null)
+                {
+                    _instance = new PostgresPaymentMethodRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
+                }
+                return _instance;
+            }
+
+            public IEnumerable<PaymentMethod> GetAll()
+            {
+                if(paymentMethods.Count == 0)
+                {
+                    string query = "SELECT pm.id, pm.type, pm.account_number, pm.bank_name, pm.account_holder, pm.phone_number, is_default " +
+                        "FROM PAYMENT_METHOD pm " +
+                        "WHERE pm.deleted = @deleted";
+                    using (var cmd = new NpgsqlCommand(query, _connection))
+                    {
+                        cmd.Parameters.AddWithValue("deleted", false);
+                        _connection.Open();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                PaymentMethod paymentMethod = new PaymentMethod();
+                                paymentMethod.Id = reader.GetInt32(0);
+                                paymentMethod.Type = reader.GetString(1);
+                                paymentMethod.AccountNumber = reader.IsDBNull(2) ? null : reader.GetString(2);
+                                paymentMethod.BankName = reader.IsDBNull(3) ? null : reader.GetString(3);
+                                paymentMethod.AccountHolder = reader.IsDBNull(4) ? null : reader.GetString(4);
+                                paymentMethod.PhoneNumber = reader.IsDBNull(5) ? null : reader.GetString(5);
+                                paymentMethod.IsDefault = reader.GetBoolean(6);
+                                paymentMethods.Add(paymentMethod);
+                            }
+                        }
+                        _connection.Close();
+                    }
+                }
+                return paymentMethods;
+            }
+
+            public PaymentMethod? GetById(int id)
+            {
+                if(paymentMethods.Count == 0)
+                {
+                    GetAll();
+                }
+                return paymentMethods.Find(pm => pm.Id == id);
+            }
+
+            public void Create(PaymentMethod entity)
+            {
+                string query = "INSERT INTO PAYMENT_METHOD(type, account_number, bank_name, account_holder, phone_number, is_default) " +
+                    "VALUES(@type, @accountNumber, @bankName, @accountHolder, @phoneNumber, @isDefault) RETURNING id;";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("type", entity.Type);
+                    cmd.Parameters.AddWithValue("accountNumber", entity.AccountNumber == null ? DBNull.Value : entity.AccountNumber);
+                    cmd.Parameters.AddWithValue("bankName", entity.BankName == null ? DBNull.Value : entity.BankName);
+                    cmd.Parameters.AddWithValue("accountHolder", entity.AccountHolder == null ? DBNull.Value : entity.AccountHolder);
+                    cmd.Parameters.AddWithValue("phoneNumber", entity.PhoneNumber == null ? DBNull.Value : entity.PhoneNumber);
+                    cmd.Parameters.AddWithValue("isDefault", entity.IsDefault);
+
+                    _connection.Open();
+                    int paymentMethodId = (int)cmd.ExecuteScalar();
+                    entity.Id = paymentMethodId;
+                    paymentMethods.Add(entity);
+                    _connection.Close();
+                }
+            }
+
+            public void Update(PaymentMethod entity)
+            {
+                string query = "UPDATE PAYMENT_METHOD " +
+                    "SET type = @type, account_number = @accountNumber, bank_name = @bankName, account_holder = @accountHolder, phone_number = @phoneNumber, is_default = @isDefault " +
+                    "WHERE id = @id";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("type", entity.Type);
+                    cmd.Parameters.AddWithValue("accountNumber", entity.AccountNumber == null ? DBNull.Value : entity.AccountNumber);
+                    cmd.Parameters.AddWithValue("bankName", entity.BankName == null ? DBNull.Value : entity.BankName);
+                    cmd.Parameters.AddWithValue("accountHolder", entity.AccountHolder == null ? DBNull.Value : entity.AccountHolder);
+                    cmd.Parameters.AddWithValue("phoneNumber", entity.PhoneNumber == null ? DBNull.Value : entity.PhoneNumber);
+                    cmd.Parameters.AddWithValue("isDefault", entity.IsDefault);
+                    cmd.Parameters.AddWithValue("id", entity.Id);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+
+                var existingPaymentMethod = paymentMethods.FirstOrDefault(pm => pm.Id == entity.Id);
+                if(existingPaymentMethod != null)
+                {
+                    paymentMethods.Remove(existingPaymentMethod);
+                    paymentMethods.Add(entity);
+                }
+            }
+
+            public void Delete(int id)
+            {
+                string query = "UPDATE PAYMENT_METHOD SET deleted = TRUE WHERE id = @id";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("id", id);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+                var paymentMethodToRemove = paymentMethods.FirstOrDefault(pm => pm.Id == id);
+                if (paymentMethodToRemove != null)
+                {
+                    paymentMethods.Remove(paymentMethodToRemove);
+                }
+            }
+        }
+
     }
 }
