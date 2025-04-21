@@ -128,6 +128,7 @@ namespace PointOfSaleSystem.Views
                     Content = "Không tìm thấy phương thức thanh toán ngân hàng mặc định.",
                     CloseButtonText = "OK"
                 };
+                dialog.XamlRoot = this.Content.XamlRoot;
                 await dialog.ShowAsync();
             }
         }
@@ -151,6 +152,7 @@ namespace PointOfSaleSystem.Views
                     Content = "Không tìm thấy phương thức thanh toán Momo mặc định.",
                     CloseButtonText = "OK"
                 };
+                dialog.XamlRoot = this.Content.XamlRoot;
                 await dialog.ShowAsync();
             }
         }
