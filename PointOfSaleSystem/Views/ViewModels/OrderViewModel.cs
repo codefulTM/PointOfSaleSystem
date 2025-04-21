@@ -171,5 +171,48 @@ namespace PointOfSaleSystem.Views.ViewModels
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void CreateOrder()
+        {
+            if (OrderProducts.Count == 0)
+            {
+                throw new InvalidOperationException("Không thể tạo đơn hàng trống.");
+            }
+
+            // Tạo đối tượng Order
+            var newOrder = new Order
+            {
+                CustomerId = 1,
+                OrderTime = DateTime.Now,
+                Discount = 0,
+                TotalPrice = Total + Tax,
+                IsPaid = false,
+            };
+
+            // Lưu Order vào cơ sở dữ liệu
+            var dao = Services.Services.GetKeyedSingleton<IDao>();
+            dao.Orders.Create(newOrder);
+
+            // Tạo các OrderDetail tương ứng
+            //foreach (var product in OrderProducts)
+            //{
+            //    var orderDetail = new OrderDetail
+            //    {
+            //        OrderId = newOrder.Id,
+            //        ProductId = product.Id,
+            //        Quantity = product.Quantity ?? 0,
+            //    };
+
+            //    // Lưu OrderDetail vào cơ sở dữ liệu
+            //    dao.OrderDetails.Create(orderDetail);
+            //}
+
+            // Xóa danh sách sản phẩm trong đơn hàng sau khi thanh toán
+            OrderProducts.Clear();
+
+            // Cập nhật lại Total và Tax
+            RaisePropertyChanged(nameof(Total));
+            RaisePropertyChanged(nameof(Tax));
+        }
     }
 }

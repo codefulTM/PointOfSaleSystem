@@ -120,7 +120,7 @@
         </StackPanel>
         <Button Grid.Column="4" Grid.Row="6" Width="300" Background="CadetBlue" Padding="10">Thêm khách hàng</Button>
         <Border Grid.Column="4" Grid.Row="7" BorderBrush="Black" BorderThickness="0.5" VerticalAlignment="Stretch" />
-        <Button Grid.Column="4" Grid.Row="8" Width="280" Height="50" Style="{StaticResource AccentButtonStyle}" Margin="10" Padding="10">Thanh toán</Button>
+        <Button Grid.Column="4" Grid.Row="8" Width="280" Height="50" Style="{StaticResource AccentButtonStyle}" Margin="10" Padding="10" Click="Checkout_Click">Thanh toán</Button>
 
 
         <Border Grid.Column="1" Grid.RowSpan="9" BorderBrush="Black" BorderThickness="0.5" VerticalAlignment="Stretch" />

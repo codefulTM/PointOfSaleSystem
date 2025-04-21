@@ -82,5 +82,48 @@ namespace PointOfSaleSystem.Views
                 ViewModel.RaisePropertyChanged(nameof(ViewModel.Tax));
             }
         }
+
+        private async void Checkout_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Gọi phương thức CreateOrder trong ViewModel
+                ViewModel.CreateOrder();
+
+                // Hiển thị thông báo thành công
+                var successDialog = new ContentDialog
+                {
+                    Title = "Thành công",
+                    Content = "Chuyển đến giao diện thanh toán",
+                    CloseButtonText = "OK",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await successDialog.ShowAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Hiển thị thông báo lỗi nếu không có sản phẩm trong đơn hàng
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = ex.Message,
+                    CloseButtonText = "OK",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await errorDialog.ShowAsync();
+            }
+            catch (Exception ex)
+            {
+                // Hiển thị thông báo lỗi chung
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = $"Đã xảy ra lỗi: {ex.Message}",
+                    CloseButtonText = "OK",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await errorDialog.ShowAsync();
+            }
+        }
     }
 }
