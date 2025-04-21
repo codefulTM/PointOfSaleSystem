@@ -17,8 +17,6 @@ namespace PointOfSaleSystem.Models
         public bool? IsPaid { get; set; }
         public DateTime? OrderTime { get; set; }
 
-        public List<int> ProductIds { get; set; } = new List<int>();
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public string? AcceptForChecking(IChecker checker)
