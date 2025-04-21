@@ -94,6 +94,16 @@ namespace PointOfSaleSystem.Views
                     var dao = Services.Services.GetKeyedSingleton<IDao>();
                     dao.Orders.Update(CurrentOrder);
 
+                    // Notify that the payment is successful
+                    var dialog = new ContentDialog
+                    {
+                        Title = "Thông báo",
+                        Content = "Thanh toán thành công",
+                        CloseButtonText = "OK"
+                    };
+                    dialog.XamlRoot = this.Content.XamlRoot;
+                    await dialog.ShowAsync();
+
                     this.Close();
                 }
             }
@@ -105,6 +115,7 @@ namespace PointOfSaleSystem.Views
                     Content = "Số tiền khách trả phải là một số nguyên",
                     CloseButtonText = "OK"
                 };
+                
                 await dialog.ShowAsync();
             }
         }
