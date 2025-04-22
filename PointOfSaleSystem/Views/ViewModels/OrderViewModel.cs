@@ -28,7 +28,6 @@ namespace PointOfSaleSystem.Views.ViewModels
             }
         }
         public int Total => OrderProducts?.Sum(p => (p.SellingPrice ?? 0) * (p.Quantity ?? 0)) ?? 0;
-        public int Tax => (int)(Total * 0.1);
 
         public OrderViewModel()
         {
@@ -38,8 +37,8 @@ namespace PointOfSaleSystem.Views.ViewModels
             // Lắng nghe thay đổi trong danh sách OrderProducts
             OrderProducts.CollectionChanged += OnOrderProductsChanged;
 
-            // Ghi ra giá trị hiện tại của Total và Tax
-            Debug.WriteLine($"Total: {Total}, Tax: {Tax}");
+            // Ghi ra giá trị hiện tại của Total
+            Debug.WriteLine($"Total: {Total}");
         }
 
         private void OnOrderProductsChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -62,20 +61,18 @@ namespace PointOfSaleSystem.Views.ViewModels
                 }
             }
 
-            // Cập nhật Total và Tax
+            // Cập nhật Total
             RaisePropertyChanged(nameof(Total));
-            RaisePropertyChanged(nameof(Tax));
-            // Ghi ra giá trị hiện tại của Total và Tax
-            Debug.WriteLine($"Total: {Total}, Tax: {Tax}");
+            // Ghi ra giá trị hiện tại của Total
+            Debug.WriteLine($"Total: {Total}");
         }
 
         private void OnProductPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            // Nếu Quantity hoặc SellingPrice thay đổi, cập nhật Total và Tax
+            // Nếu Quantity hoặc SellingPrice thay đổi, cập nhật Total
             if (e.PropertyName == nameof(Product.Quantity) || e.PropertyName == nameof(Product.SellingPrice))
             {
                 RaisePropertyChanged(nameof(Total));
-                RaisePropertyChanged(nameof(Tax));
             }
         }
 
@@ -159,9 +156,8 @@ namespace PointOfSaleSystem.Views.ViewModels
             }
 
             RaisePropertyChanged(nameof(Total));
-            RaisePropertyChanged(nameof(Tax));
-            // Ghi ra giá trị hiện tại của Total và Tax
-            Debug.WriteLine($"Total: {Total}, Tax: {Tax}");
+            // Ghi ra giá trị hiện tại của Total
+            Debug.WriteLine($"Total: {Total}");
         }
 
         // Phương thức hỗ trợ Fody để thông báo thay đổi
@@ -172,6 +168,13 @@ namespace PointOfSaleSystem.Views.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public Customer? SelectedCustomer { get; set; }
+
+        public void SetCustomer(Customer customer)
+        {
+            SelectedCustomer = customer;
+            RaisePropertyChanged(nameof(SelectedCustomer));
+        }
         public void CreateOrder()
         {
             if (OrderProducts.Count == 0)
@@ -182,37 +185,40 @@ namespace PointOfSaleSystem.Views.ViewModels
             // Tạo đối tượng Order
             var newOrder = new Order
             {
-                CustomerId = 1,
+                CustomerId = SelectedCustomer?.Id,
                 OrderTime = DateTime.Now,
                 Discount = 0,
-                TotalPrice = Total + Tax,
+                TotalPrice = Total,
                 IsPaid = false,
             };
 
             // Lưu Order vào cơ sở dữ liệu
             var dao = Services.Services.GetKeyedSingleton<IDao>();
             dao.Orders.Create(newOrder);
+            if (newOrder.Id <= 0)
+            {
+                throw new Exception("Lỗi: không lấy được OrderId sau khi tạo Order.");
+            }
 
-            // Tạo các OrderDetail tương ứng
-            //foreach (var product in OrderProducts)
-            //{
-            //    var orderDetail = new OrderDetail
-            //    {
-            //        OrderId = newOrder.Id,
-            //        ProductId = product.Id,
-            //        Quantity = product.Quantity ?? 0,
-            //    };
+            //Tạo các OrderDetail tương ứng
+            foreach (var product in OrderProducts)
+            {
+                var orderDetail = new OrderDetail
+                {
+                    OrderId = newOrder.Id,
+                    ProductId = product.Id,
+                    Quantity = product.Quantity ?? 0,
+                };
 
-            //    // Lưu OrderDetail vào cơ sở dữ liệu
-            //    dao.OrderDetails.Create(orderDetail);
-            //}
+                // Lưu OrderDetail vào cơ sở dữ liệu
+                dao.OrderDetails.Create(orderDetail);
+            }
 
             // Xóa danh sách sản phẩm trong đơn hàng sau khi thanh toán
             OrderProducts.Clear();
 
-            // Cập nhật lại Total và Tax
+            // Cập nhật lại Total
             RaisePropertyChanged(nameof(Total));
-            RaisePropertyChanged(nameof(Tax));
         }
     }
 }
