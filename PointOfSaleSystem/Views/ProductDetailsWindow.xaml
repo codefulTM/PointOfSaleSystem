@@ -85,12 +85,14 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="UpdateButton" 
-                            Style="{StaticResource AccentButtonStyle}" 
+                            Background="#FFB22C"
+                            Foreground="Black"
                             Click="OpenUpdateWindow"
                             Margin="10"
                             >Sửa
                     </Button><Button x:Name="DeleteButton" 
-                            Style="{StaticResource AccentButtonStyle}" 
+                            Background="#854836"
+                            Foreground="White"
                             Click="DeleteProduct"
                             Margin="10"
                             >Xóa
