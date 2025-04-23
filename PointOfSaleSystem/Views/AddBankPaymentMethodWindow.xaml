@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="PointOfSaleSystem.Views.AddBankPaymentMethodWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PointOfSaleSystem.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Thêm phương thức thanh toán">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Thêm tài khoản ngân hàng"
+                   Style="{StaticResource HeaderTextBlockStyle}"
+                   FontWeight="Bold"
+                   Foreground="#ffb22c"/>
+            <TextBox Header="Họ tên" 
+                 x:Name="nameTextBox"
+                 PlaceholderText="Nhập họ tên..."
+                 Margin="5"/>
+            <ComboBox Header="Tên ngân hàng" 
+                      PlaceholderText="Chọn tên ngân hàng"
+                      ItemsSource="{x:Bind BankNames}"
+                      Margin="5"
+                      x:Name="bankNameTextBox"/>
+            <TextBox Header="Số tài khoản"
+                 x:Name="bankNumberTextBox"
+                 PlaceholderText="Nhập số tài khoản..."
+                 Margin="5"/>
+
+            <Button Content="Thêm"
+                    Background="{ThemeResource SystemAccentColor}"
+                    Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                    HorizontalAlignment="Center"
+                    Click="AddBankPaymentMethodButton_Click"
+                    Margin="5"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
