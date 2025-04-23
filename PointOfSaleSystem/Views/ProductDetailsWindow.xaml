@@ -36,6 +36,11 @@
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center">
+                <TextBlock Text="Thông tin sản phẩm" 
+                           Style="{StaticResource HeaderTextBlockStyle}"
+                           FontWeight="Bold"
+                           Foreground="#ffb22c"
+                           Margin="5"/>
                 <StackPanel Orientation="Horizontal"
                             Margin="10">
                     <TextBlock Text="Tên sản phẩm: "
