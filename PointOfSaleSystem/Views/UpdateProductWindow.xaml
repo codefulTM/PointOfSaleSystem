@@ -41,6 +41,10 @@
             <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center">
+                <TextBlock Text="Chỉnh sửa thông tin sản phẩm"
+                           Style="{StaticResource HeaderTextBlockStyle}"
+                           FontWeight="Bold"
+                           Foreground="#ffb22c"/>
                 <TextBox x:Name="productName" 
                          Text="{Binding Name}"
                          Header="Tên sản phẩm:" 
