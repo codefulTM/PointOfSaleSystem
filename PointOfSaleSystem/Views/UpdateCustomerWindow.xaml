@@ -48,8 +48,8 @@
             <TextBlock x:Name="testTextBlock"></TextBlock>
             
             <Button Content="Chỉnh sửa"
-                    Background="{ThemeResource SystemAccentColor}"
-                    Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                    Background="#FFB22C"
+                    Foreground="Black"
                     HorizontalAlignment="Center"
                     Margin="5"
                     Click="EditButton_Click"

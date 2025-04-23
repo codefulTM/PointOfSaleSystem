@@ -30,8 +30,8 @@
                  Margin="5"/>
 
             <Button Content="Thêm"
-                    Background="{ThemeResource SystemAccentColor}"
-                    Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                    Background="#FFB22C"
+                    Foreground="Black"
                     HorizontalAlignment="Center"
                     Click="AddBankPaymentMethodButton_Click"
                     Margin="5"/>
