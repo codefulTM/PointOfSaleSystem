@@ -39,6 +39,10 @@
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center">
+                <TextBlock Text="Thêm sản phẩm"
+                           Style="{StaticResource HeaderTextBlockStyle}"
+                           FontWeight="Bold"
+                           Foreground="#ffb22c"/>
                 <TextBox x:Name="productName" Header="Tên sản phẩm:" PlaceholderText="Nhập tên sản phẩm" HorizontalAlignment="Stretch" Margin="10"/>
                 <TextBox x:Name="brand" Header="Thương hiệu:" PlaceholderText="Nhập thương hiệu" HorizontalAlignment="Stretch" Margin="10"/>
                 <TextBox x:Name="category" Header="Hạng mục:" PlaceholderText="Nhập hạng mục" HorizontalAlignment="Stretch" Margin="10"/>
