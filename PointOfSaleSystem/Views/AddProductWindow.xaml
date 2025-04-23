@@ -29,8 +29,8 @@
             <Border HorizontalAlignment="Center">
                 <Button Content="Thêm ảnh"
                         Click="AddPhoto" 
-                        Background="{ThemeResource SystemAccentColor}"
-                        Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+                        Background="#FFB22C"
+                        Foreground="Black"/>
             </Border>
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -53,8 +53,8 @@
                     <Button Content="Thêm sản phẩm"
                             Margin="10"
                             Click="AddProduct"
-                            Background="{ThemeResource SystemAccentColor}"
-                            Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+                            Background="#FFB22C"
+                            Foreground="Black"/>
                 </Border>
             </StackPanel>
         </ScrollViewer>
