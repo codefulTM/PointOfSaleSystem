@@ -23,12 +23,21 @@ using PointOfSaleSystem.Services;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window that displays the detailed information of a specific product.
+    /// It also provides options to update or delete the product.
     /// </summary>
     public sealed partial class ProductDetailsWindow : Window
     {
         Product product;
         ProductViewModel ProductViewModel = new ProductViewModel();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductDetailsWindow"/> class.
+        /// Sets the product and ViewModel to be used and subscribes to the Activated event.
+        /// </summary>
+        /// <param name="product">The product object whose details are to be displayed.</param>
+        /// <param name="productViewModel">The ViewModel used to manage product data, specifically for removing the product after deletion.</param>
+        /// <returns>A new instance of the ProductDetailsWindow.</returns>
         public ProductDetailsWindow(Product product, ProductViewModel productViewModel)
         {
             this.product = product;
@@ -37,6 +46,14 @@ namespace PointOfSaleSystem.Views
             this.Activated += ProductDetailsWindowActivated;
         }
 
+        /// <summary>
+        /// Handles the Activated event of the ProductDetailsWindow.
+        /// Sets the DataContext for the product information and displays "Chưa có dữ liệu"
+        /// for any product properties that are null.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="args">Event data.</param>
+        /// <returns>This method does not return a value.</returns>
         private void ProductDetailsWindowActivated(object sender, WindowActivatedEventArgs args)
         {
             productInfo.DataContext = product;
@@ -62,6 +79,13 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for the Open Update Window button.
+        /// Creates and activates a new UpdateProductWindow for the current product, then closes the current window.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>This method does not return a value.</returns>
         private void OpenUpdateWindow(object sender, RoutedEventArgs e)
         {
             var updateProductWindow = new UpdateProductWindow(product);
@@ -69,6 +93,14 @@ namespace PointOfSaleSystem.Views
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the click event for the Delete Product button.
+        /// Displays a confirmation dialog and, if confirmed, deletes the product from the database
+        /// and removes it from the ViewModel's product list. Displays a success dialog afterwards and closes the window.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void DeleteProduct(object sender, RoutedEventArgs e)
         {
             ContentDialog deleteDialog = new ContentDialog
