@@ -8,6 +8,11 @@ using PointOfSaleSystem.Utils.Checkers;
 
 namespace PointOfSaleSystem.Models
 {
+    /// <summary>
+    /// Represents a customer in the Point of Sale system.
+    /// Implements the <see cref="INotifyPropertyChanged"/> interface to support property change notifications
+    /// and the <see cref="ICheckable"/> interface for validation.
+    /// </summary>
     public class Customer : INotifyPropertyChanged, ICheckable
     {
         public int Id { get; set; }

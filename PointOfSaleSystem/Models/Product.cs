@@ -8,6 +8,13 @@ using PointOfSaleSystem.Utils.Checkers;
 
 namespace PointOfSaleSystem.Models
 {
+
+    /// <summary>
+    /// Represents a product in the Point of Sale system.
+    /// This class contains properties for product details such as ID, barcode, name, category, supplier, brand, 
+    /// quantity, cost price, selling price, and image. It also implements the INotifyPropertyChanged interface 
+    /// to support property change notifications and the ICheckable interface for validation.
+    /// </summary>
     public class Product : INotifyPropertyChanged, ICheckable
     {
         public int Id { get; set; }

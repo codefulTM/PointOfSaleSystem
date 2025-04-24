@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace PointOfSaleSystem.Models
 {
+    
+    /// <summary>
+    /// Represents a category in the Point of Sale system.
+    /// </summary>
     public class Category
     {
         public int? Id { get; set; } = null;

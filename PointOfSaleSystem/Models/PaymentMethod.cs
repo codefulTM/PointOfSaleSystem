@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace PointOfSaleSystem.Models
 {
+    /// <summary>
+    /// Represents a payment method used in the Point of Sale system.
+    /// </summary>
     public class PaymentMethod : INotifyPropertyChanged
     {
         public int Id { get; set; }
