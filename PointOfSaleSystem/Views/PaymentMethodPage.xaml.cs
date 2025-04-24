@@ -25,17 +25,31 @@ using System.Diagnostics;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A page that allows users to manage payment methods, including bank and MoMo options.
+    /// It provides functionality to set default methods, add new methods, remove methods, and view QR codes.
     /// </summary>
     public sealed partial class PaymentMethodPage : Page
     {
         public PaymentMethodViewModel ViewModel { get; set; } = new PaymentMethodViewModel();
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PaymentMethodPage"/> class.
+        /// Sets the DataContext for the page.
+        /// </summary>
+        /// <returns>A new instance of the PaymentMethodPage.</returns>
         public PaymentMethodPage()
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;
         }
 
+        /// <summary>
+        /// Handles the click event for setting a bank payment method as default.
+        /// Displays a confirmation dialog and updates the default status in the database and ViewModel if confirmed.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void Bank_SetDefaultClick(object sender, RoutedEventArgs e)
         {
             // Get the selected payment method
@@ -71,12 +85,24 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for adding a new bank payment method.
+        /// Opens a new window to add a new bank payment method.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
         private void Bank_AddPaymentMethodClick(object sender, RoutedEventArgs e)
         {
             var addBankPaymentMethodWindow = new AddBankPaymentMethodWindow(ViewModel);
             addBankPaymentMethodWindow.Activate();
         }
 
+        /// <summary>
+        /// Handles the click event for removing a bank payment method.
+        /// Removes the selected bank payment method from the list and updates the data source.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
         private async void Bank_RemovePaymentMethodClick(object sender, RoutedEventArgs e)
         {
             // Get the selected payment method
@@ -102,6 +128,13 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for setting a MoMo payment method as default.
+        /// Displays a confirmation dialog and updates the default status in the database and ViewModel if confirmed.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>        
         private async void Momo_SetDefaultClick(object sender, RoutedEventArgs e)
         {
             // Get the selected payment method
@@ -136,13 +169,27 @@ namespace PointOfSaleSystem.Views
                 await dialog.ShowAsync();
             }
         }
-
+        
+        /// <summary>
+        /// Handles the click event for adding a new MoMo payment method.
+        /// Opens the AddMomoPaymentMethodWindow.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>This method does not return a value.</returns>
         private void Momo_AddPaymentMethodClick(object sender, RoutedEventArgs e)
         {
             var addMomoPaymentMethodWindow = new AddMomoPaymentMethodWindow(ViewModel);
             addMomoPaymentMethodWindow.Activate();
         }
 
+        /// <summary>
+        /// Handles the click event for removing a MoMo payment method.
+        /// Displays a confirmation dialog and removes the selected payment method from the database and ViewModel if confirmed.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void Momo_RemovePaymentMethodClick(object sender, RoutedEventArgs e)
         {
             // Get the selected payment method
@@ -168,6 +215,14 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for showing the default bank QR code.
+        /// Finds the default bank payment method and opens the ShowBankQRWindow.
+        /// Displays a message if no default method is set.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void ShowBankQR(object sender, RoutedEventArgs e)
         {
             // Get the default payment method
@@ -189,6 +244,14 @@ namespace PointOfSaleSystem.Views
             showBankQRWindow.Activate();
         }
 
+        /// <summary>
+        /// Handles the click event for showing the default MoMo QR code.
+        /// Finds the default MoMo payment method and opens the ShowMomoQRWindow.
+        /// Displays a message if no default method is set.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>        
         private async void ShowMomoQR(object sender, RoutedEventArgs e)
         {
             // Get the default payment method
