@@ -24,7 +24,7 @@ using System.Security.Principal;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window that displays a bank QR code for payment based on the provided payment method and amount.
     /// </summary>
     public sealed partial class ShowBankQRWindow : Window
     {
@@ -54,6 +54,13 @@ namespace PointOfSaleSystem.Views
             { "Nam A Bank", "NAB" }
         };
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShowBankQRWindow"/> class.
+        /// Generates and displays a bank QR code based on the provided payment method and amount.
+        /// </summary>
+        /// <param name="paymentMethod">The payment method containing bank details (BankName, AccountNumber).</param>
+        /// <param name="amount">The amount to be included in the QR code for payment.</param>
+        /// <returns>A new instance of the ShowBankQRWindow.</returns>
         public ShowBankQRWindow(PaymentMethod paymentMethod, int amount)
         {
             this.PaymentMethodInfo = paymentMethod;
