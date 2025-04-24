@@ -10,6 +10,13 @@ using Windows.ApplicationModel.Store;
 
 namespace PointOfSaleSystem.Services
 {
+    /// <summary>
+    /// The <c>PostgresDao</c> class serves as a Data Access Object (DAO) implementation
+    /// for interacting with a PostgreSQL database. It provides access to various 
+    /// repository instances for managing entities such as Categories, Products, Customers, 
+    /// Orders, OrderDetails, and PaymentMethods. Each repository follows the singleton 
+    /// pattern to ensure a single instance is used throughout the application.
+    /// </summary>
     public class PostgresDao : IDao
     {
         public PostgresDao()
