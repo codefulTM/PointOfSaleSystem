@@ -9,6 +9,12 @@ using PointOfSaleSystem.Models;
 
 namespace PointOfSaleSystem.Utils.Checkers
 {
+    /// <summary>
+    /// The FormatChecker class is responsible for validating the format of various entities
+    /// such as Customer, Product, and others. It implements the IChecker interface and provides
+    /// methods to check for specific format-related issues, such as invalid characters in names,
+    /// phone numbers, or file paths.
+    /// </summary>
     public class FormatChecker : IChecker
     {
         public string Pattern { get; set; }

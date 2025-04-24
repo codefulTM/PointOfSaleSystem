@@ -10,6 +10,16 @@ using Windows.Foundation.Collections;
 
 namespace PointOfSaleSystem.Utils
 {
+    /// <summary>
+    /// A specialized implementation of <see cref="ObservableCollection{T}"/> that provides 
+    /// notifications when properties of its items change. This class ensures that changes 
+    /// to the properties of the items in the collection trigger the <see cref="CollectionChanged"/> 
+    /// event, allowing for more granular updates in data-bound scenarios.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The type of elements in the collection. Must implement <see cref="INotifyPropertyChanged"/> 
+    /// to support property change notifications.
+    /// </typeparam>
     public sealed class FullObservableCollection<T> : ObservableCollection<T>
         where T : INotifyPropertyChanged
     {

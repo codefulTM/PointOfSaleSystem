@@ -7,6 +7,12 @@ using PointOfSaleSystem.Models;
 
 namespace PointOfSaleSystem.Utils.Checkers
 {
+    /// <summary>
+    /// The <c>ValueChecker</c> class provides methods to validate various entities such as 
+    /// <c>Customer</c>, <c>Category</c>, <c>Product</c>, and <c>Order</c>. 
+    /// It implements the <c>IChecker</c> interface and ensures that the entities meet 
+    /// specific business rules and constraints.
+    /// </summary>
     public class ValueChecker : IChecker
     {
         public string? Check(Customer customer)

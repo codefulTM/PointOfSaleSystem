@@ -7,6 +7,9 @@ using Windows.Media.SpeechSynthesis;
 
 namespace PointOfSaleSystem.Models
 {
+    /// <summary>
+    /// Interface for performing validation checks on various entities in the Point of Sale system.
+    /// </summary>
     public interface IChecker
     {
         public string? Check(Customer customer);
