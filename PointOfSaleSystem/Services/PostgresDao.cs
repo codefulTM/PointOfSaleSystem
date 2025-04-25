@@ -1134,17 +1134,32 @@ namespace PointOfSaleSystem.Services
             }
         }
         
+        /// <summary>
+        /// Repository for managing table data in the database.
+        /// Implements the <see cref="IRepository{Table}"/> interface.
+        /// </summary>
         public class PostgresTableRepository : IRepository<Table>
         {
             List<Table> tables = new List<Table>();
             private NpgsqlConnection _connection;
             // singleton instance
             private static PostgresTableRepository? _instance = null;
+            
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PostgresTableRepository"/> class.
+            /// </summary>
+            /// <param name="connection">The database connection to use.</param>
             private PostgresTableRepository(NpgsqlConnection connection)
             {
                 _connection = connection;
                 GetAll();
             }
+
+
+            /// <summary>
+            /// Retrieves the singleton instance of the <see cref="PostgresTableRepository"/> class.
+            /// </summary>
+            /// <returns>The singleton instance of the <see cref="PostgresTableRepository"/> class.</returns>
             public static PostgresTableRepository GetInstance()
             {
                 if (_instance == null)
@@ -1153,6 +1168,12 @@ namespace PointOfSaleSystem.Services
                 }
                 return _instance;
             }
+
+            /// <summary>
+            /// Creates a new table in the database.
+            /// </summary>
+            /// <param name="entity">The table to create.</param>
+            /// <returns>Nothing.</returns>
             public void Create(Table entity)
             {
                 string query = "INSERT INTO \"table\"(name, state) VALUES(@name, @state) RETURNING id;";
@@ -1167,6 +1188,12 @@ namespace PointOfSaleSystem.Services
                     _connection.Close();
                 }
             }
+
+            /// <summary>
+            /// Deletes a table from the database by its ID.
+            /// </summary>
+            /// <param name="id">The ID of the table to delete.</param>
+            /// <returns>Nothing.</returns>
             public void Delete(int id)
             {
                 string query = "UPDATE \"table\" SET deleted = TRUE WHERE id = @id";
@@ -1183,6 +1210,11 @@ namespace PointOfSaleSystem.Services
                     tables.Remove(tableToRemove);
                 }
             }
+
+            /// <summary>
+            /// Retrieves all tables from the database.
+            /// </summary>
+            /// <returns>A list of all tables in the database.</returns>
             public IEnumerable<Table> GetAll()
             {
                 if (tables.Count == 0)
@@ -1210,6 +1242,12 @@ namespace PointOfSaleSystem.Services
                 }
                 return tables;
             }
+
+            /// <summary>
+            /// Retrieves a table by its ID.
+            /// </summary>
+            /// <param name="id">The ID of the table to retrieve.</param>
+            /// <returns>The table with the specified ID, or null if not found.</returns>
             public Table GetById(int id)
             {
                 if (tables.Count == 0)
@@ -1218,6 +1256,12 @@ namespace PointOfSaleSystem.Services
                 }
                 return tables.Find(table => table.Id == id);
             }
+
+            /// <summary>
+            /// Updates an existing table in the database.
+            /// </summary>
+            /// <param name="entity">The table to update.</param>
+            /// <returns>Nothing.</returns>
             public void Update(Table entity)
             {
                 string query = "UPDATE \"table\" SET customer_id = @customerId, name = @name, state = @state, book_time = @bookTime WHERE id = @id";
