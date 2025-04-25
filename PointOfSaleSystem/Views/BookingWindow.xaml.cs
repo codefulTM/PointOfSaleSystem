@@ -22,7 +22,7 @@ using PointOfSaleSystem.Services;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window for booking a table.
     /// </summary>
     public sealed partial class BookingWindow : Window
     {
@@ -32,6 +32,11 @@ namespace PointOfSaleSystem.Views
         public DateTimeOffset BookingDate { get; set; }
         public string BookingTime { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <c>BookingWindow</c> class.
+        /// </summary>
+        /// <param name="cusViewModel">The customer view model.</param>
+        /// <param name="table">The table to book.</param>
         public BookingWindow(CustomerViewModel cusViewModel, Table table)
         {
             this.InitializeComponent();
@@ -40,6 +45,11 @@ namespace PointOfSaleSystem.Views
             BookingDate = DateTimeOffset.Now;
         }
 
+        /// <summary>
+        /// Handles the click event of the select button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private async void Select_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedCustomer == null)
@@ -119,12 +129,22 @@ namespace PointOfSaleSystem.Views
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the click event of the cancel button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             SelectedCustomer = null;
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the click event of the add customer button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {
             var addCustomerWindow = new AddCustomerWindow(CustomerViewModel);
