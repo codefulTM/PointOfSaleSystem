@@ -57,7 +57,7 @@ namespace PointOfSaleSystem.Views
                 Name = NameTextBox.Text,
                 PhoneNumber = PhoneNumberTextBox.Text,
                 Address = AddressTextBox.Text,
-                Birthday = BirthdayDatePicker.Date.DateTime,
+                Birthday = BirthdayDatePicker.SelectedDate is not null ? BirthdayDatePicker.SelectedDate.Value.DateTime : (DateTime?)null,
                 Gender = (bool)MaleRadioButton.IsChecked ? "Nam" : (bool)FemaleRadioButton.IsChecked ? "Nữ" : ""
             };
 

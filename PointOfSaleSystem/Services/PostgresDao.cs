@@ -514,7 +514,7 @@ namespace PointOfSaleSystem.Services
                     cmd.Parameters.AddWithValue("name", entity.Name);
                     cmd.Parameters.AddWithValue("phone_number", entity.PhoneNumber);
                     cmd.Parameters.AddWithValue("address", entity.Address);
-                    cmd.Parameters.AddWithValue("birthday", entity.Birthday);
+                    cmd.Parameters.AddWithValue("birthday", entity.Birthday ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("gender", entity.Gender);
 
                     _connection.Open();
