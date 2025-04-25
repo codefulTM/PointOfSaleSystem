@@ -21,19 +21,28 @@ using Windows.Foundation.Collections;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window for selecting a customer.
     /// </summary>
     public sealed partial class SelectCustomerWindow : Window
     {
         public CustomerViewModel CustomerViewModel { get; set; }
         public Customer? SelectedCustomer { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <c>SelectCustomerWindow</c> class.
+        /// </summary>
+        /// <param name="viewModel">The customer view model.</param>
         public SelectCustomerWindow(CustomerViewModel viewModel)
         {
             this.InitializeComponent();
             CustomerViewModel = viewModel;
         }
 
+        /// <summary>
+        /// Handles the click event of the select button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void SelectCustomer_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedCustomer != null)
@@ -42,12 +51,22 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event of the cancel button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             SelectedCustomer = null; // Không chọn khách hàng nào
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the click event of the add customer button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {
             // Mở cửa sổ AddCustomerWindow
