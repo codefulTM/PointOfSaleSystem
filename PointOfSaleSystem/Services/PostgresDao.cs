@@ -10,6 +10,13 @@ using Windows.ApplicationModel.Store;
 
 namespace PointOfSaleSystem.Services
 {
+    /// <summary>
+    /// The <c>PostgresDao</c> class serves as a Data Access Object (DAO) implementation
+    /// for interacting with a PostgreSQL database. It provides access to various 
+    /// repository instances for managing entities such as Categories, Products, Customers, 
+    /// Orders, OrderDetails, and PaymentMethods. Each repository follows the singleton 
+    /// pattern to ensure a single instance is used throughout the application.
+    /// </summary>
     public class PostgresDao : IDao
     {
         public PostgresDao()
@@ -28,6 +35,11 @@ namespace PointOfSaleSystem.Services
         public IRepository<OrderDetail> OrderDetails { get; set; }
         public IRepository<PaymentMethod> PaymentMethods { get; set; }
 
+        /// <summary>
+        /// Represents a repository for managing categories in the Point of Sale system.
+        /// This class implements the <see cref="IRepository{Category}"/> interface and provides 
+        /// methods for creating, reading, updating, and deleting categories in the database.
+        /// </summary>
         public class PostgresCategoryRepository : IRepository<Category>
         {
             List<Category> categories = new List<Category>();
@@ -36,12 +48,27 @@ namespace PointOfSaleSystem.Services
             // singleton instance
             private static PostgresCategoryRepository? _instance = null;
 
+            /// <summary>
+            /// Initializes a new instance of the <c>PostgresCategoryRepository</c> class with the specified
+            /// connection to the PostgreSQL database.
+            /// </summary>
+            /// <param name="connection">The connection to the PostgreSQL database.</param>
+            /// <remarks>
+            /// This constructor is private and intended to be used by the singleton instance of the
+            /// <c>PostgresCategoryRepository</c> class.
+            /// </remarks>
             private PostgresCategoryRepository(NpgsqlConnection connection)
             {
                 _connection = connection;
                 GetAll();
             }
 
+            /// <summary>
+            /// Retrieves the singleton instance of the <c>PostgresCategoryRepository</c> class.
+            /// </summary>
+            /// <returns>
+            /// The singleton instance of the <c>PostgresCategoryRepository</c> class.
+            /// </returns>
             public static PostgresCategoryRepository GetInstance()
             {
                 if (_instance == null)
@@ -51,6 +78,10 @@ namespace PointOfSaleSystem.Services
                 return _instance;
             }
 
+            /// <summary>
+            /// Creates a new category in the database.
+            /// </summary>
+            /// <param name="entity">The category to create.</param>
             public void Create(Category entity)
             {
                 string query = "INSERT INTO CATEGORY(name) VALUES(@name) RETURNING category_id;";
@@ -66,11 +97,21 @@ namespace PointOfSaleSystem.Services
                 }
             }
 
+            /// <summary>
+            /// Deletes a category from the database.
+            /// </summary>
+            /// <param name="id">The ID of the category to delete.</param>
             public void Delete(int id)
             {
                 throw new NotImplementedException();
             }
 
+            /// <summary>
+            /// Retrieves all categories from the database.
+            /// </summary>
+            /// <returns>
+            /// A list of all categories in the database.
+            /// </returns>
             public IEnumerable<Category> GetAll()
             {
                 if (categories.Count == 0)
@@ -96,16 +137,32 @@ namespace PointOfSaleSystem.Services
                 return categories;
             }
 
+            /// <summary>
+            /// Retrieves a category from the database by its ID.
+            /// </summary>
+            /// <param name="id">The ID of the category to retrieve.</param>
+            /// <returns>The category with the specified ID or null if not found.</returns>
             public Category GetById(int id)
             {
                 throw new NotImplementedException();
             }
 
+            /// <summary>
+            /// Updates an existing category in the database.
+            /// </summary>
+            /// <param name="entity">The category to update.</param>
+            /// <returns>True if the category was updated successfully, false otherwise.</returns>
             public void Update(Category entity)
             {
                 throw new NotImplementedException();
             }
         }
+
+        /// <summary>
+        /// Represents a repository for managing products in the Point of Sale system.
+        /// This class implements the <see cref="IRepository{Product}"/> interface and provides 
+        /// methods for creating, reading, updating, and deleting products in the database.
+        /// </summary>
         public class PostgresProductRepository : IRepository<Product>
         {
             List<Product> products = new List<Product>();
@@ -114,12 +171,25 @@ namespace PointOfSaleSystem.Services
             // singleton instance
             private static PostgresProductRepository _instance = null;
 
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PostgresProductRepository"/> class.
+            /// Retrieves all products from the database.
+            /// </summary>
+            /// <param name="connection">The database connection to use.</param>
+            /// <returns>This method does not return a value.</returns>
             private PostgresProductRepository(NpgsqlConnection connection)
             {
                 _connection = connection;
                 GetAll();
             }
 
+            /// <summary>
+            /// Retrieves the singleton instance of the <see cref="PostgresProductRepository"/> class.
+            /// </summary>
+            /// <returns>
+            /// The singleton instance of the <see cref="PostgresProductRepository"/> class.
+            /// </returns>
             public static PostgresProductRepository GetInstance()
             {
                 if (_instance == null)
@@ -129,6 +199,11 @@ namespace PointOfSaleSystem.Services
                 return _instance;
             }
 
+            /// <summary>
+            /// Creates a new product in the database.
+            /// </summary>
+            /// <param name="entity">The product to create.</param>
+            /// <returns>Nothing.</returns>
             public void Create(Product entity)
             {
                 string query;
@@ -198,6 +273,11 @@ namespace PointOfSaleSystem.Services
                 }
             }
 
+            /// <summary>
+            /// Deletes the product with the specified id from the database and the cache.
+            /// </summary>
+            /// <param name="id">The id of the product to delete.</param>
+            /// <returns>Nothing.</returns>
             public void Delete(int id)
             {
                 string query = "UPDATE PRODUCT SET deleted = TRUE WHERE product_id = @id";
@@ -217,6 +297,12 @@ namespace PointOfSaleSystem.Services
                 }
             }
 
+            /// <summary>
+            /// Retrieves all products from the database.
+            /// </summary>
+            /// <returns>
+            /// A list of all products in the database.
+            /// </returns>
             public IEnumerable<Product> GetAll()
             {
                 if (products.Count == 0)
@@ -254,6 +340,11 @@ namespace PointOfSaleSystem.Services
                 return products;
             }
 
+            /// <summary>
+            /// Retrieves a product from the database by its ID.
+            /// </summary>
+            /// <param name="id">The ID of the product to retrieve.</param>
+            /// <returns>The product with the specified ID or null if not found.</returns>
             public Product? GetById(int id)
             {
                 if (products.Count == 0)
@@ -263,10 +354,15 @@ namespace PointOfSaleSystem.Services
                 return products.Find(product => product.Id == id);
             }
 
+            /// <summary>
+            /// Updates an existing product in the database.
+            /// </summary>
+            /// 
+            /// <param name="entity">The product to update.</param>
+            /// <returns>Nothing.</returns>
             public void Update(Product entity)
             {
                 string query;
-
                 // Find category id
                 int? categoryId = null;
                 if (entity.Category != null)
@@ -340,6 +436,12 @@ namespace PointOfSaleSystem.Services
                 }
             }
         }
+        
+        /// <summary>
+        /// Represents a repository for managing customers in the Point of Sale system.
+        /// This class implements the <see cref="IRepository{Customer}"/> interface and provides 
+        /// methods for creating, reading, updating, and deleting customers in the database.
+        /// </summary>
         public class PostgresCustomerRepository : IRepository<Customer>
         {
             List<Customer> customers = new List<Customer>();
@@ -348,12 +450,24 @@ namespace PointOfSaleSystem.Services
             // singleton instance
             private static PostgresCustomerRepository? _instance = null;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PostgresCustomerRepository"/> class.
+            /// Retrieves all customers from the database.
+            /// </summary>
+            /// <param name="connection">The database connection to use.</param>
+            /// <returns>This method does not return a value.</returns>
             private PostgresCustomerRepository(NpgsqlConnection connection)
             {
                 _connection = connection;
                 GetAll();
             }
 
+            /// <summary>
+            /// Retrieves the singleton instance of the <see cref="PostgresCustomerRepository"/> class.
+            /// </summary>
+            /// <returns>
+            /// The singleton instance of the <see cref="PostgresCustomerRepository"/> class.
+            /// </returns>
             public static PostgresCustomerRepository GetInstance()
             {
                 if (_instance == null)
@@ -363,6 +477,11 @@ namespace PointOfSaleSystem.Services
                 return _instance;
             }
 
+            /// <summary>
+            /// Deletes the customer with the specified id from the database and the cache.
+            /// </summary>
+            /// <param name="id">The id of the customer to delete.</param>
+            /// <returns>Nothing.</returns>
             public void Delete(int id)
             {
                 string query = "UPDATE CUSTOMER SET deleted = TRUE WHERE customer_id = @id";
@@ -381,6 +500,11 @@ namespace PointOfSaleSystem.Services
                 }
             }
 
+            /// <summary>
+            /// Creates a new customer in the database.
+            /// </summary>
+            /// <param name="entity">The customer to create.</param>
+            /// <returns>Nothing.</returns>
             public void Create(Customer entity)
             {
                 string query = "INSERT INTO CUSTOMER(name, phone_number, address, birthday, gender) VALUES(@name, @phone_number, @address, @birthday, @gender) RETURNING customer_id;";
@@ -400,7 +524,12 @@ namespace PointOfSaleSystem.Services
                 }
             }
 
-
+            /// <summary>
+            /// Retrieves all customers from the database.
+            /// </summary>
+            /// <returns>
+            /// A list of all customers in the database.
+            /// </returns>
             public IEnumerable<Customer> GetAll()
             {
                 if (customers.Count == 0)
@@ -430,6 +559,11 @@ namespace PointOfSaleSystem.Services
                 return customers;
             }
 
+            /// <summary>
+            /// Retrieves a customer from the database by its ID.
+            /// </summary>
+            /// <param name="id">The ID of the customer to retrieve.</param>
+            /// <returns>The customer with the specified ID or null if not found.</returns>
             public Customer GetById(int id)
             {
                 Customer customer = null;
@@ -440,7 +574,12 @@ namespace PointOfSaleSystem.Services
                 customer = customers.Find(c => c.Id == id);
                 return customer;
             }
-
+            
+            /// <summary>
+            /// Updates an existing customer in the database.
+            /// </summary>
+            /// <param name="entity">The customer to update.</param>
+            /// <returns>Nothing.</returns>
             public void Update(Customer entity)
             {
                 string query = "UPDATE CUSTOMER " +
@@ -471,17 +610,36 @@ namespace PointOfSaleSystem.Services
             }
         }
         
+        /// <summary>
+        /// Represents a repository for managing orders in the Point of Sale system.
+        /// This class implements the <see cref="IRepository{Order}"/> interface and provides 
+        /// methods for creating, reading, updating, and deleting orders in the database.
+        /// </summary>
         public class PostgresOrderRepository : IRepository<Order>
         {
             List<Order> orders = new List<Order>();
             private NpgsqlConnection _connection;
             // singleton instance
             private static PostgresOrderRepository? _instance = null;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PostgresOrderRepository"/> class.
+            /// Retrieves all orders from the database.
+            /// </summary>
+            /// <param name="connection">The database connection to use.</param>
+            /// <returns>This method does not return a value.</returns>
             private PostgresOrderRepository(NpgsqlConnection connection)
             {
                 _connection = connection;
                 GetAll();
             }
+
+            /// <summary>
+            /// Retrieves the singleton instance of the <see cref="PostgresOrderRepository"/> class.
+            /// </summary>
+            /// <returns>
+            /// The singleton instance of the <see cref="PostgresOrderRepository"/> class.
+            /// </returns>
             public static PostgresOrderRepository GetInstance()
             {
                 if (_instance == null)
@@ -490,6 +648,12 @@ namespace PointOfSaleSystem.Services
                 }
                 return _instance;
             }
+
+            /// <summary>
+            /// Creates a new order in the database.
+            /// </summary>
+            /// <param name="entity">The order to create.</param>
+            /// <returns>Nothing.</returns>
             public void Create(Order entity)
             {
                 string query = "INSERT INTO \"order\"(customer_id, total_price, discount, paid, order_time) VALUES(@customerId, @totalPrice, @discount, @isPaid, @orderTime) RETURNING order_id;";
@@ -508,6 +672,12 @@ namespace PointOfSaleSystem.Services
                     _connection.Close();
                 }
             }
+
+            /// <summary>
+            /// Deletes the order with the specified id from the database and the cache.
+            /// </summary>
+            /// <param name="id">The id of the order to delete.</param>
+            /// <returns>Nothing.</returns>
             public void Delete(int id)
             {
                 string query = "UPDATE \"order\" SET deleted = TRUE WHERE order_id = @id";
@@ -526,6 +696,13 @@ namespace PointOfSaleSystem.Services
                     orders.Remove(orderToRemove);
                 }
             }
+
+            /// <summary>
+            /// Retrieves all orders from the database.
+            /// </summary>
+            /// <returns>
+            /// A list of all orders in the database.
+            /// </returns>
             public IEnumerable<Order> GetAll()
             {
                 if (orders.Count == 0)
@@ -554,6 +731,12 @@ namespace PointOfSaleSystem.Services
                 }
                 return orders;
             }
+
+            /// <summary>
+            /// Retrieves an order from the database by its ID.
+            /// </summary>
+            /// <param name="id">The ID of the order to retrieve.</param>
+            /// <returns>The order with the specified ID or null if not found.</returns>
             public Order GetById(int id)
             {
                 if (orders.Count == 0)
@@ -562,6 +745,12 @@ namespace PointOfSaleSystem.Services
                 }
                 return orders.Find(order => order.Id == id);
             }
+
+            /// <summary>
+            /// Updates an existing order in the database.
+            /// </summary>
+            /// <param name="entity">The order to update.</param>
+            /// <returns>Nothing.</returns>
             public void Update(Order entity)
             {
                 string query = "UPDATE \"order\" SET customer_id = @customerId, total_price = @totalPrice, discount = @discount, paid = @isPaid, order_time = @orderTime WHERE order_id = @id";
@@ -588,6 +777,11 @@ namespace PointOfSaleSystem.Services
             }
         }
 
+        /// <summary>
+        /// Represents a repository for managing order details in the Point of Sale system.
+        /// This class implements the <see cref="IRepository{OrderDetail}"/> interface and provides 
+        /// methods for creating, reading, updating, and deleting order details in the database.
+        /// </summary>
         public class PostgresOrderDetailRepository : IRepository<OrderDetail>
         {
             List<OrderDetail> orderDetails = new List<OrderDetail>();
@@ -596,12 +790,24 @@ namespace PointOfSaleSystem.Services
             // singleton instance
             private static PostgresOrderDetailRepository? _instance = null;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PostgresOrderDetailRepository"/> class.
+            /// Retrieves all order details from the database.
+            /// </summary>
+            /// <param name="connection">The database connection to use.</param>
+            /// <returns>This method does not return a value.</returns>
             private PostgresOrderDetailRepository(NpgsqlConnection connection)
             {
                 _connection = connection;
                 GetAll();
             }
 
+            /// <summary>
+            /// Retrieves the singleton instance of the <see cref="PostgresOrderDetailRepository"/> class.
+            /// </summary>
+            /// <returns>
+            /// The singleton instance of the <see cref="PostgresOrderDetailRepository"/> class.
+            /// </returns>
             public static PostgresOrderDetailRepository GetInstance()
             {
                 if(_instance == null)
@@ -611,6 +817,11 @@ namespace PointOfSaleSystem.Services
                 return _instance;
             }
 
+            /// <summary>
+            /// Creates a new order detail in the database.
+            /// </summary>
+            /// <param name="entity">The order detail to create.</param>
+            /// <returns>Nothing.</returns>
             public void Create(OrderDetail entity)
             {
                 // Check if orderId and productId are not null
@@ -631,6 +842,11 @@ namespace PointOfSaleSystem.Services
                 orderDetails.Add(entity);
             }
 
+            /// <summary>
+            /// Deletes the order details associated with the specified order ID from the database.
+            /// </summary>
+            /// <param name="orderId">The ID of the order to delete.</param>
+            /// <returns>Nothing.</returns>
             public void Delete(int orderId)
             {
                 string query = "UPDATE PRODUCT SET deleted = TRUE WHERE order_id = @orderId";
@@ -650,6 +866,12 @@ namespace PointOfSaleSystem.Services
                 }
             }
 
+            /// <summary>
+            /// Retrieves all order details from the database.
+            /// </summary>
+            /// <returns>
+            /// A list of all order details in the database.
+            /// </returns>
             public IEnumerable<OrderDetail> GetAll()
             {
                 if(orderDetails.Count == 0)
@@ -679,11 +901,21 @@ namespace PointOfSaleSystem.Services
                 return orderDetails;
             }
 
+            /// <summary>
+            /// Retrieves an order detail from the database by its ID.
+            /// </summary>
+            /// <param name="id">The ID of the order detail to retrieve.</param>
+            /// <returns>The order detail with the specified ID or null if not found.</returns>
             public OrderDetail GetById(int id)
             {
                 throw new NotImplementedException();
             }
 
+            /// <summary>
+            /// Retrieves all order details associated with the specified order ID from the database.
+            /// </summary>
+            /// <param name="orderId">The ID of the order to retrieve.</param>
+            /// <returns>A list of order details associated with the specified order ID.</returns>
             public IEnumerable<OrderDetail> GetByOrderId(int orderId)
             {
                 if(orderDetails.Count == 0)
@@ -693,6 +925,11 @@ namespace PointOfSaleSystem.Services
                 return orderDetails.Where(od => od.OrderId == orderId);
             }
 
+            /// <summary>
+            /// Updates an order detail in the database.
+            /// </summary>
+            /// <param name="entity">The order detail to update.</param>
+            /// <returns>Nothing.</returns>
             public void Update(OrderDetail entity)
             {
                 if(entity.OrderId == null || entity.ProductId == null)
@@ -718,6 +955,12 @@ namespace PointOfSaleSystem.Services
                 }
             }
         }
+
+        /// <summary>
+        /// Represents a repository for managing payment methods in the Point of Sale system.
+        /// This class implements the <see cref="IRepository{PaymentMethod}"/> interface and provides 
+        /// methods for creating, reading, updating, and deleting payment methods in the database.
+        /// </summary>
         public class PostgresPaymentMethodRepository : IRepository<PaymentMethod>
         {
             List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
@@ -726,12 +969,24 @@ namespace PointOfSaleSystem.Services
             // singleton instance
             private static PostgresPaymentMethodRepository? _instance = null;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PostgresPaymentMethodRepository"/> class.
+            /// Retrieves all payment methods from the database.
+            /// </summary>
+            /// <param name="connection">The database connection to use.</param>
+            /// <returns>This method does not return a value.</returns>
             private PostgresPaymentMethodRepository(NpgsqlConnection connection)
             {
                 _connection = connection;
                 GetAll();
             }
 
+            /// <summary>
+            /// Retrieves all payment methods from the database.
+            /// </summary>
+            /// <returns>
+            /// A list of all payment methods in the database.
+            /// </returns>
             public static PostgresPaymentMethodRepository GetInstance()
             {
                 if(_instance == null)
@@ -741,6 +996,12 @@ namespace PointOfSaleSystem.Services
                 return _instance;
             }
 
+            /// <summary>
+            /// Retrieves all payment methods from the database.
+            /// </summary>
+            /// <returns>
+            /// A list of all payment methods in the database.
+            /// </returns>
             public IEnumerable<PaymentMethod> GetAll()
             {
                 if(paymentMethods.Count == 0)
@@ -773,6 +1034,11 @@ namespace PointOfSaleSystem.Services
                 return paymentMethods;
             }
 
+            /// <summary>
+            /// Retrieves a payment method from the database by its ID.
+            /// </summary>
+            /// <param name="id">The ID of the payment method to retrieve.</param>
+            /// <returns>The payment method with the specified ID or null if not found.</returns>
             public PaymentMethod? GetById(int id)
             {
                 if(paymentMethods.Count == 0)
@@ -782,6 +1048,11 @@ namespace PointOfSaleSystem.Services
                 return paymentMethods.Find(pm => pm.Id == id);
             }
 
+            /// <summary>
+            /// Creates a new payment method in the database.
+            /// </summary>
+            /// <param name="entity">The payment method to create.</param>
+            /// <returns>Nothing.</returns>
             public void Create(PaymentMethod entity)
             {
                 string query = "INSERT INTO PAYMENT_METHOD(type, account_number, bank_name, account_holder, phone_number, is_default) " +
@@ -803,6 +1074,11 @@ namespace PointOfSaleSystem.Services
                 }
             }
 
+            /// <summary>
+            /// Updates an existing payment method in the database.
+            /// </summary>
+            /// <param name="entity">The payment method to update.</param>
+            /// <returns>Nothing.</returns>
             public void Update(PaymentMethod entity)
             {
                 string query = "UPDATE PAYMENT_METHOD " +
@@ -830,6 +1106,11 @@ namespace PointOfSaleSystem.Services
                 }
             }
 
+            /// <summary>
+            /// Deletes a payment method from the database by its ID.
+            /// </summary>
+            /// <param name="id">The ID of the payment method to delete.</param>
+            /// <returns>Nothing.</returns>
             public void Delete(int id)
             {
                 string query = "UPDATE PAYMENT_METHOD SET deleted = TRUE WHERE id = @id";
@@ -847,6 +1128,5 @@ namespace PointOfSaleSystem.Services
                 }
             }
         }
-
     }
 }

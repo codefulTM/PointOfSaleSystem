@@ -22,17 +22,31 @@ using PointOfSaleSystem.Services;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window that allows the user to add a new MoMo payment method.
     /// </summary>
     public sealed partial class AddMomoPaymentMethodWindow : Window
     {
         public PaymentMethodViewModel _paymentMethodViewModel { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddMomoPaymentMethodWindow"/> class.
+        /// </summary>
+        /// <param name="paymentMethodViewModel">The view model used to update the list of payment methods.</param>
         public AddMomoPaymentMethodWindow(PaymentMethodViewModel paymentMethodViewModel)
         {
             _paymentMethodViewModel = paymentMethodViewModel;
             this.InitializeComponent();
         }
 
+        /// <summary>
+        /// Handles the click event for the Add MoMo Payment Method button.
+        /// Retrieves information from the input fields, creates a new PaymentMethod object,
+        /// saves it to the database, updates the ViewModel, displays a success dialog,
+        /// and closes the window upon successful addition.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>Nothing.</returns>        
         private async void AddMomoPaymentMethodButton_Click(object sender, RoutedEventArgs e)
         {
             // Create a new bank payment method

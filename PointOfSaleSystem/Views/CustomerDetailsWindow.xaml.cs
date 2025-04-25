@@ -20,11 +20,17 @@ using PointOfSaleSystem.Models;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window that displays the details of a specific customer.
     /// </summary>
     public sealed partial class CustomerDetailsWindow : Window
     {
         private Customer? _customer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomerDetailsWindow"/> class.
+        /// </summary>
+        /// <param name="customer">The customer object whose details are to be displayed.</param>
+        /// <returns>A new instance of the CustomerDetailsWindow.</returns>
         public CustomerDetailsWindow(Customer customer)
         {
             this.InitializeComponent();
