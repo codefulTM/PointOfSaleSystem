@@ -15,5 +15,6 @@ namespace PointOfSaleSystem.Services
         IRepository<Order> Orders { get; set; }
         IRepository<OrderDetail> OrderDetails { get; set; }
         IRepository<PaymentMethod> PaymentMethods { get; set; }
+        IRepository<Table> Tables { get; set; }
     }
 }

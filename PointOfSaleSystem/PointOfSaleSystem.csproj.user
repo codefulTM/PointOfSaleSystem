@@ -13,6 +13,15 @@
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Views\BookingWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AddNewTableWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TablePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\PaymentWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

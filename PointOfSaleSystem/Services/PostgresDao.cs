@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Npgsql;
 using PointOfSaleSystem.Models;
 using Windows.ApplicationModel.Store;
@@ -19,6 +21,8 @@ namespace PointOfSaleSystem.Services
             Customers = PostgresCustomerRepository.GetInstance();
             PaymentMethods = PostgresPaymentMethodRepository.GetInstance();
             Orders = PostgresOrderRepository.GetInstance();
+            OrderDetails = PostgresOrderDetailRepository.GetInstance();
+            Tables = PostgresTableRepository.GetInstance();
         }
 
         public IRepository<Category> Categories { get; set; }
@@ -27,6 +31,7 @@ namespace PointOfSaleSystem.Services
         public IRepository<Order> Orders { get; set; }
         public IRepository<OrderDetail> OrderDetails { get; set; }
         public IRepository<PaymentMethod> PaymentMethods { get; set; }
+        public IRepository<Table> Tables { get; set; }
 
         public class PostgresCategoryRepository : IRepository<Category>
         {
@@ -470,7 +475,7 @@ namespace PointOfSaleSystem.Services
                 }
             }
         }
-        
+
         public class PostgresOrderRepository : IRepository<Order>
         {
             List<Order> orders = new List<Order>();
@@ -604,7 +609,7 @@ namespace PointOfSaleSystem.Services
 
             public static PostgresOrderDetailRepository GetInstance()
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
                     _instance = new PostgresOrderDetailRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
                 }
@@ -644,7 +649,7 @@ namespace PointOfSaleSystem.Services
 
                 // Find order details by orderId and remove them from the list
                 var orderDetailsToRemove = orderDetails.Where(od => od.OrderId == orderId).ToList();
-                foreach(var orderDetail in orderDetailsToRemove)
+                foreach (var orderDetail in orderDetailsToRemove)
                 {
                     orderDetails.Remove(orderDetail);
                 }
@@ -652,19 +657,19 @@ namespace PointOfSaleSystem.Services
 
             public IEnumerable<OrderDetail> GetAll()
             {
-                if(orderDetails.Count == 0)
+                if (orderDetails.Count == 0)
                 {
                     string query = "SELECT d.order_id, d.product_id, d.count " +
                         "FROM DETAIL d " +
                         "WHERE d.deleted = @deleted";
-                        
+
                     using (var cmd = new NpgsqlCommand(query, _connection))
                     {
                         cmd.Parameters.AddWithValue("deleted", false);
                         _connection.Open();
                         using (var reader = cmd.ExecuteReader())
                         {
-                            while(reader.Read())
+                            while (reader.Read())
                             {
                                 OrderDetail orderDetail = new OrderDetail();
                                 orderDetail.OrderId = reader.GetInt32(0);
@@ -686,7 +691,7 @@ namespace PointOfSaleSystem.Services
 
             public IEnumerable<OrderDetail> GetByOrderId(int orderId)
             {
-                if(orderDetails.Count == 0)
+                if (orderDetails.Count == 0)
                 {
                     GetAll();
                 }
@@ -695,7 +700,7 @@ namespace PointOfSaleSystem.Services
 
             public void Update(OrderDetail entity)
             {
-                if(entity.OrderId == null || entity.ProductId == null)
+                if (entity.OrderId == null || entity.ProductId == null)
                 {
                     return;
                 }
@@ -734,7 +739,7 @@ namespace PointOfSaleSystem.Services
 
             public static PostgresPaymentMethodRepository GetInstance()
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
                     _instance = new PostgresPaymentMethodRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
                 }
@@ -743,7 +748,7 @@ namespace PointOfSaleSystem.Services
 
             public IEnumerable<PaymentMethod> GetAll()
             {
-                if(paymentMethods.Count == 0)
+                if (paymentMethods.Count == 0)
                 {
                     string query = "SELECT pm.id, pm.type, pm.account_number, pm.bank_name, pm.account_holder, pm.phone_number, is_default " +
                         "FROM PAYMENT_METHOD pm " +
@@ -775,7 +780,7 @@ namespace PointOfSaleSystem.Services
 
             public PaymentMethod? GetById(int id)
             {
-                if(paymentMethods.Count == 0)
+                if (paymentMethods.Count == 0)
                 {
                     GetAll();
                 }
@@ -823,7 +828,7 @@ namespace PointOfSaleSystem.Services
                 }
 
                 var existingPaymentMethod = paymentMethods.FirstOrDefault(pm => pm.Id == entity.Id);
-                if(existingPaymentMethod != null)
+                if (existingPaymentMethod != null)
                 {
                     paymentMethods.Remove(existingPaymentMethod);
                     paymentMethods.Add(entity);
@@ -848,5 +853,111 @@ namespace PointOfSaleSystem.Services
             }
         }
 
+        public class PostgresTableRepository : IRepository<Table>
+        {
+            List<Table> tables = new List<Table>();
+            private NpgsqlConnection _connection;
+            // singleton instance
+            private static PostgresTableRepository? _instance = null;
+            private PostgresTableRepository(NpgsqlConnection connection)
+            {
+                _connection = connection;
+                GetAll();
+            }
+            public static PostgresTableRepository GetInstance()
+            {
+                if (_instance == null)
+                {
+                    _instance = new PostgresTableRepository(new NpgsqlConnection(Configuration.CONNECTION_STRING));
+                }
+                return _instance;
+            }
+            public void Create(Table entity)
+            {
+                string query = "INSERT INTO \"table\"(name, state) VALUES(@name, @state) RETURNING id;";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("name", entity.Name);
+                    cmd.Parameters.AddWithValue("state", entity.State);
+                    _connection.Open();
+                    int tableId = (int)cmd.ExecuteScalar();
+                    entity.Id = tableId;
+                    tables.Add(entity);
+                    _connection.Close();
+                }
+            }
+            public void Delete(int id)
+            {
+                string query = "UPDATE \"table\" SET deleted = TRUE WHERE id = @id";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("id", id);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+                var tableToRemove = tables.FirstOrDefault(t => t.Id == id);
+                if (tableToRemove != null)
+                {
+                    tables.Remove(tableToRemove);
+                }
+            }
+            public IEnumerable<Table> GetAll()
+            {
+                if (tables.Count == 0)
+                {
+                    string query = "SELECT * FROM \"table\" WHERE deleted = @deleted";
+                    using (var cmd = new NpgsqlCommand(query, _connection))
+                    {
+                        cmd.Parameters.AddWithValue("deleted", false);
+                        _connection.Open();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Table table = new Table();
+                                table.Id = reader.GetInt32(0);
+                                table.Name = reader.IsDBNull(1) ? null : reader.GetString(1);
+                                table.State = reader.IsDBNull(2) ? null : reader.GetString(2);
+                                table.CustomerId = reader.IsDBNull(3) ? null : reader.GetInt32(3);
+                                table.BookTime = reader.IsDBNull(4) ? null : reader.GetDateTime(4);
+                                tables.Add(table);
+                            }
+                        }
+                        _connection.Close();
+                    }
+                }
+                return tables;
+            }
+            public Table GetById(int id)
+            {
+                if (tables.Count == 0)
+                {
+                    GetAll();
+                }
+                return tables.Find(table => table.Id == id);
+            }
+            public void Update(Table entity)
+            {
+                string query = "UPDATE \"table\" SET customer_id = @customerId, name = @name, state = @state, book_time = @bookTime WHERE id = @id";
+                using (var cmd = new NpgsqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("customerId", entity.CustomerId == null ? DBNull.Value : entity.CustomerId);
+                    cmd.Parameters.AddWithValue("name", entity.Name == null ? DBNull.Value : entity.Name);
+                    cmd.Parameters.AddWithValue("state", entity.State == null ? DBNull.Value : entity.State);
+                    cmd.Parameters.AddWithValue("bookTime", entity.BookTime == null ? DBNull.Value : entity.BookTime);
+                    cmd.Parameters.AddWithValue("id", entity.Id);
+                    _connection.Open();
+                    cmd.ExecuteNonQuery();
+                    _connection.Close();
+                }
+                var existingTable = tables.FirstOrDefault(t => t.Id == entity.Id);
+                if (existingTable != null)
+                {
+                    tables.Remove(existingTable);
+                    tables.Add(entity);
+                }
+            }
+        }
     }
 }

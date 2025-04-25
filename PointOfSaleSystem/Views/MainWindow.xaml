@@ -19,7 +19,13 @@
                         <FontIcon Glyph="B"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                
+
+                <NavigationViewItem Content="Đặt bàn" Tag="TablePage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="D"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
                 <NavigationViewItem Content="Hàng hóa" Tag="ProductPage" IsSelected="True">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="H"/>

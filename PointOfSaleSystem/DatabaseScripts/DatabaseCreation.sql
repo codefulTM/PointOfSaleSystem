@@ -108,3 +108,13 @@ CREATE TABLE PAYMENT_METHOD (
     is_default BOOLEAN DEFAULT FALSE,
 	deleted BOOLEAN DEFAULT FALSE
 );
+
+CREATE TABLE "table" (
+	id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    state VARCHAR(10),
+    customer_id INT,
+    book_time TIMESTAMP,
+    deleted BOOLEAN NOT NULL DEFAULT false,
+    FOREIGN KEY (customer_id) REFERENCES CUSTOMER(customer_id)
+);
