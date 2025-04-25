@@ -15,6 +15,13 @@ namespace PointOfSaleSystem.Utils.Checkers
     /// </summary>
     public class RequiredFieldChecker : IChecker
     {
+        /// <summary>
+        /// Checks a customer for any required field-related issues.
+        /// </summary>
+        /// <param name="customer">The customer to check.</param>
+        /// <returns>
+        /// A string containing the error message if the check fails, or null if the check succeeds.
+        /// </returns>
         public string? Check(Customer customer)
         {
             if(string.IsNullOrWhiteSpace(customer.Name))
@@ -24,11 +31,25 @@ namespace PointOfSaleSystem.Utils.Checkers
             return null;
         }
 
+        /// <summary>
+        /// Checks a category for any required field-related issues.
+        /// </summary>
+        /// <param name="category">The category to check.</param>
+        /// <returns>
+        /// A string containing the error message if the check fails, or null if the check succeeds.
+        /// </returns>
         public string? Check(Category category)
         {
             return null;
         }
 
+        /// <summary>
+        /// Checks a product for any required field-related issues.
+        /// </summary>
+        /// <param name="product">The product to check.</param>
+        /// <returns>
+        /// A string containing the error message if the check fails, or null if the check succeeds.
+        /// </returns>
         public string? Check(Product product)
         {
             if(string.IsNullOrWhiteSpace(product.Name))
@@ -38,6 +59,13 @@ namespace PointOfSaleSystem.Utils.Checkers
             return null;
         }
 
+        /// <summary>
+        /// Checks an order for any required field-related issues.
+        /// </summary>
+        /// <param name="order">The order to check.</param>
+        /// <returns>
+        /// A string containing the error message if the check fails, or null if the check succeeds.
+        /// </returns>
         public string? Check(Order order)
         {
             throw new NotImplementedException();
