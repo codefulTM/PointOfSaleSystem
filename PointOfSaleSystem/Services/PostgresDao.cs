@@ -26,6 +26,7 @@ namespace PointOfSaleSystem.Services
             Customers = PostgresCustomerRepository.GetInstance();
             PaymentMethods = PostgresPaymentMethodRepository.GetInstance();
             Orders = PostgresOrderRepository.GetInstance();
+            OrderDetails = PostgresOrderDetailRepository.GetInstance();
         }
 
         public IRepository<Category> Categories { get; set; }

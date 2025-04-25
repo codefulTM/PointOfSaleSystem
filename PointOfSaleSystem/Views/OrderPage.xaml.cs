@@ -99,10 +99,29 @@ namespace PointOfSaleSystem.Views
                 // Xóa sản phẩm khỏi OrderProducts
                 ViewModel.OrderProducts.Remove(ViewModel.SelectedProduct);
 
-                // Cập nhật Total và Tax
+                // Cập nhật Total
                 ViewModel.RaisePropertyChanged(nameof(ViewModel.Total));
-                ViewModel.RaisePropertyChanged(nameof(ViewModel.Tax));
             }
+        }
+
+        private void AddCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            // Tạo ViewModel cho danh sách khách hàng  
+            var customerViewModel = new CustomerViewModel();
+
+            // Mở cửa sổ chọn khách hàng  
+            var selectCustomerWindow = new SelectCustomerWindow(customerViewModel);
+            selectCustomerWindow.Activate();
+
+            // Lắng nghe sự kiện khi cửa sổ bị đóng  
+            selectCustomerWindow.Closed += (_, _) =>
+            {
+                if (selectCustomerWindow.SelectedCustomer != null)
+                {
+                    // Gán khách hàng được chọn vào đơn hàng  
+                    ViewModel.SetCustomer(selectCustomerWindow.SelectedCustomer);
+                }
+            };
         }
 
         /// <summary>
@@ -117,6 +136,20 @@ namespace PointOfSaleSystem.Views
         {
             try
             {
+                // Kiểm tra nếu chưa thêm khách hàng
+                if (ViewModel.SelectedCustomer == null)
+                {
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Lỗi",
+                        Content = "Vui lòng thêm khách hàng trước khi thanh toán.",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.Content.XamlRoot
+                    };
+                    await errorDialog.ShowAsync();
+                    return;
+                }
+
                 // Gọi phương thức CreateOrder trong ViewModel
                 var order = ViewModel.CreateOrder();
 
