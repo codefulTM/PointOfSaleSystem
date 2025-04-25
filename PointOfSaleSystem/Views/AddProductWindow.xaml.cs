@@ -208,6 +208,8 @@ namespace PointOfSaleSystem.Views
 
             // Add the product to the database
             dao.Products.Create(product);
+            // Update real time viewModel
+            _productViewModel.Products.Add(product);
 
             dialog = new ContentDialog
             {

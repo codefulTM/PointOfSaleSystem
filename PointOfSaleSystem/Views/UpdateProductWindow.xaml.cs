@@ -77,6 +77,7 @@ namespace PointOfSaleSystem.Views
             int? prodCostPrice = null;
             int? prodSellingPrice = null;
             string? prodCat = category.Text != "" ? category.Text : null;
+            string? prodImage = productImage.Tag != null ? productImage.Tag as string : product.Image;
 
             // Constraint checking
             ContentDialog dialog;
@@ -183,7 +184,7 @@ namespace PointOfSaleSystem.Views
             product.CostPrice = prodCostPrice;
             product.SellingPrice = prodSellingPrice;
             product.Category = prodCat;
-            product.Image = productImage.Tag as string;
+            product.Image = prodImage;
 
             // Add the product to the database
             productRepo.Update(product);
