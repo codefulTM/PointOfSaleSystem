@@ -23,19 +23,27 @@ using Windows.Foundation.Collections;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A page for managing tables.
     /// </summary>
     public sealed partial class TablePage : Page
     {
         public TableViewModel ViewModel { get; set; } = new TableViewModel();
         private Table? _selectedTable = new Table();
 
+        /// <summary>
+        /// Initializes a new instance of the <c>TablePage</c> class.
+        /// </summary>
         public TablePage()
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;
         }
 
+        /// <summary>
+        /// Handles the selection changed event of the table list view.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void TableListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Lấy bàn được chọn
@@ -45,12 +53,22 @@ namespace PointOfSaleSystem.Views
             BookingButton.IsEnabled = _selectedTable != null;
         }
 
+        /// <summary>
+        /// Handles the click event of the add button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             var screen = new AddNewTableWindow(ViewModel);
             screen.Activate();
         }
 
+        /// <summary>
+        /// Handles the click event of the booking button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void bookingButton_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedTable != null)
@@ -63,11 +81,21 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event of the delete booking button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void deleteBookingButton_Click(object sender, RoutedEventArgs e)
         {
             // Logic hủy đặt bàn
         }
 
+        /// <summary>
+        /// Handles the click event of the delete button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
