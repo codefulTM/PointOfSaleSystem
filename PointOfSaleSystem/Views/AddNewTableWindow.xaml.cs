@@ -22,17 +22,27 @@ using PointOfSaleSystem.Models;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window for adding a new table.
     /// </summary>
     public sealed partial class AddNewTableWindow : Window
     {
         private TableViewModel _viewModel { get; set; } = new TableViewModel();
+        
+        /// <summary>
+        /// Initializes a new instance of the <c>AddNewTableWindow</c> class.
+        /// </summary>
+        /// <param name="ViewModel">The view model to use for the window.</param>
         public AddNewTableWindow(TableViewModel ViewModel)
         {
             this.InitializeComponent();
             _viewModel = ViewModel;
         }
 
+        /// <summary>
+        /// Handles the click event of the add button.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The event arguments.</param>
         public async void AddButton_Click(object sender, RoutedEventArgs e)
         {
             var table = new Table
