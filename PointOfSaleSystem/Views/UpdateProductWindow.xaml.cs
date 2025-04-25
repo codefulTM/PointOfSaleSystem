@@ -16,7 +16,8 @@ using PointOfSaleSystem.Services;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage.Pickers;
-using System.Threading.Tasks; // Added for async/await
+using System.Threading.Tasks;
+using PointOfSaleSystem.Utils.Checkers; // Added for async/await
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -175,6 +176,63 @@ namespace PointOfSaleSystem.Views
                     };
                     catRepo.Create(newCat);
                 }
+            }
+
+            // Create a new product for checking
+            Product checkedProduct = new Product()
+            {
+                Name = prodName,
+                Brand = prodBrand,
+                Quantity = prodQuantity,
+                CostPrice = prodCostPrice,
+                SellingPrice = prodSellingPrice,
+                Category = prodCat,
+                Image = prodImage
+            };
+
+            // Check format
+            string? res = checkedProduct.AcceptForChecking(new FormatChecker());
+            if(res is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Lỗi định dạng",
+                    Content = res,
+                    CloseButtonText = "Đóng"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Check required fields
+            res = checkedProduct.AcceptForChecking(new RequiredFieldChecker());
+            if(res is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Nhập thiếu thông tin cần thiết",
+                    Content = res,
+                    CloseButtonText = "Đóng"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Check value
+            res = checkedProduct.AcceptForChecking(new ValueChecker());
+            if (res is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Nhập thông tin không hợp lệ",
+                    Content = res,
+                    CloseButtonText = "Đóng"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
             }
 
             // Update the product
