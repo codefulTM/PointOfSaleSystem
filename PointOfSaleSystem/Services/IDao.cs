@@ -7,6 +7,10 @@ using PointOfSaleSystem.Models;
 
 namespace PointOfSaleSystem.Services
 {
+    /// <summary>
+    /// Represents a data access object (DAO) interface that provides 
+    /// repositories for managing various entities in the system.
+    /// </summary>
     public interface IDao
     {
         IRepository<Category> Categories { get; set; }

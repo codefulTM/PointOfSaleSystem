@@ -99,26 +99,20 @@
                    Margin="10" />
 
         <TextBlock Grid.Column="4" 
-                   Grid.Row="4" 
-                   Text="Thuế:" 
-                   FontWeight="Bold"
+                   Grid.Row="4" Text="Khách hàng:" 
+                   FontWeight="Bold" 
                    TextAlignment="Left"
                    VerticalAlignment="Center"
-                   Margin="10"/>
+                   Margin="10" />
         <TextBlock Grid.Column="4" 
                    Grid.Row="4" 
-                   Text="{Binding Tax, Converter={StaticResource currency}}"
-                   FontWeight="Bold"
+                   Text="{x:Bind ViewModel.SelectedCustomer.Name, Mode=OneWay}" 
                    TextAlignment="Right"
                    VerticalAlignment="Center"
                    Margin="10" />
-        <StackPanel Grid.Column="4"
-                    Grid.Row="5"
-                    Orientation="Horizontal">
-            <Button Background="#FFB22C" Foreground="Black" Width="150" HorizontalAlignment="Left" Padding="10">Thêm ghi chú</Button>
-            <Button Background="#854836" Foreground="White" Width="150" HorizontalAlignment="Right" Padding="10" Click="DeleteSelectedProduct_Click">Xóa</Button>
-        </StackPanel>
-        <Button Grid.Column="4" Grid.Row="6" Width="300" Background="#FFB22C" Foreground="Black" Padding="10">Thêm khách hàng</Button>
+        
+        <Button Grid.Column="4" Grid.Row="5" Width="300" Background="#854836" Foreground="White" HorizontalAlignment="Center" Padding="10" Click="DeleteSelectedProduct_Click">Xóa</Button>
+        <Button Grid.Column="4" Grid.Row="6" Width="300" Background="#FFB22C" Foreground="Black" HorizontalAlignment="Center" Padding="10" Click="AddCustomer_Click">Thêm khách hàng</Button>
         <Border Grid.Column="4" Grid.Row="7" BorderBrush="Black" BorderThickness="0.5" VerticalAlignment="Stretch" />
         <Button Grid.Column="4" Grid.Row="8" Width="280" Height="50" Background="#F7F7F7" Foreground="Black" FontWeight="Bold" Margin="10" Padding="10" Click="Checkout_Click">Thanh toán</Button>
 

@@ -21,7 +21,8 @@ using PointOfSaleSystem.Models;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window used for processing payments for an order.
+    /// It displays the total amount, discount, amount due, and handles payment input and processing.
     /// </summary>
     public sealed partial class PaymentWindow : Window
     {
@@ -32,6 +33,12 @@ namespace PointOfSaleSystem.Views
         public Order CurrentOrder { get; set; }
         public List<OrderDetail> OrderDetails { get; set; } 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PaymentWindow"/> class.
+        /// Sets the order details and updates the UI with the total amount, discount, and amount due.
+        /// </summary>
+        /// <param name="order">The order object for which payment is being processed.</param>
+        /// <returns>A new instance of the PaymentWindow.</returns>
         public PaymentWindow(Order order)
         {
             this.InitializeComponent();
@@ -53,6 +60,14 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event for the Amount Paid TextBox.
+        /// Calculates and displays the change based on the amount paid and the amount due.
+        /// Displays a message if the amount paid is insufficient.
+        /// </summary>
+        /// <param name="sender">The source of the event, the Amount Paid TextBox.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>This method does not return a value.</returns>        
         private void AmountPaidTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (int.TryParse(amountPaid.Text, out int amountPaidValue))
@@ -73,6 +88,15 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for the Pay Button.
+        /// Validates the amount paid, updates the order status to paid if sufficient,
+        /// saves the updated order to the database, displays a success or error dialog,
+        /// and closes the window upon successful payment.
+        /// </summary>
+        /// <param name="sender">The source of the event, the Pay Button.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void PayButton_Click(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(amountPaid.Text, out int amountPaidValue))
@@ -121,6 +145,14 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for showing the Bank QR code.
+        /// Finds the default bank payment method and opens the ShowBankQRWindow with the amount due.
+        /// Displays an error message if no default bank payment method is found.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void ShowBankQR(object sender, RoutedEventArgs e)
         {
             // Find the default bank payment method
@@ -145,6 +177,14 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for showing the MoMo QR code.
+        /// Finds the default MoMo payment method and opens the ShowMomoQRWindow with the amount due.
+        /// Displays an error message if no default MoMo payment method is found.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void ShowMomoQR(object sender, RoutedEventArgs e)
         {
             // Find the default bank payment method

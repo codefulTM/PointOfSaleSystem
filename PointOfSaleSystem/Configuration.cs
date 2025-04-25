@@ -7,6 +7,9 @@ using DotNetEnv;
 
 namespace PointOfSaleSystem
 {
+    /// <summary>
+    /// Provides static configuration settings for the Point of Sale system.
+    /// </summary>
     public static class Configuration
     {
         public static string CONNECTION_STRING;

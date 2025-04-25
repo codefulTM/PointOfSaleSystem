@@ -16,6 +16,8 @@ using PointOfSaleSystem.Services;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage.Pickers;
+using System.Threading.Tasks;
+using PointOfSaleSystem.Utils.Checkers; // Added for async/await
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,11 +25,18 @@ using Windows.Storage.Pickers;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window that allows the user to update the details of an existing product.
     /// </summary>
     public sealed partial class UpdateProductWindow : Window
     {
         Product product;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateProductWindow"/> class.
+        /// Sets the product to be updated and subscribes to the Activated event.
+        /// </summary>
+        /// <param name="product">The product object whose details are to be updated.</param>
+        /// <returns>A new instance of the UpdateProductWindow.</returns>
         public UpdateProductWindow(Product product)
         {
             this.product = product;
@@ -35,11 +44,27 @@ namespace PointOfSaleSystem.Views
             this.Activated += UpdateWindowActivated;
         }
 
+        /// <summary>
+        /// Handles the Activated event of the UpdateProductWindow.
+        /// Sets the DataContext for the product information when the window is activated.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="args">Event data.</param>
+        /// <returns>This method does not return a value.</returns>
         private void UpdateWindowActivated(object sender, WindowActivatedEventArgs args)
         {
             productInfo.DataContext = product;
         }
 
+        /// <summary>
+        /// Handles the click event for the Update Product button.
+        /// Retrieves updated product information from the input fields, performs validation,
+        /// updates the product in the database, displays a success or error dialog,
+        /// and closes the window upon successful update.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         public async void UpdateProduct(object sender, RoutedEventArgs e)
         {
             // Get an instance of the product repository
@@ -53,6 +78,7 @@ namespace PointOfSaleSystem.Views
             int? prodCostPrice = null;
             int? prodSellingPrice = null;
             string? prodCat = category.Text != "" ? category.Text : null;
+            string? prodImage = productImage.Tag != null ? productImage.Tag as string : product.Image;
 
             // Constraint checking
             ContentDialog dialog;
@@ -136,7 +162,7 @@ namespace PointOfSaleSystem.Views
                 return;
             }
 
-            // If the category is detailed, add it to the database 
+            // If the category is detailed, add it to the database
             if (prodCat != null)
             {
                 var catRepo = dao.Categories;
@@ -152,6 +178,63 @@ namespace PointOfSaleSystem.Views
                 }
             }
 
+            // Create a new product for checking
+            Product checkedProduct = new Product()
+            {
+                Name = prodName,
+                Brand = prodBrand,
+                Quantity = prodQuantity,
+                CostPrice = prodCostPrice,
+                SellingPrice = prodSellingPrice,
+                Category = prodCat,
+                Image = prodImage
+            };
+
+            // Check format
+            string? res = checkedProduct.AcceptForChecking(new FormatChecker());
+            if(res is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Lỗi định dạng",
+                    Content = res,
+                    CloseButtonText = "Đóng"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Check required fields
+            res = checkedProduct.AcceptForChecking(new RequiredFieldChecker());
+            if(res is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Nhập thiếu thông tin cần thiết",
+                    Content = res,
+                    CloseButtonText = "Đóng"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Check value
+            res = checkedProduct.AcceptForChecking(new ValueChecker());
+            if (res is not null)
+            {
+                dialog = new ContentDialog
+                {
+                    Title = "Nhập thông tin không hợp lệ",
+                    Content = res,
+                    CloseButtonText = "Đóng"
+                };
+                dialog.XamlRoot = this.Content.XamlRoot;
+                await dialog.ShowAsync();
+                return;
+            }
+
             // Update the product
             product.Name = prodName;
             product.Brand = prodBrand;
@@ -159,7 +242,7 @@ namespace PointOfSaleSystem.Views
             product.CostPrice = prodCostPrice;
             product.SellingPrice = prodSellingPrice;
             product.Category = prodCat;
-            product.Image = productImage.Tag as string;
+            product.Image = prodImage;
 
             // Add the product to the database
             productRepo.Update(product);
@@ -176,6 +259,14 @@ namespace PointOfSaleSystem.Views
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the click event for the Add Photo button.
+        /// Opens a file picker to allow the user to select an image file,
+        /// displays the selected image in the UI, and stores its absolute path.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         public async void AddPhoto(object sender, RoutedEventArgs e)
         {
             // Create a FileOpenPicker

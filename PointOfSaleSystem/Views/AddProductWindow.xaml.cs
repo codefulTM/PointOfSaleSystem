@@ -28,17 +28,31 @@ using PointOfSaleSystem.Utils.Checkers;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window that allows the user to add a new product to the system.
     /// </summary>
     public sealed partial class AddProductWindow : Window
     {
         private ProductViewModel _productViewModel;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddProductWindow"/> class.
+        /// </summary>
+        /// <param name="ViewModel">The ProductViewModel used to manage product data.</param>
         public AddProductWindow(ProductViewModel ViewModel)
         {
             this.InitializeComponent();
             _productViewModel = ViewModel;
         }
 
+        /// <summary>
+        /// Handles the click event for the Add Product button.
+        /// Retrieves product information from the input fields, performs validation,
+        /// adds the new product to the database, displays a success or error dialog,
+        /// and closes the window upon successful addition.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         public async void AddProduct(object sender, RoutedEventArgs e)
         {
             // Get an instance of the database access object
@@ -194,6 +208,8 @@ namespace PointOfSaleSystem.Views
 
             // Add the product to the database
             dao.Products.Create(product);
+            // Update real time viewModel
+            _productViewModel.Products.Add(product);
 
             dialog = new ContentDialog
             {
@@ -207,6 +223,14 @@ namespace PointOfSaleSystem.Views
             this.Close();
         }
 
+         /// <summary>
+        /// Handles the click event for the Add Photo button.
+        /// Opens a file picker to allow the user to select an image file,
+        /// displays the selected image in the UI, and stores its absolute path.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         public async void AddPhoto(object sender, RoutedEventArgs e)
         {
             // Create a FileOpenPicker

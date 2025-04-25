@@ -22,6 +22,9 @@
     <Page Update="Views\TablePage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\SelectCustomerWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\PaymentWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

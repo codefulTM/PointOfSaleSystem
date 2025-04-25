@@ -5,7 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PointOfSaleSystem.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:converter="using:PointOfSaleSystem.Views.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -24,6 +25,9 @@
                   Padding="10"
                   IsItemClickEnabled="True"
                   ItemClick="OnItemClicked">
+            <GridView.Resources>
+                <converter:BooleanToVisibilityConverter x:Key="boolToVisibility"/>
+            </GridView.Resources>
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical"
@@ -51,6 +55,12 @@
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                         </Border>
+                        <!-- Thông báo "Sắp hết hàng" -->
+                        <TextBlock Text="Sắp hết hàng"
+                                   Foreground="Red"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Visibility="{Binding LowStockWarning, Converter={StaticResource boolToVisibility}}"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
