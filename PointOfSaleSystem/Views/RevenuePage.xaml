@@ -15,7 +15,11 @@
             <StackPanel Orientation="Vertical"
                         Padding="10">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Style="{StaticResource TitleTextBlockStyle}">Doanh thu theo ngày</TextBlock>
+                    <TextBlock Text="Doanh thu theo ngày" 
+                               Style="{StaticResource HeaderTextBlockStyle}"
+                               FontWeight="Bold"
+                               Foreground="#ffb22c"
+                               Margin="5"/>
                     <DatePicker x:Name="dailyRevenueDatePicker" 
                                 DateChanged="DailyRevenueDatePicker_DateChanged" 
                                 Header="Chọn ngày" 
@@ -27,7 +31,11 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Style="{StaticResource TitleTextBlockStyle}">Doanh thu theo tuần</TextBlock>
+                    <TextBlock Text="Doanh thu theo tuần" 
+                               Style="{StaticResource HeaderTextBlockStyle}"
+                               FontWeight="Bold"
+                               Foreground="#ffb22c"
+                               Margin="5"/> 
                     <DatePicker x:Name="weeklyRevenueDatePicker" 
                                 DateChanged="WeeklyRevenueDatePicker_DateChanged" 
                                 Header="Chọn ngày bắt đầu" 
@@ -49,7 +57,11 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Style="{StaticResource TitleTextBlockStyle}">Doanh thu theo tháng</TextBlock>
+                    <TextBlock Text="Doanh thu theo tháng" 
+                               Style="{StaticResource HeaderTextBlockStyle}"
+                               FontWeight="Bold"
+                               Foreground="#ffb22c"
+                               Margin="5"/> 
                     <DatePicker x:Name="monthlyRevenueDatePicker" 
                                 DateChanged="MonthlyRevenueDatePicker_DateChanged" 
                                 Header="Chọn ngày bắt đầu" 

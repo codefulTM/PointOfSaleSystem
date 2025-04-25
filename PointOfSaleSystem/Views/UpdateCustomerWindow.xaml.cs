@@ -24,11 +24,19 @@ using PointOfSaleSystem.Utils.Checkers;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window that allows the user to update the details of an existing customer.
     /// </summary>
     public sealed partial class UpdateCustomerWindow : Window
     {
         private CustomerViewModel _customerViewModel;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateCustomerWindow"/> class.
+        /// Sets the ViewModel and the customer data context, and pre-selects the customer's gender in the UI.
+        /// </summary>
+        /// <param name="customerViewModel">The ViewModel used to manage customer data.</param>
+        /// <param name="customer">The customer object whose details are to be updated.</param>
+        /// <returns>A new instance of the UpdateCustomerWindow.</returns>
         public UpdateCustomerWindow(CustomerViewModel customerViewModel, Customer customer)
         {
             this.InitializeComponent();
@@ -48,6 +56,15 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for the Edit Button.
+        /// Retrieves updated customer information from the input fields, performs validation,
+        /// updates the customer in the database, displays a success or error dialog,
+        /// and closes the window upon successful update.
+        /// </summary>
+        /// <param name="sender">The source of the event, expected to be a Button with a Customer tag.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;

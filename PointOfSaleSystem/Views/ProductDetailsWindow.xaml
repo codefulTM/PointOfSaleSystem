@@ -36,6 +36,11 @@
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center">
+                <TextBlock Text="Thông tin sản phẩm" 
+                           Style="{StaticResource HeaderTextBlockStyle}"
+                           FontWeight="Bold"
+                           Foreground="#ffb22c"
+                           Margin="5"/>
                 <StackPanel Orientation="Horizontal"
                             Margin="10">
                     <TextBlock Text="Tên sản phẩm: "
@@ -80,12 +85,14 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="UpdateButton" 
-                            Style="{StaticResource AccentButtonStyle}" 
+                            Background="#FFB22C"
+                            Foreground="Black"
                             Click="OpenUpdateWindow"
                             Margin="10"
                             >Sửa
                     </Button><Button x:Name="DeleteButton" 
-                            Style="{StaticResource AccentButtonStyle}" 
+                            Background="#854836"
+                            Foreground="White"
                             Click="DeleteProduct"
                             Margin="10"
                             >Xóa

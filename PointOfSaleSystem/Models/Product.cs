@@ -8,6 +8,13 @@ using PointOfSaleSystem.Utils.Checkers;
 
 namespace PointOfSaleSystem.Models
 {
+
+    /// <summary>
+    /// Represents a product in the Point of Sale system.
+    /// This class contains properties for product details such as ID, barcode, name, category, supplier, brand, 
+    /// quantity, cost price, selling price, and image. It also implements the INotifyPropertyChanged interface 
+    /// to support property change notifications and the ICheckable interface for validation.
+    /// </summary>
     public class Product : INotifyPropertyChanged, ICheckable
     {
         public int Id { get; set; }
@@ -23,6 +30,14 @@ namespace PointOfSaleSystem.Models
 
         public event PropertyChangedEventHandler? PropertyChanged;
         
+        /// <summary>
+        /// Accepts a checker to perform a validation check on this <see cref="Product"/> instance.
+        /// </summary>
+        /// <param name="checker">The checker object to perform the validation.</param>
+        /// <returns>
+        /// A string containing the error message if the validation check fails, or
+        /// <c>null</c> if the validation check succeeds.
+        /// </returns>
         public string? AcceptForChecking(IChecker checker)
         {
             return checker.Check(this);

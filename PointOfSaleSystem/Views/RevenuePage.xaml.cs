@@ -27,17 +27,30 @@ using PointOfSaleSystem.Views.Converters;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A page that displays revenue information, including daily, weekly, and monthly revenue summaries and charts.
     /// </summary>
     public sealed partial class RevenuePage : Page
     {
         public ChartViewModel WeeklyChartViewModel { get; set; } = new ChartViewModel();
         public ChartViewModel MonthlyChartViewModel { get; set; } = new ChartViewModel();
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RevenuePage"/> class.
+        /// </summary>
+        /// <returns>A new instance of the RevenuePage.</returns>        
         public RevenuePage()
         {
             this.InitializeComponent();
         }
 
+        /// <summary>
+        /// Handles the DateChanged event for the daily revenue DatePicker.
+        /// Filters orders by the selected date, calculates the total revenue for that day,
+        /// and displays the formatted total revenue.
+        /// </summary>
+        /// <param name="sender">The source of the event, the dailyRevenueDatePicker.</param>
+        /// <param name="e">Event data containing the new date value.</param>
+        /// <returns>This method does not return a value.</returns>
         private void DailyRevenueDatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
             // Get all orders
@@ -60,6 +73,14 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the DateChanged event for the weekly revenue DatePicker.
+        /// Filters orders for the week starting from the selected date, updates the weekly chart ViewModel,
+        /// calculates the total revenue for that week, and displays the formatted total revenue.
+        /// </summary>
+        /// <param name="sender">The source of the event, the weeklyRevenueDatePicker.</param>
+        /// <param name="e">Event data containing the new date value.</param>
+        /// <returns>This method does not return a value.</returns>
         private void WeeklyRevenueDatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
             // Get all orders
@@ -86,6 +107,14 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the DateChanged event for the monthly revenue DatePicker.
+        /// Filters orders for the month starting from the selected date, updates the monthly chart ViewModel,
+        /// calculates the total revenue for that month, and displays the formatted total revenue.
+        /// </summary>
+        /// <param name="sender">The source of the event, the monthlyRevenueDatePicker.</param>
+        /// <param name="e">Event data containing the new date value.</param>
+        /// <returns>This method does not return a value.</returns>
         private void MonthlyRevenueDatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
             // Get all orders

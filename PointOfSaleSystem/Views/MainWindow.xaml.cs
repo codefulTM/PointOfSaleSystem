@@ -19,16 +19,30 @@ using Microsoft.UI.Xaml.Navigation;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// The main window of the Point of Sale system application.
+    /// It hosts the navigation view and displays different pages within a frame.
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// Sets the initial page displayed in the content frame to ProductPage.
+        /// </summary>
+        /// <returns>A new instance of the MainWindow.</returns>
         public MainWindow()
         {
             this.InitializeComponent();
             contentFrame.Navigate(typeof(ProductPage));
         }
 
+        /// <summary>
+        /// Handles the ItemInvoked event of the NavigationView.
+        /// Navigates to the corresponding page based on the invoked navigation item's tag.
+        /// If the settings item is invoked, it prints a message to the console.
+        /// </summary>
+        /// <param name="sender">The source of the event, the NavigationView.</param>
+        /// <param name="args">Event data that provides information about the invoked item.</param>
+        /// <returns>This method does not return a value.</returns>
         private void nav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked)

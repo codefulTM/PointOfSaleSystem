@@ -175,7 +175,9 @@ namespace PointOfSaleSystem.Views.ViewModels
             SelectedCustomer = customer;
             RaisePropertyChanged(nameof(SelectedCustomer));
         }
-        public void CreateOrder()
+        
+        public Order CreateOrder()
+
         {
             if (OrderProducts.Count == 0)
             {
@@ -219,6 +221,8 @@ namespace PointOfSaleSystem.Views.ViewModels
 
             // Cập nhật lại Total
             RaisePropertyChanged(nameof(Total));
+
+            return newOrder;
         }
     }
 }

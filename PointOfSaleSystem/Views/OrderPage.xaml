@@ -56,9 +56,9 @@
                   ItemClick="OnProductClicked">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Background="LightGray">
+                    <StackPanel Background="#F7F7F7">
                         <Image Source="{Binding Image}" Width="200" Height="100"/>
-                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding Name}" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
@@ -111,10 +111,10 @@
                    VerticalAlignment="Center"
                    Margin="10" />
         
-        <Button Grid.Column="4" Grid.Row="5" Width="300" Background="Aquamarine" HorizontalAlignment="Center" Padding="10" Click="DeleteSelectedProduct_Click">Xóa</Button>
-        <Button Grid.Column="4" Grid.Row="6" Width="300" Background="CadetBlue" HorizontalAlignment="Center" Padding="10" Click="AddCustomer_Click">Thêm khách hàng</Button>
+        <Button Grid.Column="4" Grid.Row="5" Width="300" Background="#854836" Foreground="White" HorizontalAlignment="Center" Padding="10" Click="DeleteSelectedProduct_Click">Xóa</Button>
+        <Button Grid.Column="4" Grid.Row="6" Width="300" Background="#FFB22C" Foreground="Black" HorizontalAlignment="Center" Padding="10" Click="AddCustomer_Click">Thêm khách hàng</Button>
         <Border Grid.Column="4" Grid.Row="7" BorderBrush="Black" BorderThickness="0.5" VerticalAlignment="Stretch" />
-        <Button Grid.Column="4" Grid.Row="8" Width="280" Height="50" Style="{StaticResource AccentButtonStyle}" Margin="10" Padding="10" Click="Checkout_Click">Thanh toán</Button>
+        <Button Grid.Column="4" Grid.Row="8" Width="280" Height="50" Background="#F7F7F7" Foreground="Black" FontWeight="Bold" Margin="10" Padding="10" Click="Checkout_Click">Thanh toán</Button>
 
 
         <Border Grid.Column="1" Grid.RowSpan="9" BorderBrush="Black" BorderThickness="0.5" VerticalAlignment="Stretch" />

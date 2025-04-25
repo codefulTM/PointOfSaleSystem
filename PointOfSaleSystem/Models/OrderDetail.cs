@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PointOfSaleSystem.Models
 {
+    /// <summary>
+    /// Represents the details of an order, including the associated order ID, product ID, and quantity.
+    /// </summary>
     public class OrderDetail
     {
         public int? OrderId { get; set; } = null;

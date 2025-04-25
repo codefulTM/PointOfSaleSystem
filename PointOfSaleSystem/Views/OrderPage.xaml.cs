@@ -21,11 +21,18 @@ using PointOfSaleSystem.Models;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A page that allows users to create and manage customer orders.
+    /// It displays products, allows adding them to an order, deleting items, and proceeding to checkout.
     /// </summary>
     public sealed partial class OrderPage : Page
     {
         public OrderViewModel ViewModel { get; set; } = new OrderViewModel();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderPage"/> class.
+        /// Sets the DataContext and loads initial data (categories and products) into the ViewModel.
+        /// </summary>
+        /// <returns>A new instance of the OrderPage.</returns>
         public OrderPage()
         {
             this.InitializeComponent();
@@ -35,6 +42,13 @@ namespace PointOfSaleSystem.Views
             ViewModel.LoadProducts();
         }
 
+        /// <summary>
+        /// Handles the click event when a product item is clicked in the product list.
+        /// Adds the clicked product to the current order in the ViewModel.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data containing information about the clicked item.</param>
+        /// <returns>This method does not return a value.</returns>        
         private void OnProductClicked(object sender, ItemClickEventArgs e)
         {
             var clickedProduct = e.ClickedItem as Product;
@@ -44,6 +58,14 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for the Delete Selected Product button.
+        /// Removes the currently selected product from the order after displaying a confirmation dialog.
+        /// Updates the total and tax values in the ViewModel.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void DeleteSelectedProduct_Click(object sender, RoutedEventArgs e)
         {
             if (ViewModel.SelectedProduct == null)
@@ -102,6 +124,14 @@ namespace PointOfSaleSystem.Views
             };
         }
 
+        /// <summary>
+        /// Handles the click event for the Checkout button.
+        /// Creates an order from the current items, opens the payment window,
+        /// and handles potential errors like an empty order.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void Checkout_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -121,17 +151,20 @@ namespace PointOfSaleSystem.Views
                 }
 
                 // Gọi phương thức CreateOrder trong ViewModel
-                ViewModel.CreateOrder();
+                var order = ViewModel.CreateOrder();
 
-                // Hiển thị thông báo thành công
-                var successDialog = new ContentDialog
-                {
-                    Title = "Thành công",
-                    Content = "Chuyển đến giao diện thanh toán",
-                    CloseButtonText = "OK",
-                    XamlRoot = this.Content.XamlRoot
-                };
-                await successDialog.ShowAsync();
+                // Mở cửa sổ thanh toán
+                var paymentWindow = new PaymentWindow(order);
+                paymentWindow.Activate();
+                //// Hiển thị thông báo thành công 
+                //var successDialog = new ContentDialog
+                //{
+                //    Title = "Thành công",
+                //    Content = "Chuyển đến giao diện thanh toán",
+                //    CloseButtonText = "OK",
+                //    XamlRoot = this.Content.XamlRoot
+                //};
+                //await successDialog.ShowAsync();
             }
             catch (InvalidOperationException ex)
             {

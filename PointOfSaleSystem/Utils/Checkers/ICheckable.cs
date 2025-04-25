@@ -7,6 +7,11 @@ using PointOfSaleSystem.Models;
 
 namespace PointOfSaleSystem.Utils.Checkers
 {
+    
+    /// <summary>
+    /// Represents an interface for objects that can be checked by an implementation of the <see cref="IChecker"/> interface.
+    /// Provides a method to accept a checker and perform a checking operation.
+    /// </summary>
     public interface ICheckable
     {
         public string? AcceptForChecking(IChecker checker);

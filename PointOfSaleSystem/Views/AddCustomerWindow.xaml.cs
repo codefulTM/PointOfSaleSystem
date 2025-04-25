@@ -23,17 +23,31 @@ using PointOfSaleSystem.Utils.Checkers;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// A window that allows the user to add a new customer to the system.
     /// </summary>
     public sealed partial class AddCustomerWindow : Window
     {
         private CustomerViewModel _customerViewModel;
-        public AddCustomerWindow(CustomerViewModel ViewModel)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddCustomerWindow"/> class.
+        /// </summary>
+        /// <param name="customerViewModel">The CustomerViewModel used to manage customer data.</param>        
+        public AddCustomerWindow(CustomerViewModel customerViewModel)
         {
             this.InitializeComponent();
-            _customerViewModel = ViewModel;
+            _customerViewModel = customerViewModel;
         }
 
+        /// <summary>
+        /// Handles the click event for the Add Customer button.
+        /// Retrieves customer information from the input fields, performs validation,
+        /// adds the new customer to the database and the ViewModel, displays a success or error dialog,
+        /// and closes the window upon successful addition.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void AddButton_Click(object sender, RoutedEventArgs e)
         {
             ContentDialog dialog;

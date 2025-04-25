@@ -22,17 +22,29 @@ using Windows.Foundation.Collections;
 namespace PointOfSaleSystem.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A page that displays a list of customers and provides options to view, add, update, and delete customers.
     /// </summary>
     public sealed partial class CustomerPage : Page
     {
         public CustomerViewModel ViewModel { get; set; } = new CustomerViewModel();
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomerPage"/> class.
+        /// </summary>
+        /// <returns>A new instance of the CustomerPage.</returns>
         public CustomerPage()
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;
         }
 
+        /// <summary>
+        /// Handles the click event for the View Detail button.
+        /// Opens a new window to display the details of the selected customer.
+        /// </summary>
+        /// <param name="sender">The source of the event, expected to be a Button with a Customer tag.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>Nothing.</returns>
         private void viewDetailButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -44,12 +56,26 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for the Add button.
+        /// Opens a new window to add a new customer.
+        /// </summary>
+        /// <param name="sender">The source of the event, expected to be a Button.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>This method does not return a value.</returns>
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             var screen = new AddCustomerWindow(ViewModel);
             screen.Activate();
         }
 
+        /// <summary>
+        /// Handles the click event for the Update button.
+        /// Opens a new window to update the details of the selected customer.
+        /// </summary>
+        /// <param name="sender">The source of the event, expected to be a Button with a Customer tag.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>This method does not return a value.</returns>
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -61,6 +87,14 @@ namespace PointOfSaleSystem.Views
             }
         }
 
+        /// <summary>
+        /// Handles the click event for the Delete button.
+        /// Displays a confirmation dialog and, if confirmed, deletes the selected customer
+        /// from the ViewModel and the database.
+        /// </summary>
+        /// <param name="sender">The source of the event, expected to be a Button with a Customer tag.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         private async void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             bool isRemovable = false;
