@@ -4,12 +4,90 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PointOfSaleSystem.Views"
+    xmlns:converter="using:PointOfSaleSystem.Views.Converters"
+    xmlns:models="using:PointOfSaleSystem.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <converter:BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Page.Resources>
+    
     <Grid>
-
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical" 
+                        Padding="10">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock>Tài khoản ngân hàng</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Click="Bank_SetDefaultClick" 
+                                Background="#FFB22C"
+                                Foreground="Black"
+                                Margin="5">Đặt làm mặc định</Button>
+                        <Button Click="Bank_AddPaymentMethodClick" 
+                                Background="#FFB22C"
+                                Foreground="Black"
+                                Margin="5">Thêm</Button>
+                        <Button Click="ShowBankQR" 
+                                Background="#FFB22C"
+                                Foreground="Black"
+                                Margin="5">Xem QR</Button>
+                        <Button Click="Bank_RemovePaymentMethodClick" 
+                                Background="#854836"
+                                Margin="5">Xóa</Button>
+                    </StackPanel>
+                    <ListView x:Name="bankPaymentMethods" ItemsSource="{x:Bind ViewModel.BankPaymentMethods}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:PaymentMethod">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding BankName}"/>
+                                    <TextBlock Text="-"/>
+                                    <TextBlock Text="{Binding AccountHolder}"/>
+                                    <TextBlock Text="-"/>
+                                    <TextBlock Text="{Binding AccountNumber}"/>
+                                    <TextBlock Text="(Mặc định)"
+                                               Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibility}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock>Momo</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Click="Momo_SetDefaultClick" 
+                                Background="#FFB22C"
+                                Foreground="Black"
+                                Margin="5">Đặt làm mặc định</Button>
+                        <Button Click="Momo_AddPaymentMethodClick" 
+                                Background="#FFB22C"
+                                Foreground="Black"
+                                Margin="5">Thêm</Button>
+                        <Button Click="ShowMomoQR" 
+                                Background="#FFB22C"
+                                Foreground="Black"
+                                Margin="5">Xem QR</Button>
+                        <Button Click="Momo_RemovePaymentMethodClick" 
+                                Background="#854836"
+                                Margin="5">Xóa</Button>
+                    </StackPanel>
+                    <ListView x:Name="momoPaymentMethods" ItemsSource="{x:Bind ViewModel.MomoPaymentMethods}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:PaymentMethod">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding AccountHolder}"/>
+                                    <TextBlock Text="-"/>
+                                    <TextBlock Text="{Binding PhoneNumber}"/>
+                                    <TextBlock Text="(Mặc định)"
+                               Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibility}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

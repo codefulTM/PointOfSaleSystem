@@ -47,6 +47,7 @@
                                    />
                         </Grid>
                         <Border Width="100"
+                                Height="50"
                                 VerticalAlignment="Stretch">
                             <TextBlock Text="{Binding Name}"
                                        Style="{StaticResource BodyStrongTextBlockStyle}"
@@ -66,7 +67,7 @@
 
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid MaximumRowsOrColumns="3" 
+                    <ItemsWrapGrid MaximumRowsOrColumns="5" 
                                    Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>

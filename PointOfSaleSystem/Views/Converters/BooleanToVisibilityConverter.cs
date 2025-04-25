@@ -12,9 +12,9 @@ namespace PointOfSaleSystem.Views.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is bool boolValue)
+            if (value is bool isVisible)
             {
-                return boolValue ? Visibility.Visible : Visibility.Collapsed;
+                return isVisible ? Visibility.Visible : Visibility.Collapsed;
             }
             return Visibility.Collapsed;
         }

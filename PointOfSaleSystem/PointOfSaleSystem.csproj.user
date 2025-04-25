@@ -13,6 +13,24 @@
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Views\SelectCustomerWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PaymentWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ShowMomoQRWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AddMomoPaymentMethodWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ShowBankQRWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AddBankPaymentMethodWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\RevenuePage.xaml">
       <SubType>Designer</SubType>
     </Page>

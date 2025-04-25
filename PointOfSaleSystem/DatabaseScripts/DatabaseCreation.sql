@@ -97,3 +97,14 @@ CREATE TABLE PRODUCT_SUPPLIES (
     FOREIGN KEY (product_id) REFERENCES PRODUCT(product_id) ON DELETE CASCADE,
     FOREIGN KEY (supplies_id) REFERENCES SUPPLIES(supplies_id) ON DELETE CASCADE
 );
+
+CREATE TABLE PAYMENT_METHOD (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(10) NOT NULL CHECK(type IN ('bank', 'momo')),
+    account_number TEXT,
+    bank_name TEXT,
+    account_holder TEXT,
+    phone_number TEXT,
+    is_default BOOLEAN DEFAULT FALSE,
+	deleted BOOLEAN DEFAULT FALSE
+);

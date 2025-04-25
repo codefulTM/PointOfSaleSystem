@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="PointOfSaleSystem.Views.AddMomoPaymentMethodWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PointOfSaleSystem.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="BlankWindow1">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Thêm tài khoản MOMO"
+               Style="{StaticResource HeaderTextBlockStyle}"
+               FontWeight="Bold"
+               Foreground="#ffb22c"/>
+            <TextBox Header="Họ tên" 
+             x:Name="nameTextBox"
+             PlaceholderText="Nhập họ tên..."
+             Margin="5"/>
+            <TextBox Header="Số Momo"
+             x:Name="momoNumberTextBox"
+             PlaceholderText="Nhập số MOMO..."
+             Margin="5"/>
+
+            <Button Content="Thêm"
+                Background="#FFB22C"
+                Foreground="Black"
+                HorizontalAlignment="Center"
+                Click="AddMomoPaymentMethodButton_Click"
+                Margin="5"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
