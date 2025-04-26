@@ -28,7 +28,7 @@ namespace PointOfSaleSystem.Views
     public sealed partial class TablePage : Page
     {
         public TableViewModel ViewModel { get; set; } = new TableViewModel();
-        private Table? _selectedTable = new Table();
+        private Table? _selectedTable { get; set; } 
 
         /// <summary>
         /// Initializes a new instance of the <c>TablePage</c> class.
@@ -51,6 +51,7 @@ namespace PointOfSaleSystem.Views
 
             // Kích hoạt nút "Đặt bàn" nếu có bàn được chọn
             BookingButton.IsEnabled = _selectedTable != null;
+            DeleteBookingButton.IsEnabled = _selectedTable != null;
         }
 
         /// <summary>
@@ -73,6 +74,22 @@ namespace PointOfSaleSystem.Views
         {
             if (_selectedTable != null)
             {
+                // Kiểm tra nếu bàn đã được đặt
+                if (_selectedTable.State == "booked")
+                {
+                    var dialog = new ContentDialog
+                    {
+                        Title = "Lỗi",
+                        Content = $"Bàn '{_selectedTable.Name}' đã được đặt trước. Vui lòng chọn bàn khác.",
+                        CloseButtonText = "Đóng",
+                        XamlRoot = this.Content.XamlRoot
+                    };
+
+                    _ = dialog.ShowAsync(); // Hiển thị thông báo lỗi
+                    return;
+                }
+
+                // Nếu bàn chưa được đặt, tiếp tục logic đặt bàn
                 var customerViewModel = new CustomerViewModel();
                 var bookingWindow = new BookingWindow(customerViewModel, _selectedTable);
 
@@ -86,9 +103,65 @@ namespace PointOfSaleSystem.Views
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The event arguments.</param>
-        private void deleteBookingButton_Click(object sender, RoutedEventArgs e)
+        private async void deleteBookingButton_Click(object sender, RoutedEventArgs e)
         {
-            // Logic hủy đặt bàn
+            if (_selectedTable == null)
+            {
+                var dialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Vui lòng chọn bàn để hủy đặt bàn.",
+                    CloseButtonText = "Đóng",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+
+            // Giữ bản sao
+            var tableToUpdate = _selectedTable;
+
+            if (tableToUpdate.State == "empty")
+            {
+                var dialog = new ContentDialog
+                {
+                    Title = "Thông báo",
+                    Content = $"Bàn '{tableToUpdate.Name}' hiện không được đặt. Không thể hủy đặt bàn.",
+                    CloseButtonText = "Đóng",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+
+            var confirmDialog = new ContentDialog
+            {
+                Title = "Xác nhận",
+                Content = $"Bạn có chắc chắn muốn hủy đặt bàn '{tableToUpdate.Name}' không?",
+                PrimaryButtonText = "Hủy đặt bàn",
+                CloseButtonText = "Đóng",
+                XamlRoot = this.Content.XamlRoot
+            };
+
+            var result = await confirmDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                tableToUpdate.State = "empty";
+                tableToUpdate.CustomerId = null;
+                tableToUpdate.BookTime = null;
+
+                var dao = Services.Services.GetKeyedSingleton<IDao>();
+                dao.Tables.Update(tableToUpdate);
+
+                var successDialog = new ContentDialog
+                {
+                    Title = "Thành công",
+                    Content = $"Đã hủy đặt bàn '{tableToUpdate.Name}' thành công.",
+                    CloseButtonText = "Đóng",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await successDialog.ShowAsync();
+            }
         }
 
         /// <summary>
