@@ -31,6 +31,7 @@
                 Margin="10">
             </Button>
             <Button Content="Hủy đặt bàn" 
+                x:Name="DeleteBookingButton"
                 Background="#ffb22c"
                 Foreground="Black"
                 Click="deleteBookingButton_Click"

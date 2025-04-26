@@ -139,6 +139,19 @@ namespace PointOfSaleSystem.Views.ViewModels
 
         public void AddProductToOrder(Product product)
         {
+            // Kiểm tra nếu sản phẩm hết hàng hoặc không có giá bán
+            if (product.Quantity <= 0)
+            {
+                Debug.WriteLine($"Không thể thêm sản phẩm '{product.Name}' vì đã hết hàng.");
+                return;
+            }
+
+            if (product.SellingPrice == null)
+            {
+                Debug.WriteLine($"Không thể thêm sản phẩm '{product.Name}' vì không có giá bán.");
+                return;
+            }
+
             var existingProduct = OrderProducts.FirstOrDefault(p => p.Id == product.Id);
             if (existingProduct != null)
             {
