@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using PointOfSaleSystem.Models;
 using PointOfSaleSystem.Views.ViewModels;
 using PointOfSaleSystem.Services;
+using System.Text.RegularExpressions;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -71,6 +72,19 @@ namespace PointOfSaleSystem.Views
                 {
                     Title = "Lỗi",
                     Content = "Vui lòng chọn ngày đặt bàn.",
+                    CloseButtonText = "Đóng",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await dialog.ShowAsync();
+                return;
+            }
+
+            if (!Regex.IsMatch(BookingTime, @"^\d{2}:\d{2}$"))
+            {
+                var dialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Thời gian không hợp lệ. Vui lòng nhập theo định dạng HH:mm.",
                     CloseButtonText = "Đóng",
                     XamlRoot = this.Content.XamlRoot
                 };
